@@ -1,0 +1,867 @@
+UPK_FILE=xcomgame.upk
+//**************************************************************************************************
+// SEQUENTIAL OVERWATCH IMPLEMENTATION - by szmind
+// PART 1: Standard overwatch triggered by moving or Covering Fire, or Reactive Targeting sensors
+//**************************************************************************************************
+OBJECT = XGUnit.ApplyReactionCost : AUTO
+[REPLACEMENT_CODE]
+//*********************************************************************************************
+//Main part of the function, left unchanged. The only change at 0x0CEB
+//*********************************************************************************************
+/*(0x0002/0x0002)*/ 0F 00 <.iNumReactionFire> 25 
+/*(0x000D/0x0009)*/ 0F 00 <.iOldReactionValue> 1A 2C 12 01 <XGUnitNativeBase.m_aCurrentStats> 
+/*(0x0023/0x0017)*/ 0F 00 <.NewValue> 92 00 <.I> 1A 2C 12 01 <XGUnitNativeBase.m_aCurrentStats> 16 
+/*(0x0044/0x002C)*/ 07 [@label_0x0126] 97 00 <.NewValue> 25 16 
+/*(0x0053/0x0037)*/ 	0F 00 <.iCharMaxValue> 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetMaxReaction.ReturnValue> 00 ( 1B <GetMaxReaction> 19 01 <XGUnitNativeBase.m_kCharacter> [@] <XGCharacter.m_kChar> 00 ( 01 <XGCharacter.m_kChar> ) 16 ) 
+/*(0x00E3/0x0093)*/ 	07 [@label_0x010D] 97 00 <.NewValue> 00 <.iCharMaxValue> 16 
+/*(0x00FA/0x00A2)*/ 		0F 00 <.NewValue> 00 <.iCharMaxValue> 
+/*(0x010D/0x00AD)*/ 	[#label_0x010D]
+/*(0x010D/0x00AD)*/ 	0F 1A 2C 12 01 <XGUnitNativeBase.m_aCurrentStats> 00 <.NewValue> 
+/*(0x0123/0x00BB)*/ 	06 [@label_0x0134] 
+/*(0x0126/0x00BE)*/ [#label_0x0126]
+/*(0x0126/0x00BE)*/ 0F 1A 2C 12 01 <XGUnitNativeBase.m_aCurrentStats> 25 
+/*(0x0134/0x00C8)*/ [#label_0x0134]
+/*(0x0134/0x00C8)*/ 07 [@label_0x018C] 82 F2 2D 00 <.bPerformReactionCheck> 28 16 18 [@] ( 9B 00 <.NewValue> 00 <.iOldReactionValue> 16 16 ) 
+/*(0x015D/0x00E5)*/ 	07 [@label_0x018C] 19 1B <GetCharacter> 16 [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 84 16 ) 
+/*(0x0182/0x0106)*/ 		1B <UpdateUnitBuffs> 16 
+/*(0x018C/0x0110)*/ [#label_0x018C]
+/*(0x018C/0x0110)*/ 07 [@label_0x0270] 82 82 77 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) 2A 16 18 [@] ( 19 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComTacticalCheatManager.bDebugReaction> 00 ( 2D 01 <XComTacticalCheatManager.bDebugReaction> ) 16 ) 18 [@] ( 81 19 1B <GetPlayer> 16 [@] <Core.Object.IsA.ReturnValue> 00 ( C5 21 <XGAIPlayer_Animal> 16 ) 16 16 ) 
+/*(0x021C/0x0178)*/ 	55 01 <@m_arrStrDebugReaction> [@] ( 70 70 70 A8 38 56 17 1F <%t "ApplyReactionCost New: "> 16 38 53 1B <GetReaction> 16 16 1F <%t " Old: "> 16 38 53 00 <.iOldReactionValue> 16 16 ) 
+/*(0x0270/0x01C4)*/ [#label_0x0270]
+/*(0x0270/0x01C4)*/ 07 [@label_0x0F22] 82 82 82 82 82 82 2D 00 <.bPerformReactionCheck> 18 [@] ( 81 1B <IsHiding> 4A 16 16 16 ) 18 [@] ( 81 19 1B <GetPlayer> 16 [@] <Core.Object.IsA.ReturnValue> 00 ( C5 21 <XGAIPlayer_Animal> 16 ) 16 16 ) 18 [@] ( 84 72 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.GetAIPlayer.ReturnValue> 00 ( 1B <GetAIPlayer> 16 ) 2A 16 18 [@] ( 81 19 2E <Class.XGAIPlayer> 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.GetAIPlayer.ReturnValue> 00 ( 1B <GetAIPlayer> 16 ) [@] <XGAIPlayer.m_bSkipAI> 00 ( 2D 01 <XGAIPlayer.m_bSkipAI> ) 16 16 ) 16 ) 18 [@] ( 84 72 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) 2A 16 18 [@] ( 81 19 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComTacticalCheatManager.bSkipReactionFire> 00 ( 2D 01 <XComTacticalCheatManager.bSkipReactionFire> ) 16 16 ) 16 ) 18 [@] ( 1B <SelfReactionAbilityCheck> 16 16 ) 18 [@] ( 1C <XGUnitNativeBase.IsAlert> 16 16 ) 
+/*(0x043F/0x030F)*/ 	0F 00 <.kEnemySquad> 19 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.GetEnemyPlayer.ReturnValue> 00 ( 1B <GetEnemyPlayer> 1B <GetPlayer> 16 16 ) [@] <XGPlayer.GetSquad.ReturnValue> 00 ( 1B <GetSquad> 16 ) 
+/*(0x04D1/0x0375)*/ 	0F 00 <.iEnemy> 25 
+/*(0x04DC/0x037C)*/ 	[#label_0x04DC]
+/*(0x04DC/0x037C)*/ 	07 [@label_0x0D07] 96 00 <.iEnemy> 19 00 <.kEnemySquad> [@] <XGSquadNativeBase.GetNumMembers.ReturnValue> 00 ( 1B <GetNumMembers> 16 ) 16 
+/*(0x0509/0x039D)*/ 		0F 00 <.kVisibleEnemy> 19 00 <.kEnemySquad> [@] <XGSquadNativeBase.GetMemberAt.ReturnValue> 00 ( 1B <GetMemberAt> 00 <.iEnemy> 16 ) 
+/*(0x053B/0x03BF)*/ 		07 [@label_0x054D] 72 00 <.kVisibleEnemy> 2A 16 
+/*(0x054A/0x03CA)*/ 			06 [@label_0x0CF9] 
+/*(0x054D/0x03CD)*/ 		[#label_0x054D]
+/*(0x054D/0x03CD)*/ 		07 [@label_0x0572] 19 00 <.kVisibleEnemy> [@] <XGUnitNativeBase.m_bWeaponDisabled> 00 ( 2D 01 <XGUnitNativeBase.m_bWeaponDisabled> ) 
+/*(0x056F/0x03E3)*/ 			06 [@label_0x0CF9] 
+/*(0x0572/0x03E6)*/ 		[#label_0x0572]
+/*(0x0572/0x03E6)*/ 		07 [@label_0x0597] 19 00 <.kVisibleEnemy> [@] <XGUnitNativeBase.m_bWeaponDisabled> 00 ( 2D 01 <XGUnitNativeBase.m_bNeuralDampingStun> ) 
+/*(0x0594/0x03FC)*/ 			06 [@label_0x0CF9] 
+/*(0x0597/0x03FF)*/ 		[#label_0x0597]			
+/*(0x0597/0x03FF)*/ 		07 [@label_0x0CF9] 82 82 82 82 82 82 82 82 82 19 00 <.kVisibleEnemy> [@] <XGUnitNativeBase.IsAlert.ReturnValue> 00 ( 1C <XGUnitNativeBase.IsAlert> 16 ) 18 [@] ( 77 00 <.kVisibleEnemy> 00 <.StrangleTarget> 16 16 ) 18 [@] ( 19 00 <.kVisibleEnemy> [@] <XGUnitNativeBase.m_bReactionFireStatus> 00 ( 2D 01 <XGUnitNativeBase.m_bReactionFireStatus> ) 16 ) 18 [@] ( 19 00 <.kVisibleEnemy> [@] <XGUnit.DormantAlienCheck.ReturnValue> 00 ( 1B <DormantAlienCheck> 16 ) 16 ) 18 [@] ( 19 00 <.kVisibleEnemy> [@] <XGUnit.ReactionWeaponCheck.ReturnValue> 00 ( 1B <ReactionWeaponCheck> 16 ) 16 ) 18 [@] ( 19 00 <.kVisibleEnemy> [@] <XGUnit.ReactionAbilityCheck.ReturnValue> 00 ( 1B <ReactionAbilityCheck> 17 16 ) 16 ) 18 [@] ( 19 00 <.kVisibleEnemy> [@] <XGUnit.IsTargetInReactionArea.ReturnValue> 00 ( 1B <IsTargetInReactionArea> 17 16 ) 16 ) 18 [@] ( 81 19 00 <.kVisibleEnemy> [@] <XGUnitNativeBase.IsPanicActive.ReturnValue> 00 ( 1B <IsPanicActive> 4A 16 ) 16 16 ) 18 [@] ( 19 00 <.kVisibleEnemy> [@] <XGUnit.RapidReactionIsOk.ReturnValue> 00 ( 1B <RapidReactionIsOk> 17 16 ) 16 ) 18 [@] ( 19 00 <.kVisibleEnemy> [@] <XGUnit.IsEnemyVisible.ReturnValue> 00 ( 1B <IsEnemyVisible> 17 16 ) 16 ) 
+/*(0x06F9/0x0509)*/ 			14 2D 00 <.bCloseCombatShot> 82 19 00 <.kVisibleEnemy> [@] <XGUnit.CloseCombatSpecialist.ReturnValue> 00 ( 1B <CloseCombatSpecialist> 17 16 ) 18 [@] ( 81 2D 00 <.bReactiveTargetingOnly> 16 16 ) 
+/*(0x0735/0x0535)*/ 			07 [@label_0x0CF9] 84 84 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.TriggeredReactionFire.ReturnValue> 00 ( 1B <TriggeredReactionFire> 1B <GetReaction> 16 19 00 <.kVisibleEnemy> [@] <XGUnit.GetReaction.ReturnValue> 00 ( 1B <GetReaction> 16 ) 16 ) 18 [@] ( 2D 00 <.bReactiveTargetingOnly> 16 ) 18 [@] ( 2D 00 <.bCloseCombatShot> 16 ) 
+
+								//FOR COVERING FIRE ALLOWED, SKIP ENEMY WHO IS MARKED AS 'ALREADY HAVING REACTED TO THIS ACTION'	
+/*(0x07E7/0x05B3)*/ 				07 [@label_0x0835] 82 2D 00 <.bCoveringFireOnly> 18 [@] ( 84 81 19 19 00 <.kVisibleEnemy> [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 2F 16 ) 16 18 [@] ( 9B 46 01 <@m_arrStrDebugReaction> [@] ( 38 56 00 <.kVisibleEnemy> 16 ) 1D <%i -1> 16 16 ) 16 ) 
+/*(0x0832/0x05EE)*/ 					06 [@label_0x0CF9] 
+/*(0x0835/0x05F1)*/ 				[#label_0x0835]
+/*(0x0835/0x05F1)*/ 				14 2D 00 <.bProcMsg> 28 
+/*(0x0841/0x05F9)*/ 				07 [@label_0x092A] 2D 00 <.bReactiveTargetingOnly> 
+/*(0x084E/0x0602)*/ 					07 [@label_0x088D] 81 19 19 00 <.kVisibleEnemy> [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 90 16 ) 16 
+/*(0x088A/0x0632)*/ 						06 [@label_0x0CF9] 
+/*(0x088D/0x0635)*/ 					[#label_0x088D]
+/*(0x088D/0x0635)*/ 					07 [@label_0x08A7] 77 00 <.kVisibleEnemy> 00 <.ReactiveTarget> 16 
+/*(0x08A4/0x0644)*/ 						06 [@label_0x0CF9] 
+/*(0x08A7/0x0647)*/ 					[#label_0x08A7]
+/*(0x08A7/0x0647)*/ 					07 [@label_0x08CC] 19 00 <.kVisibleEnemy> [@] <@m_bFiredReactiveTargeting> 00 ( 2D 01 <@m_bFiredReactiveTargeting> ) 
+/*(0x08C9/0x065D)*/ 						06 [@label_0x0CF9] 
+/*(0x08CC/0x0660)*/ 					[#label_0x08CC]
+/*(0x08CC/0x0660)*/ 					14 19 00 <.kVisibleEnemy> [@] <@m_bFiredReactiveTargeting> 00 ( 2D 01 <@m_bFiredReactiveTargeting> ) 27 
+/*(0x08ED/0x0675)*/ 					19 00 <.kVisibleEnemy> [@] <XGUnit.ActivatePerk.ReturnValue> 00 ( 1B <ActivatePerk> 24 90 17 4A 4A 4A 16 ) 
+/*(0x0912/0x0692)*/ 					14 2D 00 <.bProcMsg> 27 
+/*(0x091E/0x069A)*/ 					0F 00 <.eProcMsg> 24 13 
+/*(0x092A/0x06A2)*/ 				[#label_0x092A]
+/*(0x092A/0x06A2)*/ 				07 [@label_0x09A3] 2D 00 <.bCloseCombatShot> 
+/*(0x0937/0x06AB)*/ 					55 19 00 <.kVisibleEnemy> [@] <@m_arrCloseCombatShots> 00 ( 01 <@m_arrCloseCombatShots> ) [@] ( 17 16 ) 
+/*(0x095A/0x06C2)*/ 					14 2D 00 <.bProcMsg> 27 
+/*(0x0966/0x06CA)*/ 					07 [@label_0x0997] 19 00 <.kVisibleEnemy> [@] <XGUnit.HasSentinelModule.ReturnValue> 00 ( 1B <HasSentinelModule> 16 ) 
+/*(0x0988/0x06E4)*/ 						0F 00 <.eProcMsg> 24 1B 
+/*(0x0994/0x06EC)*/ 						06 [@label_0x09A3] 
+/*(0x0997/0x06EF)*/ 					[#label_0x0997]
+/*(0x0997/0x06EF)*/ 					0F 00 <.eProcMsg> 24 1A 
+/*(0x09A3/0x06F7)*/ 				[#label_0x09A3]
+/*(0x09A3/0x06F7)*/ 				07 [@label_0x09C8] 2D 00 <.bCoveringFireOnly> 										
+/*(0x09B0/0x0700)*/ 					14 2D 00 <.bProcMsg> 27 
+/*(0x09BC/0x0708)*/ 					0F 00 <.eProcMsg> 24 19
+										
+										//MARK THE PENDING COV-FIRING ENEMY AS 'ALREADY HAVING REACTED TO THIS ACTION' BY ADDING HIS NAME TO m_arrStrDebugReaction ARRAY
+										55 01 <@m_arrStrDebugReaction> [@] ( 38 56 00 <.kVisibleEnemy> 16 )
+/*(0x09C8/0x0710)*/ 				[#label_0x09C8]
+/*(0x09C8/0x0710)*/ 				07 [@label_0x0B8E] 2D 00 <.bProcMsg> 
+/*(0x09D5/0x0719)*/ 					0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetUnexpandedLocalizedMessageString.ReturnValue> 00 ( 1B <GetUnexpandedLocalizedMessageString> 00 <.eProcMsg> 16 ) 19 00 <.kVisibleEnemy> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 03 4A 4A 19 00 <.kVisibleEnemy> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 16 ) 
+/*(0x0B0F/0x07EB)*/ 					07 [@label_0x0B8E] 77 00 <.kBroadcastWorldMessage> 2A 16 
+/*(0x0B1E/0x07F6)*/ 						19 2E <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_UnexpandedLocalizedString> 00 <.eProcMsg> 19 00 <.kVisibleEnemy> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 03 19 00 <.kVisibleEnemy> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+/*(0x0B8E/0x0842)*/ 				[#label_0x0B8E]
+/*(0x0B8E/0x0842)*/ 				07 [@label_0x0CC1] 82 77 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) 2A 16 18 [@] ( 19 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComTacticalCheatManager.bDebugReaction> 00 ( 2D 01 <XComTacticalCheatManager.bDebugReaction> ) 16 ) 
+/*(0x0BF6/0x0886)*/ 					0F 00 <.strReactionDebugging> 70 70 A8 A8 70 70 A8 A8 A8 38 56 17 1F <%t "ApplyReactionCost() requesting "> 16 38 56 00 <.kVisibleEnemy> 16 1F <%t "("> 16 38 53 19 00 <.kVisibleEnemy> [@] <XGUnit.GetReaction.ReturnValue> 00 ( 1B <GetReaction> 16 ) 16 1F <%t ") to perform reaction fire against"> 16 38 56 17 16 1F <%t "("> 16 38 53 19 17 [@] <XGUnit.GetReaction.ReturnValue> 00 ( 1B <GetReaction> 16 ) 16 1F <%t ")"> 16 
+/*(0x0CAB/0x0927)*/ 					55 01 <@m_arrStrDebugReaction> [@] ( 00 <.strReactionDebugging> 16 ) 
+/*(0x0CC1/0x0935)*/ 				[#label_0x0CC1]
+/*(0x0CC1/0x0935)*/ 				19 00 <.kVisibleEnemy> [@] <XGUnit.TakeReactionOverwatchShot.ReturnValue> 00 ( 1B <TakeReactionOverwatchShot> 17 2D 00 <.bCloseCombatShot> 16 ) 
+/*(0x0CEB/0x0953)*/ 				A5 00 <.iNumReactionFire> 16 
+//----------------------------------------------------------------------------------------------------------
+/*Adding an explicit break here - after first soldier on overwatch has opened fire, stop cycling 
+through the squad in search for shooters*/
+/*(0x0CF6/0x095A)*/ 				06 [@label_0x0D08] 
+//----------------------------------------------------------------------------------------------------------
+/*(0x0CF9/0x095D)*/ 		[#label_0x0CF9]
+/*(0x0CF9/0x095D)*/ 		A3 00 <.iEnemy> 16 
+/*(0x0D04/0x0964)*/ 		06 [@label_0x04DC] 
+/*(0x0D07/0x0967)*/ 	[#label_0x0D07]
+/*(0x0D08/0x0968)*/ 	[#label_0x0D08]
+/*(0x0D08/0x0968)*/ 	07 [@label_0x0F0B] 97 00 <.iNumReactionFire> 25 16 
+/*(0x0D17/0x0973)*/ 		19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.CAMGetLookAtView.ReturnValue> 00 ( 1B <CAMGetLookAtView> 16 ) [@] <NullRef> 00 ( 1B <AutoZoom_AddUnit> 17 16 ) 
+/*(0x0D8A/0x09C2)*/ 		14 2D 01 <@m_bReactionFireAutoZoomAddSelf> 27 
+/*(0x0D96/0x09CA)*/ 		0F 00 <.kFireAction> 2E <Class.XGAction_Fire> 1B <GetAction> 16 
+/*(0x0DB3/0x09DF)*/ 		07 [@label_0x0F08] 82 82 77 00 <.kFireAction> 2A 16 18 [@] ( 77 19 00 <.kFireAction> [@] <XGAction_Fire.m_kShot> 00 ( 01 <XGAction_Fire.m_kShot> ) 2A 16 16 ) 18 [@] ( 77 19 19 00 <.kFireAction> [@] <XGAction_Fire.m_kShot> 00 ( 01 <XGAction_Fire.m_kShot> ) [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 2A 16 16 ) 
+/*(0x0E24/0x0A30)*/ 			19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.CAMGetLookAtView.ReturnValue> 00 ( 1B <CAMGetLookAtView> 16 ) [@] <NullRef> 00 ( 1B <AutoZoom_AddUnit> 19 19 00 <.kFireAction> [@] <XGAction_Fire.m_kShot> 00 ( 01 <XGAction_Fire.m_kShot> ) [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 16 ) 
+/*(0x0ECA/0x0AA2)*/ 			0F 01 <@m_kReactionFireAutoZoomTarget> 19 19 00 <.kFireAction> [@] <XGAction_Fire.m_kShot> 00 ( 01 <XGAction_Fire.m_kShot> ) [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 
+/*(0x0F08/0x0ACC)*/ 		[#label_0x0F08]
+/*(0x0F08/0x0ACC)*/ 		06 [@label_0x0F22] 
+/*(0x0F0B/0x0ACF)*/ 	[#label_0x0F0B]
+/*(0x0F0B/0x0ACF)*/ 	14 2D 01 <@m_bReactionFireAutoZoomAddSelf> 28 
+/*(0x0F17/0x0AD7)*/ 	0F 01 <@m_kReactionFireAutoZoomTarget> 2A 
+/*(0x0F22/0x0ADE)*/ [#label_0x0F22]
+/*(0x0F22/0x0ADE)*/ 04 0B 
+/*(0x0F24/0x0AE0)*/ 53 
+//
+//**************************************************************************************************
+// SEQUENTIAL OVERWATCH IMPLEMENTATION
+// PART 2: 	Overwatch against spawned aliens (reinforcements). Making only one soldier 
+//		to shoot the spawned alien.
+//**************************************************************************************************
+OBJECT = DelayedOverwatch.DoOverwatchAgainstUnit : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 0F 00 <.kPlayer> 19 2E <Class.XGBattle_SP> 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle_SP.GetHumanPlayer.ReturnValue> 00 ( 1B <GetHumanPlayer> 16 ) 
+/*(0x007B/0x004F)*/ 0F 00 <.kMember> 19 19 00 <.kPlayer> [@] <XGPlayer.GetSquad.ReturnValue> 00 ( 1B <GetSquad> 16 ) [@] <XGSquad.GetNextGoodMember.ReturnValue> 00 ( 1B <GetNextGoodMember> 4A 4A 4A 4A 4A 4A 4A 16 ) 
+/*(0x00C1/0x0085)*/ [#label_0x00C1]
+/*(0x00C1/0x0085)*/ 07 [@label_0x0275] 77 00 <.kMember> 2A 16 
+/*(0x00D0/0x0090)*/ 	07 [@label_0x0224] 19 00 <.kMember> [@] <XGUnitNativeBase.IsInOverwatch.ReturnValue> 00 ( 1B <IsInOverwatch> 16 ) 
+/*(0x00F2/0x00AA)*/ 		07 [@label_0x0224] 19 00 <.kMember> [@] <XGUnit.CanSee.ReturnValue> 00 ( 1B <CanSee> 00 <.kUnit> 4A 4A 16 ) 
+/*(0x011F/0x00CB)*/ 			07 [@label_0x0224] 19 00 <.kMember> [@] <XGUnit.IsTargetInReactionArea.ReturnValue> 00 ( 1B <IsTargetInReactionArea> 00 <.kUnit> 16 ) 
+/*(0x014A/0x00EA)*/ 				07 [@label_0x0224] 81 19 00 <.kMember> [@] <XGUnit.m_bSuppressing> 00 ( 2D 01 <XGUnit.m_bSuppressing> ) 16 
+/*(0x016E/0x0102)*/ 					07 [@label_0x0224] 81 19 00 <.kMember> [@] <XGUnit.m_bSuppressingArea> 00 ( 2D 01 <XGUnit.m_bSuppressingArea> ) 16 
+/*(0x0192/0x011A)*/ 						07 [@label_0x0224] 19 00 <.kUnit> [@] <XGUnitNativeBase.IsAliveAndWell.ReturnValue> 00 ( 1B <IsAliveAndWell> 4A 16 ) 
+/*(0x01B5/0x0135)*/ 							07 [@label_0x0224] 81 19 19 00 <.kMember> [@] <XGUnitNativeBase.m_kActionQueue> 00 ( 01 <XGUnitNativeBase.m_kActionQueue> ) [@] <XGActionQueue.Contains.ReturnValue> 00 ( 1C <XGActionQueue.Contains> 21 <XGAction_FireOverwatchExecuting> 4A 16 ) 16 
+//----------------------------------------------------------------------------------------------------------
+// Adding a condition for taking overwatch shot: nobody is already shooting at the alien
+//													
+/*(0x01F8/0x0164)*/ 								07 [@label_0x0224] 9A 19 00 <.kUnit> [@] <XGUnitNativeBase.GetNumberOfSuppressionExecutingEnemies.ReturnValue> 00 ( 1B <GetNumberOfSuppressionExecutingEnemies> 16 ) 25 16
+//----------------------------------------------------------------------------------------------------------
+/*(0x01F8/0x0164)*/ 							19 00 <.kMember> [@] <XGUnit.TakeReactionOverwatchShot.ReturnValue> 00 ( 1B <TakeReactionOverwatchShot> 00 <.kUnit> 4A 16 ) 			
+/*(0x0224/0x0184)*/ 	[#label_0x0224]
+/*(0x0224/0x0184)*/ 	0F 00 <.kMember> 19 19 00 <.kPlayer> [@] <XGPlayer.GetSquad.ReturnValue> 00 ( 1B <GetSquad> 16 ) [@] <XGSquad.GetNextGoodMember.ReturnValue> 00 ( 1B <GetNextGoodMember> 00 <.kMember> 4A 28 4A 4A 4A 4A 16 ) 
+/*(0x0272/0x01BE)*/ 	06 [@label_0x00C1] 
+/*(0x0275/0x01C1)*/ [#label_0x0275]
+/*(0x0275/0x01C1)*/ 04 0B 
+/*(0x027F/0x01CB)*/ 53 
+//
+/* *************************************************************************************************
+ SEQUENTIAL OVERWATCH IMPLEMENTATION
+ PART 3: 	Overwatch against spawned aliens (reinforcements). Allowing other soldiers on overwatch
+			to continue firing (still one by one) if the target is still alive.*/
+//**************************************************************************************************
+OBJECT = DelayedOverwatch.TriggerOverwatch.Tick : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 07 [@label_0x00A0] 97 36 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> 25 16 
+/*(0x0010/0x000C)*/ 	07 [@label_0x0064] 19 10 25 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> [@] <XGUnit.IsIdle.ReturnValue> 00 ( 1B <IsIdle> 16 ) 
+/*(0x0034/0x0028)*/ 		1B <DoOverwatchAgainstUnit> 10 25 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> 16 
+//----------------------------------------------------------------------------------------------------
+// Adding here a condition for untriggerring overwatch against alien - 'there is no fire after calling
+// 'do overwatch' function. Otherwise alien would be untriggered after first shot.
+							07 [@label_0x0064] 9A 19 10 25 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> [@] <XGUnitNativeBase.GetNumberOfSuppressionExecutingEnemies.ReturnValue> 00 ( 1B <GetNumberOfSuppressionExecutingEnemies> 16 ) 25 16
+//----------------------------------------------------------------------------------------------------
+/*(0x0049/0x0039)*/ 		56 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> [@] ( 10 25 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> 16 ) 
+/*(0x0061/0x0049)*/ 	//	06 [@label_0x00A0] 
+/*(0x0064/0x004C)*/ 	[#label_0x0064]
+/*(0x0064/0x004C)*/ 	07 [@label_0x00A0] 19 10 25 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> [@] <XGUnitNativeBase.IsDead.ReturnValue> 00 ( 1B <IsDead> 16 ) 
+/*(0x0088/0x0068)*/ 		56 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> [@] ( 10 25 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> 16 ) 
+/*(0x00A0/0x0078)*/ [#label_0x00A0]
+/*(0x00A0/0x0078)*/ 07 [@label_0x0134] 9A 36 01 <DelayedOverwatch.m_arrUnitsTriggeringOverwatch> 25 16 
+/*(0x00B0/0x0084)*/ 	56 19 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_kSpawnAlienQueue> 00 ( 01 <XGBattle.m_kSpawnAlienQueue> ) [@] <SpawnAlienQueue.m_arrOverwatches> 00 ( 01 <SpawnAlienQueue.m_arrOverwatches> ) [@] ( 17 16 ) 
+/*(0x0131/0x00D5)*/ 	61 17 16 
+/*(0x0134/0x00D8)*/ [#label_0x0134]
+/*(0x0134/0x00D8)*/ 04 0B 
+/*(0x0136/0x00DA)*/ 53 
+
+OBJECT = XGAction_Fire.Firing : AUTO
+/* ****************************************************************************
+SEQUENTIAL OVERWATCH IMPLEMENTATION
+PART 4: Handle sequential covering fire from different overwatchers.
+There is still limit of one covering shot from each overwatcher. 
+Changes are at 0x691 and consist of 2 lines
+****************************************************************************** */
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 07 [@label_0x00C2] 82 82 9B 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 00 16 18 [@] ( 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 16 ) 18 [@] ( 81 2D 01 <XGAction.m_bOwnedByLocalPlayer> 16 16 ) 
+/*(0x0050/0x003C)*/ 	19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <NullRef> 00 ( 1B <AddFiringUnit> 01 <XGAction.m_kUnit> 4A 16 ) 
+/*(0x00C2/0x0086)*/ [#label_0x00C2]
+/*(0x00C2/0x0086)*/ 0F 01 <@m_iTracerBeamShots> 25 
+/*(0x00CD/0x008D)*/ 07 [@label_0x0185] 84 82 77 19 01 <@m_kShot> [@] <XGAbility_Targeted.m_kWeapon> 00 ( 01 <XGAbility_Targeted.m_kWeapon> ) 2A 16 18 [@] ( 9A 38 3A 19 19 01 <@m_kShot> [@] <XGAbility_Targeted.m_kWeapon> 00 ( 01 <XGAbility_Targeted.m_kWeapon> ) [@] <XGItem.GameplayType.ReturnValue> 00 ( 1B <GameplayType> 16 ) 38 3A 24 07 16 16 ) 18 [@] ( 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 54 16 16 ) 
+/*(0x015A/0x00F6)*/ 	0F 01 <@m_kTargetedEnemy> 2A 
+/*(0x0165/0x00FD)*/ 	06 [@label_0x0185] 
+/*(0x0168/0x0100)*/ 	2D 01 <@m_bShotIsBlocked> 
+/*(0x0172/0x0106)*/ 	0F 01 <@m_vTarget> 01 <@m_vHitLocation> 
+/*(0x0185/0x0111)*/ [#label_0x0185]
+/*(0x0185/0x0111)*/ 14 2D 01 <@m_bUpdateAnimRot> 28 
+/*(0x0191/0x0119)*/ 07 [@label_0x0394] 81 19 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_kGlamMgr> 00 ( 01 <XGBattle.m_kGlamMgr> ) [@] <XComGlamManager.m_bGlamBusy> 00 ( 2D 01 <XComGlamManager.m_bGlamBusy> ) 16 
+/*(0x0213/0x016B)*/ 	1B <ChooseFiringCam> 16 
+/*(0x021D/0x0175)*/ 	61 00 1E <%f 0> 16 
+/*(0x0225/0x017D)*/ 	07 [@label_0x0301] 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <XComCameraManager.IsTrackingFiringUnit.ReturnValue> 00 ( 1B <IsTrackingFiringUnit> 01 <XGAction.m_kUnit> 16 ) 
+/*(0x0299/0x01C9)*/ 		19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <NullRef> 00 ( 1B <SetCameraWaitFlag> 16 ) 
+/*(0x0301/0x020D)*/ 	[#label_0x0301]
+/*(0x0301/0x020D)*/ 	0F 01 <@m_eFireActionStatus> 24 01 
+/*(0x030D/0x0215)*/ 	[#label_0x030D]
+/*(0x030D/0x0215)*/ 	07 [@label_0x0394] 82 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <XComCameraManager.WaitForCamera.ReturnValue> 00 ( 1B <WaitForCamera> 16 ) 18 [@] ( 81 2D 01 <@m_bDebugEmergencyAbort> 16 16 ) 
+/*(0x0389/0x0269)*/ 		61 00 1E <%f 0.05> 16 
+/*(0x0391/0x0271)*/ 		06 [@label_0x030D] 
+/*(0x0394/0x0274)*/ [#label_0x0394]
+/*(0x0394/0x0274)*/ 07 [@label_0x0511] 9A 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 03 16 
+/*(0x03BD/0x0291)*/ 	07 [@label_0x0511] 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.AbilityRequiresProjectilePreview.ReturnValue> 00 ( 1B <AbilityRequiresProjectilePreview> 01 <@m_kShot> 16 ) 
+/*(0x0431/0x02DD)*/ 		[#label_0x0431]
+/*(0x0431/0x02DD)*/ 		07 [@label_0x04A9] 81 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kPrecomputedPath> 00 ( 01 <XComTacticalGRI.m_kPrecomputedPath> ) [@] <XComPrecomputedPath.bAllValidKeyframeDataReplicated> 00 ( 2D 01 <XComPrecomputedPath.bAllValidKeyframeDataReplicated> ) 16 
+/*(0x049E/0x0322)*/ 			61 00 1E <%f 0.01> 16 
+/*(0x04A6/0x032A)*/ 			06 [@label_0x0431] 
+/*(0x04A9/0x032D)*/ 		[#label_0x04A9]
+/*(0x04A9/0x032D)*/ 		19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kPrecomputedPath> 00 ( 01 <XComTacticalGRI.m_kPrecomputedPath> ) [@] <NullRef> 00 ( 1B <CopyReplicatedKeyframesToLocal> 16 ) 
+/*(0x0511/0x0371)*/ [#label_0x0511]
+/*(0x0511/0x0371)*/ 05 <XGAbility.GetType.ReturnValue> 00 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 
+/*(0x053A/0x038E)*/ 0A [@label_0x053F] 2C 21 
+/*(0x053F/0x0393)*/ [#label_0x053F]
+/*(0x053F/0x0393)*/ 0A [@label_0x0544] 2C 16 
+/*(0x0544/0x0398)*/ [#label_0x0544]
+/*(0x0544/0x0398)*/ 0A [@label_0x0549] 2C 1B 
+/*(0x0549/0x039D)*/ [#label_0x0549]
+/*(0x0549/0x039D)*/ 0A [@label_0x0551] 2C 46 
+/*(0x054E/0x03A2)*/ 	06 [@label_0x069C] 
+/*(0x0551/0x03A5)*/ [#label_0x0551]
+/*(0x0551/0x03A5)*/ 0A FF FF 
+/*(0x0554/0x03A8)*/ 07 [@label_0x0699] 82 81 19 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCoreNativeBase.m_kAbilities> 00 ( 01 <XGTacticalGameCoreNativeBase.m_kAbilities> ) [@] <XGAbilityTree.AbilityHasProperty.ReturnValue> 00 ( 1B <AbilityHasProperty> 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 08 16 ) 16 18 [@] ( 81 19 01 <@m_kShot> [@] <XGAbility.IsReactionShot.ReturnValue> 00 ( 1B <IsReactionShot> 16 ) 16 16 ) 
+/*(0x061D/0x0435)*/ 	[#label_0x061D]				
+/*(0x061D/0x0435)*/ 	19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <ApplyReactionCost> 25 27 27 28 4A 4A 16 ) 
+/*(0x0642/0x0452)*/ 	07 [@label_0x0699] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x0664/0x046C)*/ 		[#label_0x0664]
+/*(0x0664/0x046C)*/ 		07 [@label_0x0691] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x0686/0x0486)*/ 			61 00 1E <%f 0.1> 16 
+/*(0x068E/0x048E)*/ 			06 [@label_0x0664] 
+/*(0x0691/0x0491)*/ 		[#label_0x0691]
+/*(0x0691/0x0491)*/ 		61 00 1E <%f 0.1> 16
+/*--------------------------------------------------------------------------------------------
+Check for more covering fire shots - of course if the target is still alive.*/
+							07 [@label_0x0699] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsAliveAndWell.ReturnValue> 00 ( 1B <IsAliveAndWell> 16 )
+								06 [@label_0x061D] 
+//--------------------------------------------------------------------------------------------
+/*(0x0699/0x0499)*/ [#label_0x0699]
+/*(0x0699/0x0499)*/ 06 [@label_0x069C] 
+/*(0x069C/0x049C)*/ [#label_0x069C]
+/*(0x069C/0x049C)*/ 07 [@label_0x09E8] 81 19 01 <@m_kShot> [@] <XGAbility.HasProperty.ReturnValue> 00 ( 1B <HasProperty> 24 01 16 ) 16 
+/*(0x06C2/0x04BA)*/ 	07 [@label_0x070F] 9A 19 01 <@m_kShot> [@] <XGAbility.iTargetType> 00 ( 01 <XGAbility.iTargetType> ) 2C 08 16 
+/*(0x06E7/0x04D3)*/ 		0F 19 01 <@m_kShot> [@] <XGAbility_Targeted.m_vTargetLocation> 00 ( 01 <XGAbility_Targeted.m_vTargetLocation> ) 01 <@m_vTarget> 
+/*(0x070F/0x04EB)*/ 	[#label_0x070F]
+/*(0x070F/0x04EB)*/ 	14 2D 01 <@m_bExecutedAbility> 28 
+/*(0x071B/0x04F3)*/ 	07 [@label_0x07EC] 1B <UseSpecialAnim> 01 <@m_TmpSingleAnim> 16 
+/*(0x0731/0x0505)*/ 		19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 06 1E <%f 0.1> 16 ) 
+/*(0x076C/0x0530)*/ 		19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetAnim> 01 <@m_TmpSingleAnim> 4A 4A 4A 16 ) 
+/*(0x07AC/0x055C)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x07B4/0x0564)*/ 		61 05 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <Engine.AnimNodeBlendList.GetTerminalSequence.ReturnValue> 00 ( 1B <GetTerminalSequence> 16 ) 4A 16 
+/*(0x07EC/0x058C)*/ 	[#label_0x07EC]
+/*(0x07EC/0x058C)*/ 	07 [@label_0x0805] 81 2D 01 <@m_bExecutedAbility> 16 
+/*(0x07FB/0x0597)*/ 		1B <ExecuteShotAbility> 16 
+/*(0x0805/0x05A1)*/ 	[#label_0x0805]
+/*(0x0805/0x05A1)*/ 	07 [@label_0x0840] 19 01 <@m_kShot> [@] <XGAbility.HasProperty.ReturnValue> 00 ( 1B <HasProperty> 24 10 16 ) 
+/*(0x0829/0x05BD)*/ 		1C <Core.Object.PushState> 21 <SwitchingWeapons> 4A 16 
+/*(0x083D/0x05CD)*/ 		06 [@label_0x084C] 
+/*(0x0840/0x05D0)*/ 	[#label_0x0840]
+/*(0x0840/0x05D0)*/ 	0F 01 <@m_eFireActionStatus> 24 02 
+/*(0x084C/0x05D8)*/ 	[#label_0x084C]
+/*(0x084C/0x05D8)*/ 	07 [@label_0x08D7] 19 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_kGlamMgr> 00 ( 01 <XGBattle.m_kGlamMgr> ) [@] <XComGlamManager.CanDoGlamCam.ReturnValue> 00 ( 1B <CanDoGlamCam> 17 16 ) 
+/*(0x08CD/0x062D)*/ 		1B <DoGlamCam> 16 
+/*(0x08D7/0x0637)*/ 	[#label_0x08D7]
+/*(0x08D7/0x0637)*/ 	14 2D 01 <@m_bWaitingForOverwatchToComplete> 27 
+/*(0x08E3/0x063F)*/ 	0F 01 <@m_eFireActionStatus> 24 03 
+/*(0x08EF/0x0647)*/ 	[#label_0x08EF]
+/*(0x08EF/0x0647)*/ 	07 [@label_0x091C] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x0911/0x0661)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x0919/0x0669)*/ 		06 [@label_0x08EF] 
+/*(0x091C/0x066C)*/ 	[#label_0x091C]
+/*(0x091C/0x066C)*/ 	07 [@label_0x0994] 72 19 19 01 <XGAction.m_kPres> [@] <XComPresentationLayer.CAMGetLookAtView.ReturnValue> 00 ( 1B <CAMGetLookAtView> 16 ) [@] <XGCameraView.GetFirstAutoZoomUnit.ReturnValue> 00 ( 1B <GetFirstAutoZoomUnit> 16 ) 01 <XGAction.m_kUnit> 16 
+/*(0x095F/0x069F)*/ 		19 19 01 <XGAction.m_kPres> [@] <XComPresentationLayer.CAMGetLookAtView.ReturnValue> 00 ( 1B <CAMGetLookAtView> 16 ) [@] <NullRef> 00 ( 1B <AutoZoomReset> 16 ) 
+/*(0x0994/0x06C8)*/ 	[#label_0x0994]
+/*(0x0994/0x06C8)*/ 	07 [@label_0x09D7] 9A 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 03 16 
+/*(0x09BD/0x06E5)*/ 		[#label_0x09BD]
+/*(0x09BD/0x06E5)*/ 		07 [@label_0x09D7] 81 1B <IsFiringStateDataReplicated_WaitOnExecutingShotAbility> 16 16 
+/*(0x09CC/0x06F4)*/ 			61 00 1E <%f 0> 16 
+/*(0x09D4/0x06FC)*/ 			06 [@label_0x09BD] 
+/*(0x09D7/0x06FF)*/ 	[#label_0x09D7]
+/*(0x09D7/0x06FF)*/ 	71 21 <ShutDownToIdle> 4A 4A 4A 16 
+/*(0x09E5/0x070D)*/ 	06 [@label_0x0A6F] 
+/*(0x09E8/0x0710)*/ [#label_0x09E8]
+/*(0x09E8/0x0710)*/ 07 [@label_0x0A6F] 72 01 <@m_kTargetedEnemy> 2A 16 
+/*(0x09F7/0x071B)*/ 	07 [@label_0x0A47] 9A 19 01 <@m_kShot> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 18 16 
+/*(0x0A1C/0x0734)*/ 		0F 19 01 <@m_kShot> [@] <XGAbility_Targeted.m_vTargetLocation> 00 ( 01 <XGAbility_Targeted.m_vTargetLocation> ) 01 <@m_vHitLocation> 
+/*(0x0A44/0x074C)*/ 		06 [@label_0x0A6F] 
+/*(0x0A47/0x074F)*/ 	[#label_0x0A47]
+/*(0x0A47/0x074F)*/ 	0F 19 01 <@m_kShot> [@] <XGAbility_Targeted.m_vTargetLocation> 00 ( 01 <XGAbility_Targeted.m_vTargetLocation> ) 01 <@m_vTarget> 
+/*(0x0A6F/0x0767)*/ [#label_0x0A6F]
+/*(0x0A6F/0x0767)*/ 0F 01 <@m_kWeapon> 19 19 01 <XGAction.m_kUnit> [@] <XGUnit.GetInventory.ReturnValue> 00 ( 1B <GetInventory> 16 ) [@] <XGInventoryNativeBase.GetActiveWeapon.ReturnValue> 00 ( 1B <GetActiveWeapon> 16 ) 
+/*(0x0AAE/0x0796)*/ 07 [@label_0x0CEE] 82 82 9A 35 <XGTacticalGameCoreNativeBase.TCharacter.iType> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 19 01 <XGAction.m_kUnit> [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.m_kChar> 00 ( 01 <XGCharacter.m_kChar> ) 2C 08 16 18 [@] ( 77 01 <@m_kShot> 2A 16 16 ) 18 [@] ( 9B 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 3F 16 16 ) 
+/*(0x0B35/0x07F9)*/ 	07 [@label_0x0CEB] 9A 38 3A 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.m_eOpenCloseState> 00 ( 01 <XComUnitPawnNativeBase.m_eOpenCloseState> ) 38 3A 24 02 16 
+/*(0x0B5E/0x0816)*/ 		1B <LookAtFiringUnit> 16 
+/*(0x0B68/0x0820)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x0B70/0x0828)*/ 		19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 04 1E <%f 0.1> 16 ) 
+/*(0x0BAB/0x0853)*/ 		19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.ActionNode> 00 ( 01 <XComUnitPawnNativeBase.ActionNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 30 1E <%f 0.1> 16 ) 
+/*(0x0BE6/0x087E)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x0BEE/0x0886)*/ 		07 [@label_0x0CEB] 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.XComUpdateOpenCloseStateNode.ReturnValue> 00 ( 1B <XComUpdateOpenCloseStateNode> 24 01 27 16 ) 
+/*(0x0C13/0x08A3)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 04 1E <%f 0.1> 16 ) 
+/*(0x0C4E/0x08CE)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.ActionNode> 00 ( 01 <XComUnitPawnNativeBase.ActionNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 2F 1E <%f 0.1> 16 ) 
+/*(0x0C89/0x08F9)*/ 			61 00 1E <%f 0.1> 16 
+/*(0x0C91/0x0901)*/ 			0F 01 <@m_TmpNode> 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.ActionNode> 00 ( 01 <XComUnitPawnNativeBase.ActionNode> ) [@] <Engine.AnimNodeBlendList.GetTerminalSequence.ReturnValue> 00 ( 1B <GetTerminalSequence> 16 ) 
+/*(0x0CCF/0x092B)*/ 			07 [@label_0x0CEB] 77 01 <@m_TmpNode> 2A 16 
+/*(0x0CDE/0x0936)*/ 				61 05 01 <@m_TmpNode> 4A 16 
+/*(0x0CEB/0x093F)*/ 	[#label_0x0CEB]
+/*(0x0CEB/0x093F)*/ 	06 [@label_0x0E0D] 
+/*(0x0CEE/0x0942)*/ [#label_0x0CEE]
+/*(0x0CEE/0x0942)*/ 07 [@label_0x0E0D] 82 82 82 82 9A 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 00 16 18 [@] ( 9B 19 01 <@m_kShot> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 16 16 16 ) 18 [@] ( 9A 19 01 <@m_kShot> [@] <XGAbility.iCategory> 00 ( 01 <XGAbility.iCategory> ) 26 16 16 ) 18 [@] ( 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsAffectedByAbility.ReturnValue> 00 ( 1B <IsAffectedByAbility> 2C 5B 16 ) 16 ) 18 [@] ( 81 19 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_kActionQueue> 00 ( 01 <XGUnitNativeBase.m_kActionQueue> ) [@] <XGActionQueue.Contains.ReturnValue> 00 ( 1C <XGActionQueue.Contains> 21 <XGAction_RemoveAbilityEffect_Hidden> 4A 16 ) 16 16 ) 
+/*(0x0DCF/0x09E3)*/ 	19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <UnstealthAndFire> 01 <@m_kShot> 16 ) 
+/*(0x0DF7/0x09FF)*/ 	61 00 1E <%f 0.1> 16 
+/*(0x0DFF/0x0A07)*/ 	71 21 <ShutDownToIdle> 4A 4A 4A 16 
+/*(0x0E0D/0x0A15)*/ [#label_0x0E0D]
+/*(0x0E0D/0x0A15)*/ 07 [@label_0x0EB7] 9A 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 03 16 
+/*(0x0E36/0x0A32)*/ 	07 [@label_0x0EB7] 81 2D 01 <XGAction.m_bOwnedByLocalPlayer> 16 
+/*(0x0E45/0x0A3D)*/ 		19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <NullRef> 00 ( 1B <AddFiringUnit> 01 <XGAction.m_kUnit> 4A 16 ) 
+/*(0x0EB7/0x0A87)*/ [#label_0x0EB7]
+/*(0x0EB7/0x0A87)*/ 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetFireStateData.ReturnValue> 00 ( 1B <GetFireStateData> 01 <@CurrentShotIndex> 01 <@CurrentShotReplicationData> 16 ) 
+/*(0x0EE8/0x0AA8)*/ 07 [@label_0x0FCC] 2D 01 <@bClusterBombSetup> 
+/*(0x0EF5/0x0AB1)*/ 	19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <StartTurning> 01 <@m_vTarget> 27 4A 16 ) 
+/*(0x0F1F/0x0ACF)*/ 	0F 01 <@m_iAimingIterations> 25 
+/*(0x0F2A/0x0AD6)*/ 	[#label_0x0F2A]
+/*(0x0F2A/0x0AD6)*/ 	07 [@label_0x0FAB] 81 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.TurnNode> 00 ( 01 <XComUnitPawnNativeBase.TurnNode> ) [@] <XComAnimNodeBlendSynchTurning.FinishedTurning.ReturnValue> 00 ( 1B <FinishedTurning> 16 ) 16 
+/*(0x0F63/0x0AFF)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x0F6B/0x0B07)*/ 		A1 01 <@m_iAimingIterations> 26 16 
+/*(0x0F77/0x0B0F)*/ 		07 [@label_0x0FA8] 99 01 <@m_iAimingIterations> 2C 32 16 
+/*(0x0F87/0x0B1B)*/ 			19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <StopTurning> 27 4A 16 ) 
+/*(0x0FA8/0x0B34)*/ 		[#label_0x0FA8]
+/*(0x0FA8/0x0B34)*/ 		06 [@label_0x0F2A] 
+/*(0x0FAB/0x0B37)*/ 	[#label_0x0FAB]
+/*(0x0FAB/0x0B37)*/ 	19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <StopTurning> 27 4A 16 ) 
+/*(0x0FCC/0x0B50)*/ [#label_0x0FCC]
+/*(0x0FCC/0x0B50)*/ 14 2D 01 <@m_bUpdateAnimRot> 27 
+/*(0x0FD8/0x0B58)*/ 07 [@label_0x1096] 2D 01 <@bClusterBombSetup> 
+/*(0x0FE5/0x0B61)*/ 	07 [@label_0x1025] 81 19 01 <@m_kShot> [@] <XGAbility.Execute.ReturnValue> 00 ( 1C <XGAbility.Execute> 4A 16 ) 16 
+/*(0x100A/0x0B7A)*/ 		14 2D 01 <@m_bClientStopWaitingForFiringStateShotAbility> 27 
+/*(0x1016/0x0B82)*/ 		14 2D 01 <Engine.Actor.bForceNetUpdate> 27 
+/*(0x1022/0x0B8A)*/ 		06 [@label_0x1089] 
+/*(0x1025/0x0B8D)*/ 	[#label_0x1025]
+/*(0x1025/0x0B8D)*/ 	19 2E <Class.XGAbility_ClusterBomb> 01 <@m_kShot> [@] <NullRef> 00 ( 1B <SaveEquipSlots> 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_eEquipSlot> 00 ( 01 <XGUnitNativeBase.m_eEquipSlot> ) 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_eReEquipSlot> 00 ( 01 <XGUnitNativeBase.m_eReEquipSlot> ) 16 ) 
+/*(0x1089/0x0BCD)*/ 	[#label_0x1089]
+/*(0x1089/0x0BCD)*/ 	1B <GotoStateShutDownToIdle> 16 
+/*(0x1093/0x0BD7)*/ 	06 [@label_0x112F] 
+/*(0x1096/0x0BDA)*/ [#label_0x1096]
+/*(0x1096/0x0BDA)*/ 07 [@label_0x112F] 2D 01 <@bClusterBombFiring> 
+/*(0x10A3/0x0BE3)*/ 	19 2E <Class.XGAbility_ClusterBomb> 01 <@m_kShot> [@] <NullRef> 00 ( 1B <RestoreEquipSlots> 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_eEquipSlot> 00 ( 01 <XGUnitNativeBase.m_eEquipSlot> ) 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_eReEquipSlot> 00 ( 01 <XGUnitNativeBase.m_eReEquipSlot> ) 16 ) 
+/*(0x1107/0x0C23)*/ 	0F 01 <@m_StoredLocation> 19 01 <XGAction.m_kPawn> [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> ) 
+/*(0x112F/0x0C3B)*/ [#label_0x112F]
+/*(0x112F/0x0C3B)*/ 07 [@label_0x11B9] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+/*(0x1143/0x0C4B)*/ 	07 [@label_0x11B9] 82 81 2D 01 <@m_bAttackerVisibleToEnemy> 16 18 [@] ( 2D 01 <@m_bProjectileWillBeVisibleToEnemy> 16 ) 
+/*(0x1161/0x0C61)*/ 		14 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_bForceVisible> 00 ( 2D 01 <XGUnitNativeBase.m_bForceVisible> ) 27 
+/*(0x1182/0x0C76)*/ 		19 12 20 <Class.XComWorldData> [@] <XComWorldData.GetWorldData.ReturnValue> 00 ( 1B <GetWorldData> 16 ) [@] <NullRef> 00 ( 1B <UpdateVisibility> 4A 4A 16 ) 
+/*(0x11B9/0x0CA1)*/ [#label_0x11B9]
+/*(0x11B9/0x0CA1)*/ 07 [@label_0x28AA] 77 01 <@m_kShot> 2A 16 
+/*(0x11C8/0x0CAC)*/ 	14 2D 01 <@m_bWeaponWasFired> 27 
+/*(0x11D4/0x0CB4)*/ 	07 [@label_0x1228] 82 2D 01 <XGAction.m_bOwnedByLocalPlayer> 18 [@] ( 9B 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 0B 16 16 ) 
+/*(0x1209/0x0CDD)*/ 		19 01 <XGAction.m_kPres> [@] <NullRef> 00 ( 1B <HUDHide> 16 ) 
+/*(0x1228/0x0CF4)*/ 	[#label_0x1228]
+/*(0x1228/0x0CF4)*/ 	07 [@label_0x13C7] 84 1B <UseSpecialAbility> 01 <@m_TmpAnimActionIndex> 16 18 [@] ( 1B <UseSpecialAnim> 01 <@m_TmpSingleAnim> 16 16 ) 
+/*(0x1256/0x0D1A)*/ 		07 [@label_0x13C4] 9B 38 3A 01 <@m_TmpAnimActionIndex> 38 3A 24 3C 16 
+/*(0x126A/0x0D2A)*/ 			14 2D 01 <@m_bUpdateAnimRot> 28 
+/*(0x1276/0x0D32)*/ 			07 [@label_0x12E1] 82 77 01 <@m_kTargetedEnemy> 2A 16 18 [@] ( 77 01 <@m_kTargetedEnemy> 01 <XGAction.m_kUnit> 16 16 ) 
+/*(0x129E/0x0D4E)*/ 				19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <StartTurning> 19 01 <@m_kTargetedEnemy> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 27 4A 16 ) 
+/*(0x12DE/0x0D7E)*/ 				06 [@label_0x130B] 
+/*(0x12E1/0x0D81)*/ 			[#label_0x12E1]
+/*(0x12E1/0x0D81)*/ 			19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <StartTurning> 01 <@m_vTarget> 27 4A 16 ) 
+/*(0x130B/0x0D9F)*/ 			[#label_0x130B]
+/*(0x130B/0x0D9F)*/ 			0F 01 <@m_iAimingIterations> 25 
+/*(0x1316/0x0DA6)*/ 			0F 01 <@m_eFireActionStatus> 24 04 
+/*(0x1322/0x0DAE)*/ 			[#label_0x1322]
+/*(0x1322/0x0DAE)*/ 			07 [@label_0x13A3] 81 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.TurnNode> 00 ( 01 <XComUnitPawnNativeBase.TurnNode> ) [@] <XComAnimNodeBlendSynchTurning.FinishedTurning.ReturnValue> 00 ( 1B <FinishedTurning> 16 ) 16 
+/*(0x135B/0x0DD7)*/ 				61 00 1E <%f 0.1> 16 
+/*(0x1363/0x0DDF)*/ 				A1 01 <@m_iAimingIterations> 26 16 
+/*(0x136F/0x0DE7)*/ 				07 [@label_0x13A0] 99 01 <@m_iAimingIterations> 2C 32 16 
+/*(0x137F/0x0DF3)*/ 					19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <StopTurning> 27 4A 16 ) 
+/*(0x13A0/0x0E0C)*/ 				[#label_0x13A0]
+/*(0x13A0/0x0E0C)*/ 				06 [@label_0x1322] 
+/*(0x13A3/0x0E0F)*/ 			[#label_0x13A3]
+/*(0x13A3/0x0E0F)*/ 			19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <StopTurning> 27 4A 16 ) 
+/*(0x13C4/0x0E28)*/ 		[#label_0x13C4]
+/*(0x13C4/0x0E28)*/ 		06 [@label_0x15F7] 
+/*(0x13C7/0x0E2B)*/ 	[#label_0x13C7]
+/*(0x13C7/0x0E2B)*/ 	07 [@label_0x15F7] 84 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.AbilityRequiresProjectilePreview.ReturnValue> 00 ( 1B <AbilityRequiresProjectilePreview> 01 <@m_kShot> 16 ) 18 [@] ( 82 77 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.AimingNode> 00 ( 01 <XComUnitPawnNativeBase.AimingNode> ) 2A 16 18 [@] ( 77 01 <@m_kTargetedEnemy> 01 <XGAction.m_kUnit> 16 16 ) 16 ) 
+/*(0x147A/0x0EA2)*/ 		07 [@label_0x1577] 81 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsInCover.ReturnValue> 00 ( 1C <XGUnitNativeBase.IsInCover> 16 ) 16 
+/*(0x149E/0x0EBA)*/ 			0F 01 <@m_iAimingIterations> 25 
+/*(0x14A9/0x0EC1)*/ 			0F 01 <@m_eFireActionStatus> 24 05 
+/*(0x14B5/0x0EC9)*/ 			[#label_0x14B5]
+/*(0x14B5/0x0EC9)*/ 			07 [@label_0x1568] 82 82 81 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.TurnNode> 00 ( 01 <XComUnitPawnNativeBase.TurnNode> ) [@] <XComAnimNodeBlendSynchTurning.FinishedTurning.ReturnValue> 00 ( 1B <FinishedTurning> 16 ) 16 18 [@] ( 81 19 01 <XGAction.m_kPawn> [@] <XComUnitPawn.IsAimedAtTargetLoc.ReturnValue> 00 ( 1B <IsAimedAtTargetLoc> 4A 16 ) 16 16 ) 18 [@] ( 96 01 <@m_iAimingIterations> 1D <%i 500> 16 16 ) 
+/*(0x152A/0x0F22)*/ 				07 [@label_0x1546] 1B <IsCurrentWeaponGrapple> 16 
+/*(0x1537/0x0F2F)*/ 					14 2D 01 <@m_bUpdateAnimRot> 28 
+/*(0x1543/0x0F37)*/ 					06 [@label_0x1552] 
+/*(0x1546/0x0F3A)*/ 				[#label_0x1546]
+/*(0x1546/0x0F3A)*/ 				14 2D 01 <@m_bUpdateAnimRot> 27 
+/*(0x1552/0x0F42)*/ 				[#label_0x1552]
+/*(0x1552/0x0F42)*/ 				61 00 1E <%f 0> 16 
+/*(0x155A/0x0F4A)*/ 				A5 01 <@m_iAimingIterations> 16 
+/*(0x1565/0x0F51)*/ 				06 [@label_0x14B5] 
+/*(0x1568/0x0F54)*/ 			[#label_0x1568]
+/*(0x1568/0x0F54)*/ 			14 2D 01 <@m_bUpdateAnimRot> 28 
+/*(0x1574/0x0F5C)*/ 			06 [@label_0x15F7] 
+/*(0x1577/0x0F5F)*/ 		[#label_0x1577]
+/*(0x1577/0x0F5F)*/ 		07 [@label_0x15F7] 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.AbilityRequiresProjectilePreview.ReturnValue> 00 ( 1B <AbilityRequiresProjectilePreview> 01 <@m_kShot> 16 ) 
+/*(0x15EB/0x0FAB)*/ 			14 2D 01 <@m_bUpdateAnimRot> 28 
+/*(0x15F7/0x0FB3)*/ 	[#label_0x15F7]
+/*(0x15F7/0x0FB3)*/ 	0F 01 <@CustomFireActionType> 1B <CheckForCustomFireAction> 16 
+/*(0x160B/0x0FC3)*/ 	07 [@label_0x162C] 9A 38 3A 01 <@CustomFireActionType> 38 3A 24 01 16 
+/*(0x161F/0x0FD3)*/ 		1B <GotoStateShutDownToIdle> 16 
+/*(0x1629/0x0FDD)*/ 		06 [@label_0x2326] 
+/*(0x162C/0x0FE0)*/ 	[#label_0x162C]
+/*(0x162C/0x0FE0)*/ 	07 [@label_0x1795] 97 38 3A 01 <@CustomFireActionType> 38 3A 24 01 16 
+/*(0x1640/0x0FF0)*/ 		07 [@label_0x167B] 9A 38 3A 01 <@CustomFireActionType> 38 3A 24 02 16 
+/*(0x1654/0x1000)*/ 			0F 01 <@CustomFireActor> 1C <Engine.Actor.Spawn> 20 <Class.XGAction_FireCustom_Flamethrower> 17 4A 4A 4A 4A 4A 4A 16 
+/*(0x1678/0x1018)*/ 			06 [@label_0x16EE] 
+/*(0x167B/0x101B)*/ 		[#label_0x167B]
+/*(0x167B/0x101B)*/ 		07 [@label_0x16B6] 9A 38 3A 01 <@CustomFireActionType> 38 3A 24 03 16 
+/*(0x168F/0x102B)*/ 			0F 01 <@CustomFireActor> 1C <Engine.Actor.Spawn> 20 <Class.XGAction_FireCustom_KineticStrike> 17 4A 4A 4A 4A 4A 4A 16 
+/*(0x16B3/0x1043)*/ 			06 [@label_0x16EE] 
+/*(0x16B6/0x1046)*/ 		[#label_0x16B6]
+/*(0x16B6/0x1046)*/ 		07 [@label_0x16EE] 9A 38 3A 01 <@CustomFireActionType> 38 3A 24 04 16 
+/*(0x16CA/0x1056)*/ 			0F 01 <@CustomFireActor> 1C <Engine.Actor.Spawn> 20 <Class.XGAction_FireCustom_Barrage> 17 4A 4A 4A 4A 4A 4A 16 
+/*(0x16EE/0x106E)*/ 		[#label_0x16EE]
+/*(0x16EE/0x106E)*/ 		07 [@label_0x173F] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+/*(0x1702/0x107E)*/ 			07 [@label_0x173F] 81 19 01 <@m_kShot> [@] <XGAbility.Execute.ReturnValue> 00 ( 1C <XGAbility.Execute> 4A 16 ) 16 
+/*(0x1727/0x1097)*/ 				14 2D 01 <@m_bClientStopWaitingForFiringStateShotAbility> 27 
+/*(0x1733/0x109F)*/ 				14 2D 01 <Engine.Actor.bForceNetUpdate> 27 
+/*(0x173F/0x10A7)*/ 		[#label_0x173F]
+/*(0x173F/0x10A7)*/ 		19 01 <@CustomFireActor> [@] <NullRef> 00 ( 71 21 <Firing> 4A 4A 4A 16 ) 
+/*(0x1762/0x10C2)*/ 		[#label_0x1762]
+/*(0x1762/0x10C2)*/ 		07 [@label_0x1792] 19 01 <@CustomFireActor> [@] <Core.Object.IsInState.ReturnValue> 00 ( 61 19 21 <Firing> 4A 16 ) 
+/*(0x1787/0x10DF)*/ 			61 00 1E <%f 0> 16 
+/*(0x178F/0x10E7)*/ 			06 [@label_0x1762] 
+/*(0x1792/0x10EA)*/ 		[#label_0x1792]
+/*(0x1792/0x10EA)*/ 		06 [@label_0x2326] 
+/*(0x1795/0x10ED)*/ 	[#label_0x1795]
+/*(0x1795/0x10ED)*/ 	07 [@label_0x2326] 9A 38 3A 01 <@CustomFireActionType> 38 3A 24 00 16 
+/*(0x17A9/0x10FD)*/ 		07 [@label_0x1965] 1B <UseSpecialAbility> 01 <@m_TmpAnimActionIndex> 16 
+/*(0x17BF/0x110F)*/ 			0F 01 <@m_eFireActionStatus> 24 06 
+/*(0x17CB/0x1117)*/ 			1B <SetTargetForPawn> 01 <@m_vTarget> 16 
+/*(0x17DE/0x1126)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 04 1E <%f 0.1> 16 ) 
+/*(0x1819/0x1151)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.ActionNode> 00 ( 01 <XComUnitPawnNativeBase.ActionNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 38 3A 01 <@m_TmpAnimActionIndex> 1E <%f 0.1> 16 ) 
+/*(0x185D/0x1181)*/ 			1B <ChooseFiringCam> 16 
+/*(0x1867/0x118B)*/ 			61 00 1E <%f 0.1> 16 
+/*(0x186F/0x1193)*/ 			07 [@label_0x18CA] 84 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 22 16 18 [@] ( 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 26 16 16 ) 
+/*(0x18BD/0x11D1)*/ 				1B <DoGlamCam> 16 
+/*(0x18C7/0x11DB)*/ 				06 [@label_0x18FA] 
+/*(0x18CA/0x11DE)*/ 			[#label_0x18CA]
+/*(0x18CA/0x11DE)*/ 			07 [@label_0x18FA] 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 3F 16 
+/*(0x18F0/0x11FC)*/ 				1B <InitMultiShot> 16 
+/*(0x18FA/0x1206)*/ 			[#label_0x18FA]
+/*(0x18FA/0x1206)*/ 			61 05 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.ActionNode> 00 ( 01 <XComUnitPawnNativeBase.ActionNode> ) [@] <Engine.AnimNodeBlendList.GetTerminalSequence.ReturnValue> 00 ( 1B <GetTerminalSequence> 16 ) 4A 16 
+/*(0x1932/0x122E)*/ 			07 [@label_0x1962] 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 31 16 
+/*(0x1958/0x124C)*/ 				1B <FireDisablingShot> 16 
+/*(0x1962/0x1256)*/ 			[#label_0x1962]
+/*(0x1962/0x1256)*/ 			06 [@label_0x1BC1] 
+/*(0x1965/0x1259)*/ 		[#label_0x1965]
+/*(0x1965/0x1259)*/ 		07 [@label_0x1A62] 1B <UseSpecialAnim> 01 <@m_TmpSingleAnim> 16 
+/*(0x197B/0x126B)*/ 			0F 01 <@m_eFireActionStatus> 24 07 
+/*(0x1987/0x1273)*/ 			1B <SetTargetForPawn> 01 <@m_vTarget> 16 
+/*(0x199A/0x1282)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 06 1E <%f 0.1> 16 ) 
+/*(0x19D5/0x12AD)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetAnim> 01 <@m_TmpSingleAnim> 4A 4A 4A 16 ) 
+/*(0x1A15/0x12D9)*/ 			1B <ChooseFiringCam> 16 
+/*(0x1A1F/0x12E3)*/ 			61 00 1E <%f 0.1> 16 
+/*(0x1A27/0x12EB)*/ 			61 05 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <Engine.AnimNodeBlendList.GetTerminalSequence.ReturnValue> 00 ( 1B <GetTerminalSequence> 16 ) 4A 16 
+/*(0x1A5F/0x1313)*/ 			06 [@label_0x1BC1] 
+/*(0x1A62/0x1316)*/ 		[#label_0x1A62]
+/*(0x1A62/0x1316)*/ 		07 [@label_0x1B95] 1B <IsCurrentWeaponGrenade> 16 
+/*(0x1A6F/0x1323)*/ 			05 <XGItem.ItemType.ReturnValue> 00 19 01 <@m_kWeapon> [@] <XGItem.ItemType.ReturnValue> 00 ( 1B <ItemType> 16 ) 
+/*(0x1A98/0x1340)*/ 			0A [@label_0x1AC2] 24 61 
+/*(0x1A9D/0x1345)*/ 				19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 15 4A 16 ) 
+/*(0x1ABF/0x135F)*/ 				06 [@label_0x1B95] 
+/*(0x1AC2/0x1362)*/ 			[#label_0x1AC2]
+/*(0x1AC2/0x1362)*/ 			0A [@label_0x1AEC] 24 52 
+/*(0x1AC7/0x1367)*/ 				19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 14 4A 16 ) 
+/*(0x1AE9/0x1381)*/ 				06 [@label_0x1B95] 
+/*(0x1AEC/0x1384)*/ 			[#label_0x1AEC]
+/*(0x1AEC/0x1384)*/ 			0A [@label_0x1B22] 24 51 
+/*(0x1AF1/0x1389)*/ 				1B <SetWeaponAnimNode> 24 04 16 
+/*(0x1AFD/0x1395)*/ 				19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 13 4A 16 ) 
+/*(0x1B1F/0x13AF)*/ 				06 [@label_0x1B95] 
+/*(0x1B22/0x13B2)*/ 			[#label_0x1B22]
+/*(0x1B22/0x13B2)*/ 			0A [@label_0x1B27] 24 54 
+/*(0x1B27/0x13B7)*/ 			[#label_0x1B27]
+/*(0x1B27/0x13B7)*/ 			0A [@label_0x1B51] 24 57 
+/*(0x1B2C/0x13BC)*/ 				19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 13 4A 16 ) 
+/*(0x1B4E/0x13D6)*/ 				06 [@label_0x1B95] 
+/*(0x1B51/0x13D9)*/ 			[#label_0x1B51]
+/*(0x1B51/0x13D9)*/ 			0A [@label_0x1B7B] 24 53 
+/*(0x1B56/0x13DE)*/ 				19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 16 4A 16 ) 
+/*(0x1B78/0x13F8)*/ 				06 [@label_0x1B95] 
+/*(0x1B7B/0x13FB)*/ 			[#label_0x1B7B]
+/*(0x1B7B/0x13FB)*/ 			0A [@label_0x1B8F] 24 58 
+/*(0x1B80/0x1400)*/ 				1B <SetWeaponAnimNode> 24 00 16 
+/*(0x1B8C/0x140C)*/ 				06 [@label_0x1B95] 
+/*(0x1B8F/0x140F)*/ 			[#label_0x1B8F]
+/*(0x1B8F/0x140F)*/ 			0A FF FF 
+/*(0x1B92/0x1412)*/ 			06 [@label_0x1B95] 
+/*(0x1B95/0x1415)*/ 		[#label_0x1B95]
+/*(0x1B95/0x1415)*/ 		1B <SetTargetForFiring> 16 
+/*(0x1B9F/0x141F)*/ 		14 2D 01 <@m_bUpdateAnimRot> 27 
+/*(0x1BAB/0x1427)*/ 		14 2D 01 <@m_bUseAimAtTargetMissPercentage> 27 
+/*(0x1BB7/0x142F)*/ 		1B <FireWeapon> 16 
+/*(0x1BC1/0x1439)*/ 		[#label_0x1BC1]
+/*(0x1BC1/0x1439)*/ 		07 [@label_0x1C5E] 9A 19 01 <@m_kShot> [@] <XGAbility.iTargetType> 00 ( 01 <XGAbility.iTargetType> ) 2C 08 16 
+/*(0x1BE6/0x1452)*/ 			07 [@label_0x1C36] 9A 19 01 <@m_kShot> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 18 16 
+/*(0x1C0B/0x146B)*/ 				0F 19 01 <@m_kShot> [@] <XGAbility_Targeted.m_vTargetLocation> 00 ( 01 <XGAbility_Targeted.m_vTargetLocation> ) 01 <@m_vHitLocation> 
+/*(0x1C33/0x1483)*/ 				06 [@label_0x1C5E] 
+/*(0x1C36/0x1486)*/ 			[#label_0x1C36]
+/*(0x1C36/0x1486)*/ 			0F 19 01 <@m_kShot> [@] <XGAbility_Targeted.m_vTargetLocation> 00 ( 01 <XGAbility_Targeted.m_vTargetLocation> ) 01 <@m_vTarget> 
+/*(0x1C5E/0x149E)*/ 		[#label_0x1C5E]
+/*(0x1C5E/0x149E)*/ 		07 [@label_0x1CA6] 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 3F 16 
+/*(0x1C84/0x14BC)*/ 			19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.XComUpdateOpenCloseStateNode.ReturnValue> 00 ( 1B <XComUpdateOpenCloseStateNode> 24 02 27 16 ) 
+/*(0x1CA6/0x14D6)*/ 		[#label_0x1CA6]
+/*(0x1CA6/0x14D6)*/ 		07 [@label_0x1EA5] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+/*(0x1CBA/0x14E6)*/ 			07 [@label_0x1E31] 82 19 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComTacticalCheatManager.bDebugReaction> 00 ( 2D 01 <XComTacticalCheatManager.bDebugReaction> ) 18 [@] ( 19 01 <@m_kShot> [@] <XGAbility.m_bReactionFire> 00 ( 2D 01 <XGAbility.m_bReactionFire> ) 16 ) 
+/*(0x1D1F/0x1527)*/ 				55 19 01 <XGAction.m_kUnit> [@] <XGUnit.m_arrStrDebugReaction> 00 ( 01 <XGUnit.m_arrStrDebugReaction> ) [@] ( 70 70 A8 A8 A8 70 A8 A8 A8 38 56 01 <XGAction.m_kUnit> 1F <%t "performing Reaction Fire Shot (cost not yet applied), Self:"> 16 38 56 01 <XGAction.m_kUnit> 16 1F <%t "("> 16 38 53 19 01 <XGAction.m_kUnit> [@] <XGUnit.GetReaction.ReturnValue> 00 ( 1B <GetReaction> 16 ) 16 1F <%t "Target:"> 16 38 56 19 01 <@m_kShot> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 16 1F <%t "("> 16 38 53 19 19 01 <@m_kShot> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) [@] <XGUnit.GetReaction.ReturnValue> 00 ( 1B <GetReaction> 16 ) 16 1F <%t ")"> 16 16 ) 
+/*(0x1E31/0x1609)*/ 			[#label_0x1E31]
+/*(0x1E31/0x1609)*/ 			07 [@label_0x1EA5] 82 81 19 01 <@m_kShot> [@] <XGAbility.HasProperty.ReturnValue> 00 ( 1B <HasProperty> 24 04 16 ) 16 18 [@] ( 81 2D 01 <@m_bNotifyExecutedShot> 16 16 ) 
+/*(0x1E68/0x1634)*/ 				07 [@label_0x1EA5] 81 19 01 <@m_kShot> [@] <XGAbility.Execute.ReturnValue> 00 ( 1C <XGAbility.Execute> 4A 16 ) 16 
+/*(0x1E8D/0x164D)*/ 					14 2D 01 <@m_bClientStopWaitingForFiringStateShotAbility> 27 
+/*(0x1E99/0x1655)*/ 					14 2D 01 <Engine.Actor.bForceNetUpdate> 27 
+/*(0x1EA5/0x165D)*/ 		[#label_0x1EA5]
+/*(0x1EA5/0x165D)*/ 		07 [@label_0x1EED] 84 72 01 <@m_kShot> 2A 16 18 [@] ( 81 19 01 <@m_kShot> [@] <XGAbility.m_bReactionFire> 00 ( 2D 01 <XGAbility.m_bReactionFire> ) 16 16 ) 
+/*(0x1EDA/0x1682)*/ 			61 18 1E <%f 15> 27 21 <Abort> 4A 16 
+/*(0x1EED/0x1695)*/ 		[#label_0x1EED]
+/*(0x1EED/0x1695)*/ 		0F 01 <@m_eFireActionStatus> 24 08 
+/*(0x1EF9/0x169D)*/ 		07 [@label_0x1F9F] 19 01 <@m_kWeapon> [@] <XGWeapon.IsMelee.ReturnValue> 00 ( 1B <IsMelee> 16 ) 
+/*(0x1F1B/0x16B7)*/ 			[#label_0x1F1B]
+/*(0x1F1B/0x16B7)*/ 			07 [@label_0x1F9F] 82 82 77 19 01 <XGAction.m_kPawn> [@] <Engine.Pawn.Weapon> 00 ( 01 <Engine.Pawn.Weapon> ) 2A 16 18 [@] ( 81 19 2E <Class.XComWeapon> 19 01 <XGAction.m_kPawn> [@] <Engine.Pawn.Weapon> 00 ( 01 <Engine.Pawn.Weapon> ) [@] <XComWeapon.IsWeaponFinishedFiring.ReturnValue> 00 ( 1B <IsWeaponFinishedFiring> 16 ) 16 16 ) 18 [@] ( 81 2D 01 <@m_bDebugEmergencyAbort> 16 16 ) 
+/*(0x1F94/0x170C)*/ 				61 00 1E <%f 0> 16 
+/*(0x1F9C/0x1714)*/ 				06 [@label_0x1F1B] 
+/*(0x1F9F/0x1717)*/ 		[#label_0x1F9F]
+/*(0x1F9F/0x1717)*/ 		61 00 1E <%f 0> 16 
+/*(0x1FA7/0x171F)*/ 		0F 01 <@m_eFireActionStatus> 24 09 
+/*(0x1FB3/0x1727)*/ 		0F 01 <@m_fHangBreakoutTime> 1E <%f 0> 
+/*(0x1FC2/0x1732)*/ 		[#label_0x1FC2]
+/*(0x1FC2/0x1732)*/ 		07 [@label_0x2326] 82 84 82 82 77 01 <@m_kShot> 2A 16 18 [@] ( 19 01 <@m_kShot> [@] <XGAbility.m_bReactionFire> 00 ( 2D 01 <XGAbility.m_bReactionFire> ) 16 ) 18 [@] ( 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 16 ) 18 [@] ( 84 82 97 01 <@m_numProjectiles> 25 16 18 [@] ( 81 2D 35 <XGUnitNativeBase.FiringStateReplicationData.m_bReflected> <XGUnitNativeBase.FiringStateReplicationData> 00 00 01 <@CurrentShotReplicationData> 16 16 ) 18 [@] ( 82 77 19 01 <XGAction.m_kPawn> [@] <Engine.Pawn.Weapon> 00 ( 01 <Engine.Pawn.Weapon> ) 2A 16 18 [@] ( 81 19 2E <Class.XComWeapon> 19 01 <XGAction.m_kPawn> [@] <Engine.Pawn.Weapon> 00 ( 01 <Engine.Pawn.Weapon> ) [@] <XComWeapon.IsWeaponFinishedFiring.ReturnValue> 00 ( 1B <IsWeaponFinishedFiring> 16 ) 16 16 ) 16 ) 16 ) 18 [@] ( 81 2D 01 <@m_bDebugEmergencyAbort> 16 16 ) 
+/*(0x20C9/0x17ED)*/ 			[#label_0x20C9]
+/*(0x20C9/0x17ED)*/ 			07 [@label_0x21F7] 82 19 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_kGlamMgr> 00 ( 01 <XGBattle.m_kGlamMgr> ) [@] <XComGlamManager.m_bGlamBusy> 00 ( 2D 01 <XComGlamManager.m_bGlamBusy> ) 18 [@] ( 81 19 01 <@m_kShot> [@] <Core.Object.IsA.ReturnValue> 00 ( C5 21 <XGAbility_Grapple> 16 ) 16 16 ) 
+/*(0x2170/0x185C)*/ 				61 00 1E <%f 0> 16 
+/*(0x2178/0x1864)*/ 				07 [@label_0x21F4] 9B 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_iResult> 00 ( 01 <XGBattle.m_iResult> ) 25 16 
+/*(0x21E5/0x18A9)*/ 					14 2D 01 <@m_bDebugEmergencyAbort> 27 
+/*(0x21F1/0x18B1)*/ 					06 [@label_0x21F7] 
+/*(0x21F4/0x18B4)*/ 				[#label_0x21F4]
+/*(0x21F4/0x18B4)*/ 				06 [@label_0x20C9] 
+/*(0x21F7/0x18B7)*/ 			[#label_0x21F7]
+/*(0x21F7/0x18B7)*/ 			07 [@label_0x2244] 2D 01 <@m_bGlamCamActive> 
+/*(0x2204/0x18C0)*/ 				07 [@label_0x2227] 1B <IsValidTargetBusyPostFiring> 16 
+/*(0x2211/0x18CD)*/ 					1B <SwitchToOverheadMode> 01 <@m_kTargetedEnemy> 16 
+/*(0x2224/0x18DC)*/ 					06 [@label_0x223A] 
+/*(0x2227/0x18DF)*/ 				[#label_0x2227]
+/*(0x2227/0x18DF)*/ 				1B <SwitchToOverheadMode> 01 <XGAction.m_kUnit> 16 
+/*(0x223A/0x18EE)*/ 				[#label_0x223A]
+/*(0x223A/0x18EE)*/ 				1B <CameraIsDone> 16 
+/*(0x2244/0x18F8)*/ 			[#label_0x2244]
+/*(0x2244/0x18F8)*/ 			07 [@label_0x22CB] 82 82 B1 01 <@m_fHangBreakoutTime> 1E <%f 4> 16 18 [@] ( 77 2E <Class.XComWeapon> 19 01 <XGAction.m_kPawn> [@] <Engine.Pawn.Weapon> 00 ( 01 <Engine.Pawn.Weapon> ) 2A 16 16 ) 18 [@] ( F2 19 2E <Class.XComWeapon> 19 01 <XGAction.m_kPawn> [@] <Engine.Pawn.Weapon> 00 ( 01 <Engine.Pawn.Weapon> ) [@] <XComWeapon.IsWeaponFinishedFiring.ReturnValue> 00 ( 1B <IsWeaponFinishedFiring> 16 ) 28 16 16 ) 
+/*(0x22CB/0x1957)*/ 			[#label_0x22CB]
+/*(0x22CB/0x1957)*/ 			61 00 1E <%f 0.1> 16 
+/*(0x22D3/0x195F)*/ 			B8 01 <@m_fHangBreakoutTime> 1E <%f 0.1> 16 
+/*(0x22E3/0x196B)*/ 			07 [@label_0x2323] B3 01 <@m_fHangBreakoutTime> 38 3F 2C 08 16 
+/*(0x22F5/0x1979)*/ 				07 [@label_0x230E] 97 01 <@m_numProjectiles> 25 16 
+/*(0x2304/0x1984)*/ 					1B <DebugProjectiles> 16 
+/*(0x230E/0x198E)*/ 				[#label_0x230E]
+/*(0x230E/0x198E)*/ 				07 [@label_0x2323] B3 01 <@m_fHangBreakoutTime> 38 3F 2C 14 16 
+/*(0x2320/0x199C)*/ 					06 [@label_0x2326] 
+/*(0x2323/0x199F)*/ 			[#label_0x2323]
+/*(0x2323/0x199F)*/ 			06 [@label_0x1FC2] 
+/*(0x2326/0x19A2)*/ 	[#label_0x2326]
+/*(0x2326/0x19A2)*/ 	07 [@label_0x2374] 84 19 01 <@m_kShot> [@] <XGAbility.IsGrenadeAbility.ReturnValue> 00 ( 1B <IsGrenadeAbility> 16 ) 18 [@] ( 19 01 <@m_kShot> [@] <XGAbility_Targeted.IsRocketShot.ReturnValue> 00 ( 1B <IsRocketShot> 16 ) 16 ) 
+/*(0x236C/0x19D8)*/ 		61 00 1E <%f 1.75> 16 
+/*(0x2374/0x19E0)*/ 	[#label_0x2374]
+/*(0x2374/0x19E0)*/ 	14 2D 01 <@m_bUpdateAnimRot> 28 
+/*(0x2380/0x19E8)*/ 	14 2D 01 <@m_bUseAimAtTargetMissPercentage> 28 
+/*(0x238C/0x19F0)*/ 	0F 01 <@m_eFireActionStatus> 24 0A 
+/*(0x2398/0x19F8)*/ 	14 2D 01 <@m_bWaitingForOverwatchToComplete> 27 
+/*(0x23A4/0x1A00)*/ 	[#label_0x23A4]
+/*(0x23A4/0x1A00)*/ 	07 [@label_0x23D1] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x23C6/0x1A1A)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x23CE/0x1A22)*/ 		06 [@label_0x23A4] 
+/*(0x23D1/0x1A25)*/ 	[#label_0x23D1]
+/*(0x23D1/0x1A25)*/ 	07 [@label_0x2401] 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 3F 16 
+/*(0x23F7/0x1A43)*/ 		1B <UninitMultiShot> 16 
+/*(0x2401/0x1A4D)*/ 	[#label_0x2401]
+/*(0x2401/0x1A4D)*/ 	07 [@label_0x2479] 72 19 19 01 <XGAction.m_kPres> [@] <XComPresentationLayer.CAMGetLookAtView.ReturnValue> 00 ( 1B <CAMGetLookAtView> 16 ) [@] <XGCameraView.GetFirstAutoZoomUnit.ReturnValue> 00 ( 1B <GetFirstAutoZoomUnit> 16 ) 01 <XGAction.m_kUnit> 16 
+/*(0x2444/0x1A80)*/ 		19 19 01 <XGAction.m_kPres> [@] <XComPresentationLayer.CAMGetLookAtView.ReturnValue> 00 ( 1B <CAMGetLookAtView> 16 ) [@] <NullRef> 00 ( 1B <AutoZoomReset> 16 ) 
+/*(0x2479/0x1AA9)*/ 	[#label_0x2479]
+/*(0x2479/0x1AA9)*/ 	19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <ClearSuppressionExecuting> 16 ) 
+/*(0x2498/0x1AC0)*/ 	0F 01 <@m_eFireActionStatus> 24 0B 
+/*(0x24A4/0x1AC8)*/ 	07 [@label_0x24C9] 1B <EndOfActionOvermindInit> 16 
+/*(0x24B1/0x1AD5)*/ 		[#label_0x24B1]
+/*(0x24B1/0x1AD5)*/ 		07 [@label_0x24C9] 1B <EndOfActionOvermindUpdating> 16 
+/*(0x24BE/0x1AE2)*/ 			61 00 1E <%f 1> 16 
+/*(0x24C6/0x1AEA)*/ 			06 [@label_0x24B1] 
+/*(0x24C9/0x1AED)*/ 	[#label_0x24C9]
+/*(0x24C9/0x1AED)*/ 	0F 01 <@m_eFireActionStatus> 24 0C 
+/*(0x24D5/0x1AF5)*/ 	07 [@label_0x264E] 82 82 84 81 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsAI.ReturnValue> 00 ( 1B <IsAI> 16 ) 16 18 [@] ( 82 82 77 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_kBehavior> 00 ( 01 <XGUnitNativeBase.m_kBehavior> ) 2A 16 18 [@] ( 77 19 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_kBehavior> 00 ( 01 <XGUnitNativeBase.m_kBehavior> ) [@] <XGAIBehavior.m_kManeuver> 00 ( 01 <XGAIBehavior.m_kManeuver> ) 2A 16 16 ) 18 [@] ( 19 19 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_kBehavior> 00 ( 01 <XGUnitNativeBase.m_kBehavior> ) [@] <XGAIBehavior.m_kManeuver> 00 ( 01 <XGAIBehavior.m_kManeuver> ) [@] <XGManeuver.IsPodRevealManeuver.ReturnValue> 00 ( 1B <IsPodRevealManeuver> 16 ) 16 ) 16 ) 18 [@] ( 1B <EndOfActionPodInit> 16 16 ) 18 [@] ( 84 72 01 <@m_kShot> 2A 16 18 [@] ( 82 77 01 <@m_kShot> 2A 16 18 [@] ( 81 19 01 <@m_kShot> [@] <XGAbility.m_bReactionFire> 00 ( 2D 01 <XGAbility.m_bReactionFire> ) 16 16 ) 16 ) 16 ) 
+/*(0x25FF/0x1BCB)*/ 		[#label_0x25FF]
+/*(0x25FF/0x1BCB)*/ 		07 [@label_0x264E] 1B <EndOfActionPodUpdating> 4A 16 
+/*(0x260D/0x1BD9)*/ 			61 00 1E <%f 1> 16 
+/*(0x2615/0x1BE1)*/ 			07 [@label_0x264B] 82 77 01 <@m_kShot> 2A 16 18 [@] ( 19 01 <@m_kShot> [@] <XGAbility.IsReactionShot.ReturnValue> 00 ( 1B <IsReactionShot> 16 ) 16 ) 
+/*(0x2648/0x1C08)*/ 				06 [@label_0x264E] 
+/*(0x264B/0x1C0B)*/ 			[#label_0x264B]
+/*(0x264B/0x1C0B)*/ 			06 [@label_0x25FF] 
+/*(0x264E/0x1C0E)*/ 	[#label_0x264E]
+/*(0x264E/0x1C0E)*/ 	0F 01 <@m_eFireActionStatus> 24 0D 
+/*(0x265A/0x1C16)*/ 	07 [@label_0x27F7] 2D 01 <@m_bGrappleIsValid> 
+/*(0x2667/0x1C1F)*/ 		07 [@label_0x27C6] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+/*(0x267B/0x1C2F)*/ 			0F 01 <@m_vGrappleLedgePoint> 19 2E <Class.XGAbility_Grapple> 01 <@m_kShot> [@] <XGAbility_Grapple.GetLedgePoint.ReturnValue> 00 ( 1B <GetLedgePoint> 16 ) 
+/*(0x26AD/0x1C51)*/ 			0F 35 <XGAction_Fire.GrappleStateReplicationData.m_vGrappleLedgePoint> <@GrappleStateReplicationData> 00 01 01 <@m_kGrappleStateRepData> 01 <@m_vGrappleLedgePoint> 
+/*(0x26D3/0x1C67)*/ 			0F 01 <@m_vGrappleLedgeNormal> 19 2E <Class.XGAbility_Grapple> 01 <@m_kShot> [@] <XGAbility_Grapple.GetLedgeNormal.ReturnValue> 00 ( 1B <GetLedgeNormal> 16 ) 
+/*(0x2705/0x1C89)*/ 			0F 35 <XGAction_Fire.GrappleStateReplicationData.m_vGrappleLedgeNormal> <@GrappleStateReplicationData> 00 01 01 <@m_kGrappleStateRepData> 01 <@m_vGrappleLedgeNormal> 
+/*(0x272B/0x1C9F)*/ 			14 2D 01 <@m_bGrappleShouldClimbOverLedge> 19 2E <Class.XGAbility_Grapple> 01 <@m_kShot> [@] <XGAbility_Grapple.ShouldClimbOverLedge.ReturnValue> 00 ( 1B <ShouldClimbOverLedge> 16 ) 
+/*(0x275E/0x1CC2)*/ 			14 2D 35 <XGAction_Fire.GrappleStateReplicationData.m_bGrappleShouldClimbOverLedge> <@GrappleStateReplicationData> 00 01 01 <@m_kGrappleStateRepData> 2D 01 <@m_bGrappleShouldClimbOverLedge> 
+/*(0x2786/0x1CDA)*/ 			14 2D 35 <XGAction_Fire.GrappleStateReplicationData.m_bGrappleReplicateFlipFlop> <@GrappleStateReplicationData> 00 01 01 <@m_kGrappleStateRepData> 81 2D 35 <XGAction_Fire.GrappleStateReplicationData.m_bGrappleReplicateFlipFlop> <@GrappleStateReplicationData> 00 00 01 <@m_kGrappleStateRepData> 16 
+/*(0x27C3/0x1CFF)*/ 			06 [@label_0x27E0] 
+/*(0x27C6/0x1D02)*/ 		[#label_0x27C6]
+/*(0x27C6/0x1D02)*/ 		07 [@label_0x27E0] 81 2D 01 <@m_bGrappleStateDataReplicated> 16 
+/*(0x27D5/0x1D0D)*/ 			61 00 1E <%f 0> 16 
+/*(0x27DD/0x1D15)*/ 			06 [@label_0x27C6] 
+/*(0x27E0/0x1D18)*/ 		[#label_0x27E0]
+/*(0x27E0/0x1D18)*/ 		1C <Core.Object.PushState> 21 <Grappling> 4A 16 
+/*(0x27F4/0x1D28)*/ 		06 [@label_0x2838] 
+/*(0x27F7/0x1D2B)*/ 	[#label_0x27F7]
+/*(0x27F7/0x1D2B)*/ 	07 [@label_0x2838] 82 77 01 <@m_kSavedView> 2A 16 18 [@] ( 77 01 <XGAction.m_kPres> 2A 16 16 ) 
+/*(0x2817/0x1D43)*/ 		19 01 <@m_kSavedView> [@] <NullRef> 00 ( 1B <SetTransition> 24 00 16 ) 
+/*(0x2838/0x1D5C)*/ 	[#label_0x2838]
+/*(0x2838/0x1D5C)*/ 	07 [@label_0x28A7] 82 82 77 01 <@m_kTargetedEnemy> 2A 16 18 [@] ( 77 01 <@m_kTargetedEnemy> 01 <XGAction.m_kUnit> 16 16 ) 18 [@] ( 81 19 01 <@m_kShot> [@] <XGAbility.IsReactionShot.ReturnValue> 00 ( 1B <IsReactionShot> 16 ) 16 16 ) 
+/*(0x2886/0x1D96)*/ 		19 01 <@m_kTargetedEnemy> [@] <NullRef> 00 ( 1B <SetDiscState> 24 00 16 ) 
+/*(0x28A7/0x1DAF)*/ 	[#label_0x28A7]
+/*(0x28A7/0x1DAF)*/ 	06 [@label_0x28AA] 
+/*(0x28AA/0x1DB2)*/ [#label_0x28AA]
+/*(0x28AA/0x1DB2)*/ 07 [@label_0x28EC] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+/*(0x28BE/0x1DC2)*/ 	07 [@label_0x28EC] 77 01 <@m_kTargetedEnemy> 2A 16 
+/*(0x28CD/0x1DCD)*/ 		19 01 <@m_kTargetedEnemy> [@] <NullRef> 00 ( 1B <UpdateUnitBuffs> 16 ) 
+/*(0x28EC/0x1DE4)*/ [#label_0x28EC]
+/*(0x28EC/0x1DE4)*/ A3 01 <@CurrentShotIndex> 16 
+/*(0x28F7/0x1DEB)*/ 07 [@label_0x2989] 96 01 <@CurrentShotIndex> 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetNumShots.ReturnValue> 00 ( 1B <GetNumShots> 16 ) 16 
+/*(0x2924/0x1E0C)*/ 	07 [@label_0x2973] 9A 19 01 <@m_kShot> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 08 16 
+/*(0x2949/0x1E25)*/ 		14 19 2E <Class.XGAbility_RapidFire> 01 <@m_kShot> [@] <XGAbility_RapidFire.bShotTwice> 00 ( 2D 01 <XGAbility_RapidFire.bShotTwice> ) 27 
+/*(0x2973/0x1E3F)*/ 	[#label_0x2973]
+/*(0x2973/0x1E3F)*/ 	0F 01 <@m_eFireActionStatus> 24 0E 
+/*(0x297F/0x1E47)*/ 	0D 21 <Begin> 
+/*(0x2989/0x1E51)*/ [#label_0x2989]
+/*(0x2989/0x1E51)*/ 14 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_bCelebrateAfterKill> 00 ( 2D 01 <XGUnitNativeBase.m_bCelebrateAfterKill> ) 2D 35 <XGUnitNativeBase.FiringStateReplicationData.m_bKillShot> <XGUnitNativeBase.FiringStateReplicationData> 00 00 01 <@CurrentShotReplicationData> 
+/*(0x29C6/0x1E76)*/ 07 [@label_0x2B7B] 82 82 2D 35 <XGUnitNativeBase.FiringStateReplicationData.m_bKillShot> <XGUnitNativeBase.FiringStateReplicationData> 00 00 01 <@CurrentShotReplicationData> 18 [@] ( 19 19 01 <XGAction.m_kUnit> [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 14 16 ) 16 ) 18 [@] ( 81 19 01 <@m_kShot> [@] <XGAbility.HasProperty.ReturnValue> 00 ( 1B <HasProperty> 24 25 16 ) 16 16 ) 
+/*(0x2A4A/0x1EDA)*/ 	07 [@label_0x2B7B] 2D 01 <@m_bHasAdrenalNeurosympathy> 
+/*(0x2A57/0x1EE3)*/ 		07 [@label_0x2B7B] 81 2D 01 <@m_bAdrenalNeurosympathyOnCooldown> 16 
+/*(0x2A66/0x1EEE)*/ 			07 [@label_0x2AB3] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+/*(0x2A7A/0x1EFE)*/ 				19 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.FindAbility.ReturnValue> 00 ( 1B <FindAbility> 2C 4A 2A 16 ) [@] <XGAbility.Execute.ReturnValue> 00 ( 1C <XGAbility.Execute> 28 16 ) 
+/*(0x2AB3/0x1F27)*/ 			[#label_0x2AB3]
+/*(0x2AB3/0x1F27)*/ 			0F 01 <@m_eFireActionStatus> 24 0F 
+/*(0x2ABF/0x1F2F)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 06 1E <%f 0.1> 16 ) 
+/*(0x2AFA/0x1F5A)*/ 			19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetAnimByName> 21 <AC_NO_AdrenalNeuro> 4A 4A 4A 4A 16 ) 
+/*(0x2B3B/0x1F8B)*/ 			61 00 1E <%f 0.12> 16 
+/*(0x2B43/0x1F93)*/ 			61 05 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <Engine.AnimNodeBlendList.GetTerminalSequence.ReturnValue> 00 ( 1B <GetTerminalSequence> 16 ) 4A 16 
+/*(0x2B7B/0x1FBB)*/ [#label_0x2B7B]
+/*(0x2B7B/0x1FBB)*/ 1C <Engine.Actor.ClearTimer> 21 <Abort> 4A 16 
+/*(0x2B8F/0x1FCB)*/ 0F 01 <@m_eFireActionStatus> 24 10 
+/*(0x2B9B/0x1FD3)*/ 71 21 <ShutDownToIdle> 4A 4A 4A 16 
+/*(0x2BA9/0x1FE1)*/ 08 
+/*(0x2BAA/0x1FE2)*/ 0B 
+/*(0x2BAB/0x1FE3)*/ 0C <Begin> <%u 0> <None> <%u 65535> 
+/*(0x2BC4/0x1FFC)*/ 53 
+
+/* ****************************************************************************
+SEQUENTIAL OVERWATCH IMPLEMENTATION (v. 1.3)
+PART 4.1 - Providing compatibility between Rapid Reaction and Covering Fire
+****************************************************************************** */
+
+OBJECT = XGUnit.RapidReactionIsOk : AUTO
+[REPLACEMENT_CODE]
+/*Forcing function to return 'true' for non-moving units; makes RapidReaction be compatible with CovFire
+	if(!kTarget.IsMoving())
+		return true;
+*/
+	07 [@MovingCheck] 81 19 00 <.kTarget> [@] <XGUnit.IsMoving.ReturnValue> 00 ( 1B <IsMoving> 16 ) 16
+		04 27
+	[#MovingCheck]
+	
+/*(0x0000/0x0000)*/ 07 [@label_0x00F7] 84 19 1B <GetCharacter> 16 [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 17 16 ) 18 [@] ( 19 1B <GetCharacter> 16 [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 36 16 ) 16 ) 
+/*(0x004C/0x0044)*/ 	07 [@label_0x00F7] 72 00 <.kTarget> 01 <XGUnitNativeBase.m_kRapidReactionUnit> 16 
+/*(0x0063/0x0053)*/ 		07 [@label_0x00F7] B0 E1 D8 19 00 <.kTarget> [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> ) 01 <XGUnitNativeBase.m_vRapidReactionLoc> 16 16 38 3F 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 2C C0 ) 16 
+/*(0x00F5/0x00B1)*/ 			04 28 
+/*(0x00F7/0x00B3)*/ [#label_0x00F7]
+/*(0x00F7/0x00B3)*/ 04 27 
+/*(0x00F9/0x00B5)*/ 04 3A <.ReturnValue> 
+/*(0x0103/0x00BB)*/ 53 
+
+/* ****************************************************************************
+SEQUENTIAL OVERWATCH IMPLEMENTATION (v.1.3)
+PART 4.2 - Clear the array used during multi-cov-fire handling
+****************************************************************************** */
+OBJECT = XGAction_Fire.ShutDownToIdle : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 07 [@label_0x006E] 1B <IsValidTargetBusyPostFiring> 16 
+/*(0x000D/0x000D)*/ 	07 [@label_0x0051] 77 01 <@m_kTargetedEnemy> 2A 16 
+/*(0x001C/0x0018)*/ 		0F 01 <@m_kShutDownToIdle_WaitingOn_BusyUnit> 01 <@m_kTargetedEnemy> 
+/*(0x002F/0x0023)*/ 		07 [@label_0x0051] 81 2D 01 <XGAction.m_bDetectedSuppressionExecutionDuringThisAction> 16 
+/*(0x003E/0x002E)*/ 			1B <SwitchToOverheadMode> 01 <@m_kShutDownToIdle_WaitingOn_BusyUnit> 16 
+/*(0x0051/0x003D)*/ 	[#label_0x0051]
+/*(0x0051/0x003D)*/ 	07 [@label_0x006B] 81 1B <AllowShutDownToIdle> 16 16 
+/*(0x0060/0x004C)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x0068/0x0054)*/ 		06 [@label_0x0051] 
+/*(0x006B/0x0057)*/ 	[#label_0x006B]
+/*(0x006B/0x0057)*/ 	06 [@label_0x00AB] 
+/*(0x006E/0x005A)*/ [#label_0x006E]
+/*(0x006E/0x005A)*/ 07 [@label_0x00AB] 82 96 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 18 [@] ( 2D 01 <@m_bStartedStateFiring> 16 ) 
+/*(0x0091/0x0075)*/ 	[#label_0x0091]
+/*(0x0091/0x0075)*/ 	07 [@label_0x00AB] 81 1B <IsFiringStateDataReplicated_WaitOnExecutingShotAbility> 16 16 
+/*(0x00A0/0x0084)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x00A8/0x008C)*/ 		06 [@label_0x0091] 
+/*(0x00AB/0x008F)*/ [#label_0x00AB]
+/*(0x00AB/0x008F)*/ 07 [@label_0x013A] 82 81 2D 01 <XGAction.m_bOwnedByLocalPlayer> 16 18 [@] ( 19 01 <@m_kShot> [@] <XGAbility.m_bReactionFire> 00 ( 2D 01 <XGAbility.m_bReactionFire> ) 16 ) 
+/*(0x00DE/0x00B2)*/ 	19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <NullRef> 00 ( 1B <ShowEnemySquadStatistics> 16 ) 
+/*(0x013A/0x00EE)*/ [#label_0x013A]
+/*(0x013A/0x00EE)*/ 07 [@label_0x0196] 2D 01 <@bClusterBombSetup> 
+/*(0x0147/0x00F7)*/ 	07 [@label_0x0196] 81 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsApplyingAbility.ReturnValue> 00 ( 1B <IsApplyingAbility> 2C 41 16 ) 16 
+/*(0x016D/0x0115)*/ 		19 2E <Class.XComSectopod> 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <EnableClusterBombTargeting> 28 16 ) 
+/*(0x0196/0x0132)*/ [#label_0x0196]
+/*(0x0196/0x0132)*/ 07 [@label_0x01F7] 82 82 77 01 <@m_kShot> 2A 16 18 [@] ( 19 01 <@m_kShot> [@] <XGAbility.ShouldUnhideUser.ReturnValue> 00 ( 1B <ShouldUnhideUser> 16 ) 16 ) 18 [@] ( 2D 01 <@m_bWeaponWasFired> 16 ) 
+/*(0x01D8/0x0164)*/ 	19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1C <XGUnitNativeBase.Unhide> 16 ) 
+/*(0x01F7/0x0177)*/ [#label_0x01F7]
+/*(0x01F7/0x0177)*/ 07 [@label_0x0281] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+/*(0x020B/0x0187)*/ 	07 [@label_0x0281] 82 81 2D 01 <@m_bAttackerVisibleToEnemy> 16 18 [@] ( 2D 01 <@m_bProjectileWillBeVisibleToEnemy> 16 ) 
+/*(0x0229/0x019D)*/ 		14 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.m_bForceVisible> 00 ( 2D 01 <XGUnitNativeBase.m_bForceVisible> ) 28 
+/*(0x024A/0x01B2)*/ 		19 12 20 <Class.XComWorldData> [@] <XComWorldData.GetWorldData.ReturnValue> 00 ( 1B <GetWorldData> 16 ) [@] <NullRef> 00 ( 1B <UpdateVisibility> 4A 4A 16 ) 
+/*(0x0281/0x01DD)*/ [#label_0x0281]
+/*(0x0281/0x01DD)*/ 07 [@label_0x02E5] 77 01 <Engine.Actor.Owner> 2A 16 
+/*(0x0290/0x01E8)*/ 	19 19 19 2E <Class.XComTacticalController> 01 <Engine.Actor.Owner> [@] <XComTacticalController.GetPres.ReturnValue> 00 ( 1B <GetPres> 16 ) [@] <XComPresentationLayer.GetActionIconMgr.ReturnValue> 00 ( 1B <GetActionIconMgr> 16 ) [@] <NullRef> 00 ( 1B <ShowIcons> 27 16 ) 
+/*(0x02E5/0x0229)*/ [#label_0x02E5]
+/*(0x02E5/0x0229)*/ 07 [@label_0x039E] 82 2D 01 <XGAction.m_bOwnedByLocalPlayer> 18 [@] ( 72 19 01 <XGAction.m_kUnit> [@] <XGUnit.GetPlayer.ReturnValue> 00 ( 1B <GetPlayer> 16 ) 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_kActivePlayer> 00 ( 01 <XGBattle.m_kActivePlayer> ) 16 16 ) 
+/*(0x037F/0x028F)*/ 	19 01 <XGAction.m_kPres> [@] <NullRef> 00 ( 1B <HUDShow> 16 ) 
+/*(0x039E/0x02A6)*/ [#label_0x039E]
+/*(0x039E/0x02A6)*/ 14 2D 01 <@m_bUpdateAnimRot> 28 
+/*(0x03AA/0x02AE)*/ 19 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <ResetAimOffset> 16 ) 
+/*(0x03C9/0x02C5)*/ 07 [@label_0x03E3] 2D 01 <@m_bUnitIsActive> 
+/*(0x03D6/0x02CE)*/ 	1B <RestoreCursor> 16 
+/*(0x03E0/0x02D8)*/ 	06 [@label_0x03E3] 
+/*(0x03E3/0x02DB)*/ [#label_0x03E3]
+/*(0x03E3/0x02DB)*/ 07 [@label_0x04C1] 82 82 2D 01 <@m_bWeaponWasFired> 18 [@] ( 77 01 <@m_kShot> 2A 16 16 ) 18 [@] ( 81 19 01 <@m_kShot> [@] <XGAbility.IsReactionShot.ReturnValue> 00 ( 1B <IsReactionShot> 16 ) 16 16 ) 
+/*(0x0750/0x0568)*/ 07 [@label_0x0819] 82 9B 19 01 <@m_kShot> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 3D 16 18 [@] ( 9B 19 01 <@m_kShot> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 3A 16 16 ) 
+/*(0x079C/0x059C)*/ 	07 [@label_0x0819] 98 19 19 01 <@m_kShot> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) [@] <XGUnitNativeBase.m_iElectropulseTurn> 00 ( 01 <XGUnitNativeBase.m_iElectropulseTurn> ) 25 16 
+/*(0x07D6/0x05C6)*/ 		19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <ApplyReactionCost> 25 27 28 27 19 01 <@m_kShot> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 4A 16 ) 
+/*(0x0819/0x05F9)*/ [#label_0x0819]
+/*(0x046A/0x0342)*/ 	07 [@label_0x04C1] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x048C/0x035C)*/ 		[#label_0x048C]
+/*(0x048C/0x035C)*/ 		07 [@label_0x04B9] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x04AE/0x0376)*/ 			61 00 1E <%f 0.1> 16 
+/*(0x04B6/0x037E)*/ 			06 [@label_0x048C] 
+/*(0x04B9/0x0381)*/ 		[#label_0x04B9]
+/*(0x04B9/0x0381)*/ 		61 00 1E <%f 1> 16 
+/*(0x04C1/0x0389)*/ [#label_0x04C1]
+/*(0x04C1/0x0389)*/ 14 2D 01 <@m_bIsInterruptible> 27 
+/*(0x04CD/0x0391)*/ 07 [@label_0x05A3] 1B <IsReflected> 16 
+/*(0x04DA/0x039E)*/ 	0F 01 <@m_fTemp> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.TimeSeconds> 00 ( 01 <Engine.WorldInfo.TimeSeconds> ) 
+/*(0x0502/0x03B6)*/ 	[#label_0x0502]
+/*(0x0502/0x03B6)*/ 	07 [@label_0x05A3] 82 82 77 19 01 <@m_kShot> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 2A 16 18 [@] ( 81 19 19 01 <@m_kShot> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) [@] <XGUnit.IsIdle.ReturnValue> 00 ( 1B <IsIdle> 16 ) 16 16 ) 18 [@] ( B0 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.TimeSeconds> 00 ( 01 <Engine.WorldInfo.TimeSeconds> ) AE 01 <@m_fTemp> 1E <%f 5> 16 16 16 ) 
+/*(0x0598/0x0428)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x05A0/0x0430)*/ 		06 [@label_0x0502] 
+/*(0x05A3/0x0433)*/ [#label_0x05A3]
+/*(0x05A3/0x0433)*/ 07 [@label_0x05E0] 82 2D 01 <@m_bWeaponWasFired> 18 [@] ( 9A 19 01 <@m_kShot> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 38 16 16 ) 
+/*(0x05D8/0x045C)*/ 	61 00 1E <%f 0.5> 16 
+/*(0x05E0/0x0464)*/ [#label_0x05E0]
+/*(0x05E0/0x0464)*/ 07 [@label_0x05F7] 2D 01 <@m_bGrappled> 
+/*(0x05ED/0x046D)*/ 	1B <FinalizeLocomotion> 16 
+/*(0x05F7/0x0477)*/ [#label_0x05F7]
+/*(0x05F7/0x0477)*/ 1B <OnInInterruptibleState> 16 
+/*(0x0601/0x0481)*/ 07 [@label_0x072B] 82 84 72 01 <@m_kShot> 2A 16 18 [@] ( 81 19 01 <@m_kShot> [@] <XGAbility.IsGrenadeAbility.ReturnValue> 00 ( 1B <IsGrenadeAbility> 16 ) 16 16 ) 18 [@] ( 2D 35 <XGUnitNativeBase.FiringStateReplicationData.m_bKillShot> <XGUnitNativeBase.FiringStateReplicationData> 00 00 01 <@CurrentShotReplicationData> 16 ) 
+/*(0x0658/0x04C0)*/ 	14 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_iResultCachedThisFrame> 00 ( 2D 01 <XGBattle.m_iResultCachedThisFrame> ) 28 
+/*(0x06C2/0x0502)*/ 	19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.IsBattleDone.ReturnValue> 00 ( 1B <IsBattleDone> 27 16 ) 
+/*(0x072B/0x0547)*/ [#label_0x072B]
+
+					//CLEAR m_arrStrDebugReaction ARRAY
+					//m_kUnit.m_arrStrDebugReaction.Length = 0;
+					0F 36 19 01 <XGAction.m_kUnit> [@] <XGUnit.m_arrStrDebugReaction> 00 ( 01 <XGUnit.m_arrStrDebugReaction> ) 25
+/*(0x072B/0x0547)*/ 1C <XGAction.CompleteAction> 16 
+/*(0x0735/0x054D)*/ 08 
+/*(0x0736/0x054E)*/ 0B 
+/*(0x0737/0x054F)*/ 0C <Begin> <%u 0> <None> <%u 65535> 
+/*(0x081C/0x05FC)*/ 53 
+
+
+/* ****************************************************************************
+SEQUENTIAL OVERWATCH IMPLEMENTATION
+PART 5 - Decloaking seekers. Making 'check for overwatch fire' to be performed again after
+animation of first overwatch shot is over; not allowing the seeker to finish unstealthing 
+without checking for more overwatch shots. Changes start at 0x66B and consist of 2 lines
+****************************************************************************** */
+OBJECT = XGAction_RemoveAbilityEffect_Hidden.Executing : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 14 2D 01 <@m_bWasVisible> 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsVisible.ReturnValue> 00 ( 1B <IsVisible> 16 ) 
+/*(0x002A/0x001E)*/ 07 [@label_0x015E] 2D 01 <@m_bWasVisible> 
+/*(0x0037/0x0027)*/ 	0F 01 <@vLookAt> 19 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetPawn.ReturnValue> 00 ( 1B <GetPawn> 16 ) [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> ) 
+/*(0x0075/0x0051)*/ 	19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <NullRef> 00 ( 1B <AddLookAt> 01 <@vLookAt> 4A 4A 16 ) 
+/*(0x00E8/0x009C)*/ 	[#label_0x00E8]
+/*(0x00E8/0x009C)*/ 	07 [@label_0x015E] 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <XComCameraManager.WaitForCamera.ReturnValue> 00 ( 1B <WaitForCamera> 16 ) 
+/*(0x0153/0x00E3)*/ 		61 00 1E <%f 0.1> 16 
+/*(0x015B/0x00EB)*/ 		06 [@label_0x00E8] 
+/*(0x015E/0x00EE)*/ [#label_0x015E]
+/*(0x015E/0x00EE)*/ 19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <SetHiding> 28 16 ) 
+/*(0x017E/0x0106)*/ 07 [@label_0x0258] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsVisible.ReturnValue> 00 ( 1B <IsVisible> 16 ) 
+/*(0x01A0/0x0120)*/ 	19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 12 20 <Class.XGAbilityTree> [@] <XGAbilityTree.AbilityEffectRevealed> 00 ( 02 <XGAbilityTree.AbilityEffectRevealed> ) 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 04 4A 4A 4A 4A 4A 4A 4A 16 ) 
+/*(0x0258/0x01A0)*/ [#label_0x0258]
+/*(0x0258/0x01A0)*/ 1C <Engine.Actor.PlaySound> 2E <Engine.SoundCue> 1C <Core.Object.DynamicLoadObject> 1F <%t "SoundUI.GhostArmorOffCue"> 20 <Engine.SoundCue> 4A 16 27 4A 4A 4A 4A 16 
+/*(0x029E/0x01D6)*/ 07 [@label_0x0410] 77 2E <Class.XComSeeker> 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetPawn.ReturnValue> 00 ( 1B <GetPawn> 16 ) 2A 16 
+/*(0x02CC/0x01F8)*/ 	07 [@label_0x03BA] 81 19 01 <XGAction.m_kUnit> [@] <XGUnit.DeactivatePerk.ReturnValue> 00 ( 1B <DeactivatePerk> 24 7F 4A 16 ) 16 
+/*(0x02F3/0x0217)*/ 		19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetActiveChild> 2C 06 1E <%f 0.1> 16 ) 
+/*(0x032E/0x0242)*/ 		19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <NullRef> 00 ( 1B <SetAnimByName> 21 <AC_NO_Decloak> 4A 4A 4A 4A 16 ) 
+/*(0x036F/0x0273)*/ 		0F 01 <@m_kAnim> 19 19 01 <XGAction.m_kPawn> [@] <XComUnitPawnNativeBase.MovementNode> 00 ( 01 <XComUnitPawnNativeBase.MovementNode> ) [@] <Engine.AnimNodeBlendList.GetTerminalSequence.ReturnValue> 00 ( 1B <GetTerminalSequence> 16 ) 
+/*(0x03AD/0x029D)*/ 		61 05 01 <@m_kAnim> 4A 16 
+/*(0x03BA/0x02A6)*/ 	[#label_0x03BA]
+/*(0x03BA/0x02A6)*/ 	07 [@label_0x040D] 19 2E <Class.XComSeeker> 01 <XGAction.m_kPawn> [@] <XComSeeker.m_bStealthFXOn> 00 ( 2D 01 <XComSeeker.m_bStealthFXOn> ) 
+/*(0x03E5/0x02C1)*/ 		19 2E <Class.XComSeeker> 01 <XGAction.m_kPawn> [@] <NullRef> 00 ( 1B <EndStealth> 16 ) 
+/*(0x040D/0x02DD)*/ 	[#label_0x040D]
+/*(0x040D/0x02DD)*/ 	06 [@label_0x0481] 
+/*(0x0410/0x02E0)*/ [#label_0x0410]
+/*(0x0410/0x02E0)*/ 07 [@label_0x0481] 77 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetPawn.ReturnValue> 00 ( 1B <GetPawn> 16 ) 2A 16 
+/*(0x0435/0x02FD)*/ 	0F 01 <@m_fGhostFXDuration> 19 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetPawn.ReturnValue> 00 ( 1B <GetPawn> 16 ) [@] <XComUnitPawn.SetGhostFX.ReturnValue> 00 ( 1B <SetGhostFX> 28 16 ) 
+/*(0x0475/0x032D)*/ 	61 00 01 <@m_fGhostFXDuration> 16 
+/*(0x0481/0x0335)*/ [#label_0x0481]
+/*(0x0481/0x0335)*/ 07 [@label_0x0500] 2D 01 <@m_bWasVisible> 
+/*(0x048E/0x033E)*/ 	19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kCameraManager> 00 ( 01 <XComGameReplicationInfo.m_kCameraManager> ) [@] <NullRef> 00 ( 1B <RemoveLookAt> 01 <@vLookAt> 4A 16 ) 
+/*(0x0500/0x0388)*/ [#label_0x0500]
+/*(0x0500/0x0388)*/ 19 12 20 <Class.XComWorldData> [@] <XComWorldData.GetWorldData.ReturnValue> 00 ( 1B <GetWorldData> 16 ) [@] <NullRef> 00 ( 1B <UpdateVisibility> 4A 4A 16 ) 
+/*(0x0537/0x03B3)*/ [#label_0x0537]
+/*(0x0537/0x03B3)*/ 07 [@label_0x05B4] 84 19 12 20 <Class.XComWorldData> [@] <XComWorldData.GetWorldData.ReturnValue> 00 ( 1B <GetWorldData> 16 ) [@] <XComWorldData.HasPendingVisibilityUpdates.ReturnValue> 00 ( 1B <HasPendingVisibilityUpdates> 16 ) 18 [@] ( 19 12 20 <Class.XComWorldData> [@] <XComWorldData.GetWorldData.ReturnValue> 00 ( 1B <GetWorldData> 16 ) [@] <XComWorldData.IsRebuildingTiles.ReturnValue> 00 ( 1B <IsRebuildingTiles> 16 ) 16 ) 
+/*(0x05A9/0x040D)*/ 	61 00 1E <%f 0> 16 
+/*(0x05B1/0x0415)*/ 	06 [@label_0x0537] 
+/*(0x05B4/0x0418)*/ [#label_0x05B4]
+/*(0x05B4/0x0418)*/ 07 [@label_0x0673] 9A 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.GetCharType.ReturnValue> 00 ( 1B <GetCharType> 16 ) 2C 17 16 
+/*(0x05DA/0x0436)*/ [#label_0x05DA]
+/*(0x05DA/0x0436)*/ 	19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <ApplyReactionCost> 25 27 28 28 4A 19 01 <XGAction.m_kUnit> [@] <XGUnit.m_kStrangleTarget> 00 ( 01 <XGUnit.m_kStrangleTarget> ) 16 ) 
+/*(0x061C/0x0464)*/ 	07 [@label_0x0673] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x063E/0x047E)*/ 		[#label_0x063E]
+/*(0x063E/0x047E)*/ 		07 [@label_0x066B] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsSuppressionExecuting.ReturnValue> 00 ( 1B <IsSuppressionExecuting> 16 ) 
+/*(0x0660/0x0498)*/ 			61 00 1E <%f 0.1> 16 
+/*(0x0668/0x04A0)*/ 			06 [@label_0x063E] 
+/*(0x066B/0x04A3)*/ 		[#label_0x066B]
+/*(0x066B/0x04A3)*/ 		61 00 1E <%f 0.1> 16
+/*--------------------------------------------------------------------------------------------
+Once 'check for overwatch fire' resulted in a shot the function would now allow the seeker to finish 
+decloaking without making check for more shots. I am adding here additional 'jump' in order to 
+repeat the check immediately after fire animation is over if the seeker is still alive */
+							07 [@label_0x0673] 19 01 <XGAction.m_kUnit> [@] <XGUnitNativeBase.IsAliveAndWell.ReturnValue> 00 ( 1B <IsAliveAndWell> 16 )
+								06 [@label_0x05DA]
+//-------------------------------------------------------------------------------------------- 
+/*(0x0673/0x04AB)*/ [#label_0x0673]
+/*(0x0673/0x04AB)*/ 07 [@label_0x06BB] 9A 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 02 16 
+/*(0x069C/0x04C8)*/ 	19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1C <XGUnitNativeBase.NotifyVisibleEnemiesFlankDataChanged> 16 ) 
+/*(0x06BB/0x04DB)*/ [#label_0x06BB]
+/*(0x06BB/0x04DB)*/ 07 [@label_0x0723] 82 19 01 <XGAction.m_kUnit> [@] <XGUnit.IsActiveUnit.ReturnValue> 00 ( 1B <IsActiveUnit> 16 ) 18 [@] ( 81 19 01 <XGAction.m_kUnit> [@] <XGUnit.m_bUnstealthingWhileFiring> 00 ( 2D 01 <XGUnit.m_bUnstealthingWhileFiring> ) 16 16 ) 
+/*(0x0703/0x050F)*/ 	19 01 <XGAction.m_kUnit> [@] <NullRef> 00 ( 1B <BuildAbilities> 27 16 ) 
+/*(0x0723/0x0527)*/ [#label_0x0723]
+/*(0x0723/0x0527)*/ 1C <XGAction.CompleteAction> 16 
+/*(0x072D/0x052D)*/ 08 
+/*(0x072E/0x052E)*/ 0B 
+/*(0x072F/0x052F)*/ 0C <Begin> <%u 0> <None> <%u 65535> 
+/*(0x0748/0x0548)*/ 53 
+

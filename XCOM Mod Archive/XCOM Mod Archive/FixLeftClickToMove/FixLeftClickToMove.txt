@@ -1,0 +1,54 @@
+MOD_NAME=Fix left click rarely triggering moves during battle
+AUTHOR=swfdelicious
+DESCRIPTION=Fix for the rare bug where a left click could cause a unit to move, which only right click should do.
+
+/**
+ * For the curious - in the original code, there's a call to ClickToPath in one of the branches of this method.
+ * This method is only called following a left click, and it makes no sense for ClickToPath to be here, so I've simply
+ * removed that call to fix the bug.
+ */
+
+UPK_FILE = XComGame.upk
+OBJECT = XComTacticalInput.ActiveUnit_Moving.ClickSoldier : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 0F 00 <.kPawn> 2E <Class.XComUnitPawnNativeBase> 38 36 00 <.MouseTarget> 
+/*(0x001E/0x0012)*/ 07 [@label_0x002F] 72 00 <.kPawn> 2A 16 
+/*(0x002D/0x001D)*/ 	04 28 
+/*(0x002F/0x001F)*/ [#label_0x002F]
+/*(0x002F/0x001F)*/ 0F 00 <.kTargetedUnit> 2E <Class.XGUnit> 19 00 <.kPawn> [@] <XComUnitPawnNativeBase.GetGameUnit.ReturnValue> 00 ( 1B <GetGameUnit> 16 ) 
+/*(0x0061/0x0041)*/ 07 [@label_0x0072] 72 00 <.kTargetedUnit> 2A 16 
+/*(0x0070/0x004C)*/ 	04 28 
+/*(0x0072/0x004E)*/ [#label_0x0072]
+/*(0x0072/0x004E)*/ 14 2D 00 <.bChangeUnitSuccess> 28 
+/*(0x007E/0x0056)*/ 14 2D 00 <.bHandled> 28 
+/*(0x008A/0x005E)*/ 07 [@label_0x0318] 9A 38 3A 19 19 2E <Class.XComTacticalController> 01 <Core.Object.Outer> [@] <XComTacticalController.m_XGPlayer> 00 ( 01 <XComTacticalController.m_XGPlayer> ) [@] <Engine.Actor.m_eTeam> 00 ( 01 <Engine.Actor.m_eTeam> ) 38 3A 19 00 <.kTargetedUnit> [@] <Engine.Actor.m_eTeam> 00 ( 01 <Engine.Actor.m_eTeam> ) 16 
+/*(0x00ED/0x009D)*/ 	07 [@label_0x020C] 77 1B <GetActiveUnit> 16 00 <.kTargetedUnit> 16 
+/*(0x0105/0x00B1)*/ 		07 [@label_0x01D0] 81 2D 01 <XComTacticalInput.m_bLockUnitSelection> 16 
+/*(0x0114/0x00BC)*/ 			14 19 00 <.kTargetedUnit> [@] <XGUnit.m_bClickActivated> 00 ( 2D 01 <XGUnit.m_bClickActivated> ) 27 
+/*(0x0135/0x00D1)*/ 			14 2D 00 <.bChangeUnitSuccess> 19 19 2E <Class.XComTacticalController> 01 <Core.Object.Outer> [@] <XComTacticalController.m_XGPlayer> 00 ( 01 <XComTacticalController.m_XGPlayer> ) [@] <XGPlayer.NextPreviousUnit.ReturnValue> 00 ( 1B <NextPreviousUnit> 27 4A 00 <.kTargetedUnit> 16 ) 
+/*(0x0188/0x0108)*/ 			07 [@label_0x01B8] 81 2D 00 <.bChangeUnitSuccess> 16 
+/*(0x0197/0x0113)*/ 				14 19 00 <.kTargetedUnit> [@] <XGUnit.m_bClickActivated> 00 ( 2D 01 <XGUnit.m_bClickActivated> ) 28 
+/*(0x01B8/0x0128)*/ 			[#label_0x01B8]
+/*(0x01B8/0x0128)*/ 			14 2D 00 <.bHandled> 2D 00 <.bChangeUnitSuccess> 
+/*(0x01CD/0x0135)*/ 			06 [@label_0x0209] 
+/*(0x01D0/0x0138)*/ 		[#label_0x01D0]
+/*(0x01D0/0x0138)*/ 		19 01 <Core.Object.Outer> [@] <NullRef> 00 ( 1C <Engine.Actor.PlaySound> 20 <SoundUI.MenuCancelCue> 27 4A 4A 4A 4A 16 ) 
+/*(0x01FD/0x0155)*/ 		14 2D 00 <.bHandled> 27 
+/*(0x0209/0x015D)*/ 		[#label_0x0209]
+/*(0x0209/0x015D)*/ 		06 [@label_0x023D] 
+/*(0x020C/0x0160)*/ 	[#label_0x020C]
+/*(0x020C/0x0160)*/ 	07 [@label_0x0227] 1B <UseTouchInput> 16 
+/*(0x0219/0x016D)*/ 		1B <CancelMousePathing> 4A 16 
+/*(0x0227/0x017B)*/ 	[#label_0x0227]
+/*(0x0231/0x0185)*/ 	14 2D 00 <.bHandled> 27 
+/*(0x023D/0x018D)*/ 	[#label_0x023D]
+/*(0x023D/0x018D)*/ 	07 [@label_0x0318] 82 9B 38 3A 19 19 01 <Core.Object.Outer> [@] <Engine.Actor.WorldInfo> 00 ( 01 <Engine.Actor.WorldInfo> ) [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 00 16 18 [@] ( 2D 00 <.bChangeUnitSuccess> 16 ) 
+/*(0x028A/0x01C2)*/ 		0F 00 <.kPathAction> 2E <Class.XGAction_Path> 19 1B <GetActiveUnit> 16 [@] <XGUnit.GetAction.ReturnValue> 00 ( 1B <GetAction> 16 ) 
+/*(0x02BD/0x01E9)*/ 		07 [@label_0x0318] 77 00 <.kPathAction> 2A 16 
+/*(0x02CC/0x01F4)*/ 			0F 01 <XComTacticalInput.mPathingState> 24 00 
+/*(0x02D8/0x01FC)*/ 			14 19 00 <.kPathAction> [@] <XGAction_Path.m_bDoPathingTick> 00 ( 2D 01 <XGAction_Path.m_bDoPathingTick> ) 28 
+/*(0x02F9/0x0211)*/ 			19 00 <.kPathAction> [@] <NullRef> 00 ( 1B <ClearPath> 16 ) 
+/*(0x0318/0x0228)*/ [#label_0x0318]
+/*(0x0318/0x0228)*/ 04 2D 00 <.bHandled> 
+/*(0x0323/0x022F)*/ 04 3A <.ReturnValue> 
+/*(0x032D/0x0235)*/ 53 

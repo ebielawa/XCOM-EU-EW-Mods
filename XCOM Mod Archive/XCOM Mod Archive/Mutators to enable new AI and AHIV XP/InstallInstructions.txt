@@ -1,0 +1,34 @@
+Configurable alien squad and SHIV XP mods
+=========================================
+
+DefaultStrategyAIMod.ini allows to configure a lot of parameters for alien squad, like species and numbers.
+
+DefaultSHIVXP.ini allows to configure amount of XP gained by soldiers when SHIV kills the alien.
+Soldier should see both the SHIV and its victim to gain XP. Amount of XP gained is equal to normal kill XP for
+the soldier multiplied by SHIV_KILL_MOD.
+
+Install Instructions
+====================
+
+1. Use PatcherGUI to apply XGStrategy.NewGame.txt and XGUnit.RecordKill.txt patches to Path-To-SteamLibrary\SteamApps\common\XCom-Enemy-Unknown\XEW folder.
+2. Copy four *.u files from inside this archive to Path-To-SteamLibrary\SteamApps\common\XCom-Enemy-Unknown\XEW\XComGame\CookedPCConsole folder. Answer "yes" when prompted to replace existing files.
+3. Copy two *.ini files from inside this archive to Path-To-SteamLibrary\SteamApps\common\XCom-Enemy-Unknown\XEW\XComGame\Config folder.
+4. Open Path-To-SteamLibrary\SteamApps\common\XCom-Enemy-Unknown\XEW\XComGame\Config\DefaultEngine.ini file with notepad.
+Search for this line:
++NonNativePackages=XComLZMutator
+Add these two lines right after it:
++NonNativePackages=XComStrategyAIMutator
++NonNativePackages=XComSHIVXP
+5. Open Path-To-SteamLibrary\SteamApps\common\XCom-Enemy-Unknown\XEW\XComGame\Config\DefaultMutatorLoader.ini file with notepad.
+Search for:
+arrTacticalMutators="XComLZMutator.XComSpawnAlienMutator"
+Add right after it:
+arrTacticalMutators="XComSHIVXP.XComSHIVXPMutator"
+Search for:
+arrStrategicMutators="XComLZMutator.XComFCMutator"
+Add right after it:
+arrStrategicMutators="XComStrategyAIMutator.XComStrategyAIMutator"
+
+You need to start a new game to see strategic AI changes.
+
+Authors: Wasteland Ghost & Beagle

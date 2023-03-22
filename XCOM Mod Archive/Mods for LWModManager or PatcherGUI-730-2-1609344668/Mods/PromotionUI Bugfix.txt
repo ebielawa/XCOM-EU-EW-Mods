@@ -1,0 +1,39 @@
+MOD_NAME = Promotion UI Bugfix
+AUTHOR = Lafiir
+DESCRIPTION = You can now use Controller and Keyboard to view Perks of higher ranks. It also prevents you from promoting without a selected Perk.
+
+UPK_FILE = XComStrategyGame.upk
+
+OBJECT = XGSoldierUI.OnPromotionDown : AUTO
+[REPLACEMENT_CODE]
+0F 00 <.newBranch> 92 1B <GetAbilityTreeBranch> 16 26 16
+07 [@label_0x008D] 1B <IsOptionEnabled> 24 15 16
+    0F 00 <.newBranch> F9 00 <.newBranch> 45 9A 01 <XGScreenMgr.m_iCurrentView> 26 16 [@] ( 19 01 <@m_kSoldier> [@] <XGStrategySoldier.GetRank.ReturnValue> 00 ( 1B <GetRank> 16 ) ) [@] ( 19 01 <@m_kSoldier> [@] <XGStrategySoldier.GetPsiRank.ReturnValue> 00 ( 1B <GetPsiRank> 16 ) ) 16
+    06 [@label_0x00B7]
+[#label_0x008D]
+	0F 00 <.newBranch> F9 00 <.newBranch> 45 9A 01 <XGScreenMgr.m_iCurrentView> 26 16 [@] ( 2C 07 ) [@] ( 2C 06 ) 16
+[#label_0x00B7]
+1B <SetAbilityTreeBranch> 00 <.newBranch> 16
+1B <PlayScrollSound> 16
+04 0B
+53
+
+OBJECT = XGSoldierUI.CanPromote : AUTO
+[REPLACEMENT_CODE]
+0F 00 <.Perk> 38 3A 19 01 <@m_kSoldier> [@] <XGStrategySoldier.GetPerkInClassTree.ReturnValue> 00 ( 1B <GetPerkInClassTree> 1B <GetAbilityTreeBranch> 16 1B <GetAbilityTreeOption> 16 9A 01 <XGScreenMgr.m_iCurrentView> 2C 02 16 16 )
+07 [@label_0x005E] 9A 00 <.Perk> 2C 00 16
+    04 28
+[#label_0x005E]
+07 [@label_0x00B3] 9A 01 <XGScreenMgr.m_iCurrentView> 2C 02 16
+    07 [@label_0x00B3] 99 36 19 1B <PSILABS> 16 [@] <XGFacility_PsiLabs.m_arrTraining> 00 ( 01 <XGFacility_PsiLabs.m_arrTraining> ) 12 20 <XComGame.XGTacticalGameCore> [@] <XComGame.XGTacticalGameCoreNativeBase.PSI_NUM_TRAINING_SLOTS> 00 ( 02 <XComGame.XGTacticalGameCoreNativeBase.PSI_NUM_TRAINING_SLOTS> ) 16
+        04 28
+[#label_0x00B3]
+07 [@label_0x00F7] 19 01 <@m_kSoldier> [@] <XGStrategySoldier.PerkLockedOut.ReturnValue> 00 ( 1B <PerkLockedOut> 00 <.Perk> 1B <GetAbilityTreeBranch> 16 9A 01 <XGScreenMgr.m_iCurrentView> 2C 02 16 16 )
+    04 28
+[#label_0x00F7]
+07 [@label_0x0124] 19 01 <@m_kSoldier> [@] <XGStrategySoldier.HasPerk.ReturnValue> 00 ( 1B <HasPerk> 00 <.Perk> 16 )
+    04 28
+[#label_0x0124]
+04 27
+04 3A <.ReturnValue>
+53

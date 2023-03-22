@@ -1,0 +1,56 @@
+MOD_NAME=Fix Exalt using grenades and rockets
+AUTHOR=Oakeman
+DESCRIPTION=Fix for Exalt using grenades and rockets when disabled.
+
+UPK_FILE=XComGame.upk
+
+OBJECT=XGAIAbilityDM.AddAbilityOption:AUTO
+
+[REPLACEMENT_CODE]
+//bForcePriority = false;
+49 [@] ( 28 15 ) 
+0B 
+
+//if(m_kUnit.m_bWeaponDisabled)
+07 [@IfDisabled] 82 19 01 <@m_kUnit> [@] <XGUnitNativeBase.m_bWeaponDisabled> 00 ( 2D 01 <XGUnitNativeBase.m_bWeaponDisabled> ) 18 [@] ( 84 84 84 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1C <XGAbility.GetType> 16 ) 2C <%b 16> 16 18 [@] ( 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1C <XGAbility.GetType> 16 ) 2C <%b 18> 16 16 ) 18 [@] ( 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1C <XGAbility.GetType> 16 ) 2C <%b 19> 16 16 ) 18 [@] ( 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1C <XGAbility.GetType> 16 ) 2C <%b 20> 16 16 ) 16 )
+	04 0B
+[#IfDisabled]
+	
+//kAbilityData.kAbility = kAbility;
+0F 35 <XGAIAbilityDM.ability_data.kAbility> <@ability_data> 00 01 00 <.kAbilityData> 00 <.kAbility> 
+//kAbilityData.iPriority = UpdatePriority(kAbility, kAbilityData.strDebug);
+0F 35 <XGAIAbilityDM.ability_data.iPriority> <@ability_data> 00 01 00 <.kAbilityData> 1B <UpdatePriority> 00 <.kAbility> 35 <XGAIAbilityDM.ability_data.strDebug> <@ability_data> 00 01 00 <.kAbilityData> 16 
+//if(bForcePriority)
+07 [@label001] 2D 00 <.bForcePriority> 
+    //kAbilityData.iPriority += 1000;
+    A1 35 <XGAIAbilityDM.ability_data.iPriority> <@ability_data> 00 01 00 <.kAbilityData> 1D <%i 1000> 16 
+[#label001]
+//if(kAbilityData.iPriority > 0)
+07 [@label004] 97 35 <XGAIAbilityDM.ability_data.iPriority> <@ability_data> 00 00 00 <.kAbilityData> 25 16 
+    //if(kAbilityData.kAbility.iType == 13)
+    07 [@label002] 9A 19 35 <XGAIAbilityDM.ability_data.kAbility> <@ability_data> 00 00 00 <.kAbilityData> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 0D 16 
+        //RemoveStandardShots();
+        1B <RemoveStandardShots> 16 
+    [#label002]
+    //m_arrAbilityList.AddItem(kAbilityData);
+    55 01 <@m_arrAbilityList> [@] ( 00 <.kAbilityData> 16 ) 
+    //UpdateAbilityDisplay(kAbilityData);
+    1B <UpdateAbilityDisplay> 00 <.kAbilityData> 16 
+    //m_iTotalPriority += kAbilityData.iPriority;
+    A1 01 <@m_iTotalPriority> 35 <XGAIAbilityDM.ability_data.iPriority> <@ability_data> 00 00 00 <.kAbilityData> 16 
+    //strDebugFailure @= ("added with Priority=" $ string(kAbilityData.iPriority));
+    0E <Core.Object.AtEqual_StrStr.ReturnValue> 61 43 48 <.strDebugFailure> 70 1F <%t "added with Priority="> 38 53 35 <XGAIAbilityDM.ability_data.iPriority> <@ability_data> 00 00 00 <.kAbilityData> 16 16 
+    //if((kAbility.GetType() == 7) && XGAbility_Targeted(kAbility).GetHitChance() >= Min(m_kUnit.GetOffense() - 30, class'XGTacticalGameCore'.default.EXALT_LOOT2))
+    07 [@label003] 82 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 07 16 18 [@] ( 99 19 2E <Class.XGAbility_Targeted> 00 <.kAbility> [@] <XGAbility_Targeted.GetHitChance.ReturnValue> 00 ( 1B <GetHitChance> 16 ) F9 93 19 01 <@m_kUnit> [@] <XGUnit.GetOffense.ReturnValue> 00 ( 1B <GetOffense> 16 ) 2C 1E 16 12 20 <Class.XGTacticalGameCore> [@] <XGTacticalGameCoreNativeBase.ThinManPlagueSlider> 00 ( 02 <XGTacticalGameCoreNativeBase.EXALT_LOOT2> ) 16 16 16 ) 
+        //m_bHasStrongAttack = true;
+        14 2D 01 <@m_bHasStrongAttack> 27 
+    [#label003]
+//else
+06 [@label005] 
+    [#label004]
+    //strDebugFailure @= "failed to score Priority > 0.";
+    0E <Core.Object.AtEqual_StrStr.ReturnValue> 61 43 48 <.strDebugFailure> 1F <%t "failed to score Priority > 0."> 16 
+[#label005]
+//return;
+04 0B 
+53 

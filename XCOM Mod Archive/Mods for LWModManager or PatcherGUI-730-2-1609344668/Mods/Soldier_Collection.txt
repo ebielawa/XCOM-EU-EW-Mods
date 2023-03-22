@@ -1,0 +1,17 @@
+MOD_NAME=Soldier Selection Tweak
+DESCRIPTION=Restores some sanity to soldier selection tabbing
+
+/*
+  Code by amineri. Patcher by eclipse666.
+  see https://www.reddit.com/r/Xcom/comments/399rt5/for_the_love_of_all_that_is_holy_how_the_hell/
+  
+*/
+
+UPK_FILE=XComGame.upk
+OBJECT=XGPlayer.NextPreviousUnit:AUTO
+
+[BEFORE_HEX]
+0F 00 49 A7 00 00 19 01 ED A6 00 00 2F 00 5A C2 00 00 00 1B 31 3A 00 00 00 00 00 00 19 01 A7 A6 00 00 0A 00 89 62 00 00 00 1B 4D 37 00 00 00 00 00 00 16 28 4A 4A 27 4A 4A 16 
+
+[AFTER_HEX]
+0F 00 49 A7 00 00 19 01 ED A6 00 00 2F 00 5A C2 00 00 00 1B 31 3A 00 00 00 00 00 00 19 01 A7 A6 00 00 0A 00 89 62 00 00 00 1B 4D 37 00 00 00 00 00 00 16 28 27 4A 4A 4A 4A 16

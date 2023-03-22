@@ -1,0 +1,43 @@
+Version 1.4
+- added support for "Mod Profiles" which allow adding custom sets of default settings
+
+Version 1.3.2
+- added a button to Pause Menu that displays all currently loaded mutators/mods and their version (if provided) or GUI
+- added a bunch of built-in tools not relevant to users but required by my other mods (MiniMods, Squadron Unleashed)
+
+Version 1.3.1
+- fixed sorting of mods with "Selected mods on top" (disabled mods no longer appear in the middle of the list)
+- added display of which mod and which option is currently being configured in "Configure Selected Mod" view
+- attempted to move "back button" on Mod Packages list, in EW version, to the left (needs confirmation, not tested)
+- opening mod menu and clicking "Back" without any changes (no toggle touched) no longer raises dialog
+- when packaged cannot be loaded the relevant mod name turns to red
+- when package is disabled through Mod Packages menu (but can be loaded) the relevant mod name is greyed out
+- mods that can't be loaded still have their description (if provided) below red warning
+- fixed credtis screen to be more easily skippable (cancel button appears after 3 seconds for newly viewd credits and viewing credits for at least one mod in the package makes credits skippable for all other mods in the package)
+
+Version 1.3.
+- NEW FEATURE: added relatively easy way to build multi-level options (options for an option) using Idx= property (like Idx="1", Idx="1.1", Idx="1.2" etc.)
+- extended Modder's Guide to cover dealing with localization files
+- hopefully finally ensured reliability of "Mod Packages" sub-menu
+- fixed a bug where gamepad button X was bound BOTH to Advanced options and Mods Menu in Difficulty Menu (how is that nobody had reported ??)
+
+Version 1.2.1
+- NEW MAJOR FEATURE: added .ini configuration - no code is required to build simple and mid-complex options for existing mods
+- improved Mod Packages to be more reliable (it still needs more love though)
+- improved overall stability and polished screen transitions by displaying "Building Options" box instead of freeze-like behavior
+
+Version 1.2
+- NEW FEATURE: added an option to reset mod list to the state defined by bEnabledByDefault in DefaultModsProfile.ini (or DefaultMiniMods.ini). Helps modders/players define their default set of mods for an assembly.
+- removed the bug when adding an option with VarPath pointing to some DGC value ("XGTacticalGameCore....") would break the game by ignoring large chunk of DGC settings.
+- fixed problems related to adding options for variables that take enum as their value: eTech_, eItem_, ePerk_, eFoundry_. These used to always reset themselves to zero in the menu (please note that game used to respect the saved value until re-entering mods menu - anyway for the above enums this is no longer the case).
+-fixed problem (similar to the above) with Sightlines indicator's type.
+-expanded Modder's Guide to cover INI configuration of most basic types of options: ModOptionBool, ModOptionInt, ModOptionFloat
+
+Version 1.1
+- NEW MAJOR FEATURE: added .ini configuration - no code is required to build simple and mid-complex options for existing mods
+- improved Mod Packages to be more reliable (it still needs more love though)
+- improved overall stability and polished screen transitions by displaying "Building Options" box instead of freeze-like behavior
+
+Version 1.0
+            Initial release
+

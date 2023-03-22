@@ -1,0 +1,19 @@
+MOD_NAME=Yellow Line
+AUTHOR=Zyxpsilon (with precious help from XMarksTheSpot!)
+DESCRIPTION=Updates a few UI elements
+
+// Compatible with LongWar v1.0 and most probably later versions!
+
+UPK_FILE=UICollection_Shell_SF.UPK
+
+// IMPORTANT; Please note the above UPK file must be "decompressed" for these patches to apply correctly.
+// This process possibly needs to happen only once... since LW doesn't reset it on every installation but verifying XCom files via Steam would change it back to the Compressed version in which case, you must manually decompress it again before applying this patch.
+
+// OBJECT=gfxShell.Shell:AUTO
+
+// 1) Wide Divider Line :: DefineShape4 (10) (#FFD038_CF) (Already changed by LW-Team!)
+REL_OFFSET=0
+[BEFORE_HEX]
+FF 14 35 00 00 00 0A 00 8F 48 4D 3B AE 00 03 01 26 80 8F 48 81 3B 94 00 10 01 20 00 01 00 01 14 00 80 02 67 E8 ED 7F 01 26 29 DC A0 11 EF FD A7 3C 00 07 CE E8 5D 0F 49 96 E0 00
+[AFTER_HEX]
+FF 14 35 00 00 00 0A 00 8F 48 4D 3B AE 00 03 01 26 80 8F 48 81 3B 94 00 10 01 20 00 01 00 01 14 00 80 02 FF D0 38 CF 01 26 29 DC A0 11 EF FD A7 3C 00 07 CE E8 5D 0F 49 96 E0 00

@@ -1,0 +1,59 @@
+MOD_NAME=Modify Base Fatigue added in Long War
+AUTHOR=Kvalyr
+DESCRIPTION=Modifies the base fatigue amounts added to soldiers (before the RAND_DAYS_INJURED_TANK multiplier is applied)
+
+Compatible with XCOM Long War (EW) Versions:
+ - Long War 15e
+
+UPK_FILE=XComStrategyGame.upk
+
+	ALIAS=MAXFATIGUE:<%b 48> 			// Maximum fatigue, applied when unit is injured. Should be equal to BASEFATIGUE + RANDOMFATIGUE for consistency
+	
+	// MEC Units
+	ALIAS=BASEFATIGUE_MEC:<%b 36>		// Base amount of fatigue before random variance
+	ALIAS=RANDOMFATIGUE_MEC:<%b 24>		// Random variance added to fatigue (0 to value)
+
+	// Non-MEC Units
+	ALIAS=BASEFATIGUE:<%b 24>			// Base amount of fatigue before random variance
+	ALIAS=RANDOMFATIGUE:<%b 24>			// Random variance added to fatigue (0 to value)
+	
+
+	OBJECT = XGFacility_Barracks.DetermineTimeOut
+
+		// MEC
+		// if(kSoldier.IsAugmented())
+			// if((kSoldier.m_bAllIn || kSoldier.IsInjured()) && kSoldier.GetCurrentStat(0) > 0)
+		[FIND_CODE]
+			// kSoldier.m_iTurnsOut += 144;
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 2C 90 16
+		[MODDED_CODE]
+			// kSoldier.m_iTurnsOut += MAXFATIGUE;
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 2C <!MAXFATIGUE> 16
+
+			// else
+			
+		[FIND_CODE]
+			// kSoldier.m_iTurnsOut += (120 + Rand(24));
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 92 2C 78 A7 2C 18 16 16 16
+		[MODDED_CODE]
+			// kSoldier.m_iTurnsOut += (BASEFATIGUE_MEC + Rand(RANDOMFATIGUE_MEC));
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 92 2C <!BASEFATIGUE_MEC> A7 2C <!RANDOMFATIGUE_MEC> 16 16 16
+
+		// Non-MEC
+		// else [[ that is, NOT if(kSoldier.IsAugmented()) ]]
+
+			// if((kSoldier.m_bAllIn || kSoldier.IsInjured()) && kSoldier.GetCurrentStat(0) > 0)
+		[FIND_CODE]
+			// kSoldier.m_iTurnsOut += 144
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 2C 90 16
+		[MODDED_CODE]
+			// kSoldier.m_iTurnsOut += MAXFATIGUE;
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 2C <!MAXFATIGUE> 16
+			
+			// else
+		[FIND_CODE]
+			// kSoldier.m_iTurnsOut += (96 + Rand(48))
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 92 2C 60 A7 2C 30 16 16 16
+		[MODDED_CODE]
+			// kSoldier.m_iTurnsOut += (BASEFATIGUE + Rand(RANDOMFATIGUE))
+			A1 19 00 B2 32 00 00 09 00 5A 53 00 00 00 01 5A 53 00 00 92 2C <!BASEFATIGUE> A7 2C <!RANDOMFATIGUE> 16 16 16

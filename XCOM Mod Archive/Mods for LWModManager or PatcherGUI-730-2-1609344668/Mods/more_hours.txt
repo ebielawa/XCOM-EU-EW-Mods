@@ -1,0 +1,24 @@
+DESCRIPTION=This mod changes a few timers to be in hours instead of days. I think it does fatigue, injuries, and augmentation timers, but I don't really remember. 
+
+// Author: Bilfdoffle
+UPK_FILE=XComStrategyGame.upk
+
+
+// number of hours, in HEX
+ALIAS=HOUR_DISP: 48
+
+
+/* ************************************************** */
+// do not modify below this line
+OBJECT=XGStrategySoldier.GetStatusString
+
+REL_OFFSET=0x127
+MODDED_CODE=<!HOUR_DISP>
+//REL_OFFSET=0x12C
+//MODDED_CODE=<!HOUR_DISP>
+REL_OFFSET=0x13D
+MODDED_CODE=<!HOUR_DISP>
+
+OBJECT=XGCyberneticsUI.BuildTrainees
+REL_OFFSET=0x244
+MODDED_CODE=<!HOUR_DISP>

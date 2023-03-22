@@ -1,0 +1,12 @@
+MOD_NAME=Extra Slots for Psi/Gene/MEC Labs (basic version)
+AUTHOR=XMarksTheSpot
+DESCRIPTION=Allows configuration of arbitrary slot numbers for soldier psi-testing (Psi Labs), gene modding (Gene Labs) and augmentation (Cybernetics Labs)
+
+/* UnrealScript changes */
+UPK_FILE=XComStrategyGame.upk
+
+// change these to your desired slot counts
+ALIAS=NumMecSlots:<%b 6>
+ALIAS=NumGeneSlots:<%b 6>
+
+if(iSlot < class'XGTacticalGameCore'.default.PSI_NUM_TRAINING_SLOTS)

@@ -1,0 +1,600 @@
+//---------------------------------------------------------------------------------------------
+// GAMEPAD/KEYBORD GOVERNING FUNCTION FOR SHIP SELECTION
+//---------------------------------------------------------------------------------------------
+UPK_FILE=xcomstrategygame.upk
+ALIAS=AGG_AimBonus:<%b 15>			//this is added to chance to hit for ships with AGG stance
+ALIAS=DEF_AimPenalty:<%b 15>		//this is subtracted from chance to hit for ships with DEF stance
+ALIAS=PenaltyToHitSmallUFO:<%b 10>	//shots at small-sized UFOs suffer that much of penalty to aim
+ALIAS=BonusToHitLargeUFO:<%b 15>	//shots at large-sized UFOs have that much of bonus to aim
+ALIAS=AimBonusPerKill:<%i 3>			// this is added to interceptor's chance to hit; per each kill
+ALIAS=MaxBonusForKills:<%i 30>			// no more aim bonus for kills above this number
+ALIAS=DamagedJetAimPenalty:<%i 25>		// if you are sending a damaged jet it will suffer that much of penalty to aim
+ALIAS=MinHP_PctToLaunch:<%f 0.50>	// if a jet has minimum that fraction of HP it can be launched
+ALIAS=AggroLabelColor:04 	//color of aggro label for selected 'good' ships; default 04 (yellow)
+ALIAS=AggroDamagedColor:0A	// color of aggro label for selected 'damaged' ships; default 0A (orange)
+ALIAS=HeaderSelectedColor:07 // color of name/weapon labels for selected 'good' ships; default 04 (cyan)
+ALIAS=CritMaxChance:1D <%i 25>			//max % chance for crit hit
+ALIAS=CritMinChance:1D <%i 5>			//min % chance for crit hit
+ALIAS=CritDamageMultiplier:1E <%f 1.5>		// crit damage = normal damage x this factor
+ALIAS=SparrowhawkDamageDivisor:<%f 0.8> //Sparrowhawks damage is the stingray's (see below) damage multiplied by this
+
+OBJECT = UIMissionControl_UFORadarContactAlert.ShipSelection.OnUnrealCommand : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 07 [@label_0x0023] 81 1B <CheckInputIsReleaseOrDirectionRepeat> 00 <.Cmd> 00 <.Arg> 16 16 
+/*(0x0021/0x0019)*/ 	04 27 
+/*(0x0023/0x001B)*/ [#label_0x0023]
+/*(0x0023/0x001B)*/ 14 2D 00 <.bHandled> 27 
+/*(0x002F/0x0023)*/ 05 <.Cmd> 00 00 <.Cmd> 
+/*(0x0042/0x002E)*/ 0A [@label_0x004A] 1D <%i 350> 
+/*(0x004A/0x0036)*/ [#label_0x004A]
+/*(0x004A/0x0036)*/ 0A [@label_0x0052] 1D <%i 500> 
+/*(0x0052/0x003E)*/ [#label_0x0052]
+/*(0x0052/0x003E)*/ 0A [@label_0x0128] 1D <%i 370> 
+/*(0x005A/0x0046)*/ 	0F 00 <.newSelection> 93 9C 01 <UIMissionControl_UFORadarContactAlert.m_iSelectedShip> 2C FF 16 26 16 
+/*(0x0074/0x0058)*/ 	07 [@label_0x00C2] 96 00 <.newSelection> 25 16 							
+							
+							//small adjustment: if 'Up' pressed when first jet selected, select launch button
+/*(0x0083/0x0063)*/ 		0F 00 <.newSelection> 36 35 <XGInterceptionUI.TIntSquadron.arrJets> <XGInterceptionUI.TIntSquadron> 00 00 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_kSquadron> 00 ( 01 <XGInterceptionUI.m_kSquadron> )
+/*(0x00C2/0x008A)*/ 	[#label_0x00C2]
+/*(0x00C2/0x008A)*/ 	1B <RealizeSelected> 00 <.newSelection> 16 
+/*(0x00D5/0x0099)*/ 	07 [@label_0x0125] 97 36 35 <XGInterceptionUI.TIntSquadron.arrJets> <XGInterceptionUI.TIntSquadron> 00 00 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_kSquadron> 00 ( 01 <XGInterceptionUI.m_kSquadron> ) 26 16 
+/*(0x010D/0x00BD)*/ 		1C <Engine.Actor.PlaySound> 20 <SoundUI.MenuScrollCue> 27 4A 4A 4A 4A 16 
+/*(0x0125/0x00CD)*/ 	[#label_0x0125]
+/*(0x0125/0x00CD)*/ 	06 [@label_0x037D] 
+/*(0x0128/0x00D0)*/ [#label_0x0128]
+/*(0x0128/0x00D0)*/ 0A [@label_0x0130] 1D <%i 354> 
+/*(0x0130/0x00D8)*/ [#label_0x0130]
+/*(0x0130/0x00D8)*/ 0A [@label_0x0138] 1D <%i 502> 
+/*(0x0138/0x00E0)*/ [#label_0x0138]
+/*(0x0138/0x00E0)*/ 0A [@label_0x020B] 1D <%i 371> 
+/*(0x0140/0x00E8)*/ 	0F 00 <.newSelection> 92 9C 01 <UIMissionControl_UFORadarContactAlert.m_iSelectedShip> 2C FF 16 26 16 
+
+						//small adjustment: if 'Down' pressed when launch button is selected, select first jet
+/*(0x015A/0x00FA)*/ 	07 [@label_0x01A5] 97 00 <.newSelection> 36 35 <XGInterceptionUI.TIntSquadron.arrJets> <XGInterceptionUI.TIntSquadron> 00 00 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_kSquadron> 00 ( 01 <XGInterceptionUI.m_kSquadron> ) 16 
+/*(0x019A/0x0122)*/ 		0F 00 <.newSelection> 25 
+/*(0x01A5/0x0129)*/ 	[#label_0x01A5]
+/*(0x01A5/0x0129)*/ 	1B <RealizeSelected> 00 <.newSelection> 16 
+/*(0x01B8/0x0138)*/ 	07 [@label_0x0208] 97 36 35 <XGInterceptionUI.TIntSquadron.arrJets> <XGInterceptionUI.TIntSquadron> 00 00 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_kSquadron> 00 ( 01 <XGInterceptionUI.m_kSquadron> ) 26 16 
+/*(0x01F0/0x015C)*/ 		1C <Engine.Actor.PlaySound> 20 <SoundUI.MenuScrollCue> 27 4A 4A 4A 4A 16 
+/*(0x0208/0x016C)*/ 	[#label_0x0208]
+/*(0x0208/0x016C)*/ 	06 [@label_0x037D] 
+/*(0x020B/0x016F)*/ [#label_0x020B]
+/*(0x020B/0x016F)*/ 0A [@label_0x0213] 1D <%i 356> 
+/*(0x0213/0x0177)*/ [#label_0x0213]
+/*(0x0213/0x0177)*/ 0A [@label_0x021B] 1D <%i 503> 
+/*(0x021B/0x017F)*/ [#label_0x021B]
+/*(0x021B/0x017F)*/ 0A [@label_0x029E] 1D <%i 372> 
+/*(0x0223/0x0187)*/ 	0F 00 <.newSelection> 93 95 01 <UIMissionControl_UFORadarContactAlert.m_iSelectedShip> 2C 08 16 26 16 
+/*(0x023D/0x0199)*/ 	07 [@label_0x0259] 96 00 <.newSelection> 26 16						
+/*(0x024D/0x01A5)*/ 		0F 00 <.newSelection> 2C 03 						
+/*(0x0259/0x01AD)*/ 	[#label_0x0259]
+/*(0x0259/0x01AD)*/ 	0F 00 <.newSelection> 94 00 <.newSelection> 2C 08 16 
+/*(0x0270/0x01BC)*/ 	1B <RealizeSelected> 00 <.newSelection> 16 
+/*(0x0283/0x01CB)*/ 	1C <Engine.Actor.PlaySound> 20 <SoundUI.MenuScrollCue> 27 4A 4A 4A 4A 16 
+/*(0x029B/0x01DB)*/ 	06 [@label_0x037D] 
+/*(0x029E/0x01DE)*/ [#label_0x029E]
+/*(0x029E/0x01DE)*/ 0A [@label_0x02A6] 1D <%i 352> 
+/*(0x02A6/0x01E6)*/ [#label_0x02A6]
+/*(0x02A6/0x01E6)*/ 0A [@label_0x02AE] 1D <%i 501> 
+/*(0x02AE/0x01EE)*/ [#label_0x02AE]
+/*(0x02AE/0x01EE)*/ 0A [@label_0x0331] 1D <%i 373> 
+/*(0x02B6/0x01F6)*/ 	0F 00 <.newSelection> 92 95 01 <UIMissionControl_UFORadarContactAlert.m_iSelectedShip> 2C 08 16 26 16 
+/*(0x02D0/0x0208)*/ 	07 [@label_0x02EC] 97 00 <.newSelection> 2C 03 16
+/*(0x02E0/0x0214)*/ 		0F 00 <.newSelection> 26
+/*(0x02EC/0x021C)*/ 	[#label_0x02EC]
+/*(0x02EC/0x021C)*/ 	0F 00 <.newSelection> 94 00 <.newSelection> 2C 08 16 
+/*(0x0303/0x022B)*/ 	1B <RealizeSelected> 00 <.newSelection> 16 
+/*(0x0316/0x023A)*/ 	1C <Engine.Actor.PlaySound> 20 <SoundUI.MenuScrollCue> 27 4A 4A 4A 4A 16 
+/*(0x032E/0x024A)*/ 	06 [@label_0x037D] 
+/*(0x0331/0x024D)*/ [#label_0x0331]
+/*(0x0331/0x024D)*/ 0A [@label_0x0339] 1D <%i 300> 
+/*(0x0339/0x0255)*/ [#label_0x0339]
+/*(0x0339/0x0255)*/ 0A [@label_0x034E] 1D <%i 511>
+/*(0x0341/0x025D)*/ 	1B <OnAccept> 16 
+/*(0x034B/0x0267)*/ 	06 [@label_0x037D] 
+/*(0x034E/0x026A)*/ [#label_0x034E]
+/*(0x034E/0x026A)*/ 0A [@label_0x0356] 1D <%i 301> 
+/*(0x0356/0x0272)*/ [#label_0x0356]
+/*(0x0356/0x0272)*/ 0A [@GamepadX] 1D <%i 510> 
+/*(0x035E/0x027A)*/ 	1B <OnCancel> 16 
+/*(0x0368/0x0284)*/ 	06 [@label_0x037D] 
+					
+//Adding launch functionality 'On gamepad X/SQUARE press' 				
+					[#GamepadX]
+					0A [@L_key] 1D <%i 526>
+					[#L_key]
+					0A [@GamepadY] 1D <%i 302>
+					
+						// IF ANY JETS TOGGLED IN... 		
+						07 [@PlayBadSound] 97 36 19 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_kInterception> 00 ( 01 <XGInterceptionUI.m_kInterception> ) [@] <NullRef> 00 ( 01 <XGInterception.m_arrInterceptors> ) 25 16 
+							
+							//PROCEED LAUNCH
+							1B <Remove> 16 
+							1B <CloseAlert> 4A 16
+							
+		//Edit for Ucross: 	Set m_iCurrentJet in XGInterceptionUI to 99 as flag to enable auto-sort before launch
+							0F 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_iCurrentJet> 00 ( 01 <XGInterceptionUI.m_iCurrentJet> ) 2C 63
+							
+		//Edit for Ucross:	Call for last UpdateSquadron to sort the list of jets based on aggro
+							19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <UpdateSquadron> 16 ) 
+							
+							//Launch jets...
+							19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <OnLaunch> 16 ) 
+							06 [@break_X]
+						[#PlayBadSound]
+							//OTHERWISE PLAY BAD SOUND						
+							19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <PlayBadSound> 16 ) 
+						[#break_X]
+						06 [@label_0x037D]
+
+//Adding  toggle interceptor functionality 'On gamepad Y/TRIANGLE press' and for TAB key
+					[#GamepadY]
+					0A [@TAB_key] 1D <%i 571>
+					[#TAB_key]
+					0A [@label_0x036B] 1D <%i 303>
+						19 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_kInterception> 00 ( 01 <XGInterceptionUI.m_kInterception> ) [@] <NullRef> 00 ( 
+					1B <ToggleInterceptor> 
+						35 <XGInterceptionUI.TIntDistance.kInterceptor> <XGInterceptionUI.TIntDistance> 00 00 10 9C 2C FF 01 <UIMissionControl_UFORadarContactAlert.m_iSelectedShip> 16 
+						19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_akIntDistance> 00 ( 01 <XGInterceptionUI.m_akIntDistance> ) 
+					16 )
+						1C <UIMissionControl_UFORadarContactAlert.AS_DeactivateShipList> 16 
+						19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <UpdateView> 16 ) 
+						1B <UpdateData> 16 
+						06 [@label_0x037D] 						
+/*(0x036B/0x0287)*/ [#label_0x036B]
+/*(0x036B/0x0287)*/ 0A FF FF 
+/*(0x036E/0x028A)*/ 14 2D 00 <.bHandled> 28 
+/*(0x037A/0x0292)*/ 06 [@label_0x037D] 
+/*(0x037D/0x0295)*/ [#label_0x037D]
+/*(0x037D/0x0295)*/ 04 2D 00 <.bHandled> 
+/*(0x039F/0x02B3)*/ 04 3A <.ReturnValue> 
+/*(0x03A9/0x02B9)*/ 53 
+
+//---------------------------------------------------------------------------------------------
+// MOUSE GOVERNING FUNCTION FOR SHIP SELECTION
+//---------------------------------------------------------------------------------------------
+OBJECT = UIMissionControl_UFORadarContactAlert.ShipSelection.OnMouseEvent : AUTO
+
+ALIAS=ShipsAvailable:19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_akIntDistance> 00 ( 01 <XGInterceptionUI.m_akIntDistance> )
+ALIAS=ShipSelected:01 <UIMissionControl_UFORadarContactAlert.m_iSelectedShip>
+ALIAS=m_kInterception:19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_kInterception> 00 ( 01 <XGInterceptionUI.m_kInterception> )
+
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 0F 00 <.callbackObj> 10 93 36 00 <.args> 26 16 00 <.args> 
+/*(0x0021/0x0015)*/ 07 [@label_0x0165] 9A 7E 00 <.callbackObj> 1F <%t "button"> 4A 4A 4A 16 1D <%i -1> 16 
+/*(0x0041/0x0031)*/ 	07 [@label_0x009B] 9B 7E 00 <.callbackObj> 1F <%t "ship"> 4A 4A 4A 16 1D <%i -1> 16 
+/*(0x005F/0x004B)*/ 		0F 00 <.tmp> 1C <Core.Object.Split> 00 <.callbackObj> 1F <%t "ship"> 27 16 
+/*(0x0083/0x0063)*/ 		0F 00 <.buttonCode> 38 4A 00 <.tmp> 
+/*(0x0098/0x0070)*/ 		06 [@label_0x0122] 
+/*(0x009B/0x0073)*/ 	[#label_0x009B]
+/*(0x009B/0x0073)*/ 	07 [@label_0x00C8] 9B 7E 00 <.callbackObj> 1F <%t "bal"> 4A 4A 4A 16 1D <%i -1> 16 
+/*(0x00B8/0x008C)*/ 		0F 00 <.buttonCode> 94 2C 01 2C 08 16 
+/*(0x00C8/0x0098)*/ 	[#label_0x00C8]
+/*(0x00C8/0x0098)*/ 	07 [@label_0x00F5] 9B 7E 00 <.callbackObj> 1F <%t "agg"> 4A 4A 4A 16 1D <%i -1> 16 
+/*(0x00E5/0x00B1)*/ 		0F 00 <.buttonCode> 94 2C 02 2C 08 16 
+/*(0x00F5/0x00BD)*/ 	[#label_0x00F5]
+/*(0x00F5/0x00BD)*/ 	07 [@label_0x0122] 9B 7E 00 <.callbackObj> 1F <%t "def"> 4A 4A 4A 16 1D <%i -1> 16 
+/*(0x0112/0x00D6)*/ 		0F 00 <.buttonCode> 94 2C 03 2C 08 16 
+/*(0x0122/0x00E2)*/ 	[#label_0x0122]
+/*(0x0122/0x00E2)*/ 	1B <RealizeSelected> 00 <.buttonCode> 16 
+/*(0x0135/0x00F1)*/ 	07 [@label_0x0162] 97 00 <.buttonCode> 2C FF 16 
+/*(0x0145/0x00FD)*/ 		07 [@label_0x0162] 9A 00 <.Cmd> 1D <%i 391> 16 
+/*(0x0158/0x010C)*/ 			1B <OnAccept> 16 
+								04 27
+/*------------------------------------------------------
+	If only big 'ship card' clicked -> toggle interceptor in/out
+-------------------------------------------------------*/
+						[#label_0x0162]
+/* If left-click */ 	07 [@label_Return] 9A 00 <.Cmd> 1D <%i 391> 16 
+/* Toggle in/out */			19 <!m_kInterception> [@] <NullRef> 00 ( 1B <ToggleInterceptor> 35 <XGInterceptionUI.TIntDistance.kInterceptor> <XGInterceptionUI.TIntDistance> 00 00 10 9C 2C FF <!ShipSelected> 16 <!ShipsAvailable> 16 ) 
+/* Reset list    */ 		1C <UIMissionControl_UFORadarContactAlert.AS_DeactivateShipList> 16 
+/* Upd. Squadron */			19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <UpdateView> 16 ) 
+/* Show new list */			1B <UpdateData> 16  
+/*(0x0162/0x0116)*/ 	[#label_Return]
+/*(0x0162/0x0116)*/ 	04 27
+/*(0x0165/0x0119)*/ [#label_0x0165]
+
+					//IF HOVERING OVER LAUNCH BUTTON, SORT TOGGLED-IN JETS
+					1B <RealizeSelected> 25 16
+/*(0x0165/0x0119)*/ 07 [@label_0x01F8] 9A 00 <.Cmd> 1D <%i 391> 16 
+/*(0x0178/0x0128)*/ 	0F 00 <.tmp> 1C <Core.Object.GetRightMost> 00 <.callbackObj> 16 
+/*(0x0195/0x0139)*/ 	07 [@label_0x01BD] 7B 00 <.tmp> 1F <%t ""> 16 
+/*(0x01A5/0x0145)*/ 		0F 00 <.buttonCode> 38 4A 00 <.tmp> 
+/*(0x01BA/0x0152)*/ 		06 [@label_0x01CC] 
+/*(0x01BD/0x0155)*/ 	[#label_0x01BD]
+/*(0x01BD/0x0155)*/ 	0F 00 <.buttonCode> 1D <%i -1> 
+/*(0x01CC/0x0160)*/ 	[#label_0x01CC]
+/*(0x01CC/0x0160)*/ 	07 [@label_0x01ED] 97 00 <.buttonCode> 25 16 
+/*(0x01DB/0x016B)*/ 		1B <CloseAlert> 1D <%i -1> 16 
+/*(0x01EA/0x017A)*/ 		06 [@label_0x01F8]
+/*(0x01ED/0x017D)*/ 	[#label_0x01ED]
+/*(0x01ED/0x017D)*/ 	07 [@label_0x01F8] 9A 00 <.buttonCode> 25 16						
+							
+							//IF THE ARE NO JETS SELECTED TO LAUNCH, Return
+							07 [@label_LaunchJets] 9A 36 19 <!m_kInterception> [@] <XGInterception.m_arrInterceptors> 00 ( 01 <XGInterception.m_arrInterceptors> ) 25 16 
+
+								//PLAY BAD SOUND AND RETURN						
+								19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <PlayBadSound> 16 ) 
+								06 [@label_0x01F8] 
+						
+							[#label_LaunchJets]
+							// OTHERWISE LAUNCH JETS
+
+			//Ucross Edit: 	Set m_iCurrentJet in XGInterceptionUI to 99 as flag to enable auto-sort before launch
+								0F 19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <XGInterceptionUI.m_iCurrentJet> 00 ( 01 <XGInterceptionUI.m_iCurrentJet> ) 2C 63
+							
+			//Ucross Edit:	Call for last UpdateSquadron to sort the list of jets based on aggro
+								19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <UpdateSquadron> 16 ) 
+
+								1B <Remove> 16 
+								1B <CloseAlert> 4A 16
+								19 01 <UIMissionControl_UFORadarContactAlert.m_kInterceptMgr> [@] <NullRef> 00 ( 1B <OnLaunch> 16 )
+/*(0x01F8/0x0188)*/ [#label_0x01F8]
+/*(0x01F8/0x0188)*/ 04 27 
+/*(0x0202/0x0192)*/ 04 3A <.ReturnValue> 
+/*(0x020C/0x0198)*/ 53 
+
+//--------------------------------------------------------------------------------------------
+// KEY FUNCTION MANAGING AGGRO PRECALCULATION, SORTING OF SHIP LIST AND ADDING COLOR MARKING
+//--------------------------------------------------------------------------------------------
+
+OBJECT = XGInterceptionUI.UpdateSquadron : AUTO
+ALIAS=Interceptor_m_kTShip:<XGStrategyActorNativeBase.TShip> 00 00 19 00 <.kInterceptor> [@] <XGShip.m_kTShip> 00 ( 01 <XGShip.m_kTShip> )
+ALIAS=IntValue0:19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue0> 00 ( 01 <XComGame.XGParamTag.IntValue0> ) 
+ALIAS=IntValue1:19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue1> 00 ( 01 <XComGame.XGParamTag.IntValue1> ) 
+ALIAS=IntValue2:19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue2> 00 ( 01 <XComGame.XGParamTag.IntValue2> ) 
+ALIAS=StrValue0:19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 
+ALIAS=StrValue1:19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue1> 00 ( 01 <XComGame.XGParamTag.StrValue1> ) 
+ALIAS=StrValue2:19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue2> 00 ( 01 <XComGame.XGParamTag.StrValue2> ) 
+
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 0F 00 <.iJet> 25 
+/*(0x000B/0x0007)*/ 40 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 00 01 <@m_kSquadron> 25 36 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 00 01 <@m_kSquadron> 16 
+
+[#label_NextIntAggro]
+//if(iJet < m_akIntDistance.Length)
+07 [@label_IntDistanceSort] 96 00 <.iJet> 36 01 <@m_akIntDistance> 16 
+	
+	// kInterceptor = m_akIntDistance[iJet].kInterceptor; (this substitution will ease further coding) 
+	0F 00 <.kInterceptor> 35 <XGInterceptionUI.TIntDistance.kInterceptor> <@TIntDistance> 00 00 10 00 <.iJet> 01 <@m_akIntDistance> 
+	
+	//LET AGGRO BE THE SHIP'S WEAPON LVL
+	// iIndex = HANGAR().ItemTypeToShipWeapon(kInterceptor.m_eWeapon)
+	0F 00 <.iIndex> 38 3A 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.ItemTypeToShipWeapon.ReturnValue> 00 ( 1B <ItemTypeToShipWeapon> 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_eWeapon> 00 ( 01 <XGShip_Interceptor.m_eWeapon> ) 16 ) 
+
+	// ADDING +6 AGGRO FOR CANNON CAUSE IT HAS ONLY LVL 1 (RAISING ITS AGGRO TO 7)
+	// FOR OTHER WEAPONS SETTING AGGRO AT DOUBLE THE WEAPON LVL 
+	//((iIndex == 1) ? iIndex += 6 : iIndex += iIndex);
+	45 9A 00 <.iIndex> 2C 01 16 [@] ( A1 00 <.iIndex> 2C 06 16 ) [@] ( A1 00 <.iIndex> 00 <.iIndex> 16 ) 
+	
+	//ADDING +1 AGGRO FOR FIRESTORM
+	// if(kInterceptor.m_kTShip.eType = 3)
+	07 [@label_AggroForStance] 9A 38 3A 35 <XGStrategyActorNativeBase.TShip.eType> <!Interceptor_m_kTShip> 38 3A 24 03 16 
+
+		// iIndex += 1
+		A1 00 <.iIndex> 26 16 
+		
+	[#label_AggroForStance]
+
+	// CHECKING FOR INTERCEPTORS SELECTED FOR ENGAGEMENT
+	// if(m_kInterception.HasInterceptor(kInterceptor))
+	07 [@label_StoreAggro] 19 01 <@m_kInterception> [@] <XGInterception.HasInterceptor.ReturnValue> 00 ( 1B <HasInterceptor> 00 <.kInterceptor> 16 ) 
+	
+	// ADDING +2 AGGRO INCREASE FOR AGG STANCE
+		// if(kInterceptor.m_kTShip.iRange == 1)
+		07 [@label_AggroForDEF] 9A 35 <XGStrategyActorNativeBase.TShip.iRange> <!Interceptor_m_kTShip> 2C 01 16 
+			
+			// iIndex += 2		
+			A1 00 <.iIndex> 2C 02 16 
+			
+			// goto [#label_StoreAggro]
+			06 [@label_StoreAggro]
+	
+	//... OR -2 AGGRO DECREASE FOR DEF STANCE
+		[#label_AggroForDEF] 
+		// if(kInterceptor.m_kTShip.iRange == 2)
+		07 [@label_StoreAggro] 9A 35 <XGStrategyActorNativeBase.TShip.iRange> <!Interceptor_m_kTShip> 2C 02 16 
+		
+		// iIndex -= 2					
+		A2 00 <.iIndex> 2C 02 16 
+	
+	// STORE CALCULATED AGGRO FOR JET
+	[#label_StoreAggro]		
+	// m_akIntDistance[iJet].iMiles = iIndex
+	0F 35 <XGInterceptionUI.TIntDistance.iMiles> <@TIntDistance> 00 00 10 00 <.iJet> 01 <@m_akIntDistance> 00 <.iIndex>
+	
+	// AND CYCLE TO NEXT JET
+	// iJet ++
+	A5 00 <.iJet> 16 
+	
+	// goto [#label_NextIntAggro]
+	06 [@label_NextIntAggro]
+
+/*--------ONCE ALL INTERCEPTORS HAVE AGGRO CALCULATED------------------
+----------SORT INTERCEPTORS FROM HIGHEST TO LOWEST AGGRO--------
+----------BUT NO SOONER THAN NEW SHIP IS SELECTED ------------------*/	
+	[#label_IntDistanceSort]
+
+	//Don't sort them on each click or move
+	
+	//if (m_kInterface.m_iSelectedShip & 255 ) != m_iCurrentJet
+	//07 [@FinishedAggroCalc] 9B 9C 19 1B <GetUIScreen> 16 [@] <UIMissionControl_UFORadarContactAlert.m_iSelectedShip> 00 ( 01 <UIMissionControl_UFORadarContactAlert.m_iSelectedShip> ) 2C FF 16 01 <@m_iCurrentJet> 16
+	
+	//INSTEAD (allow it only on final launch):  
+	//if (m_iCurrentJet = 99)
+	07 [@FinishedAggroCalc] 9A 01 <@m_iCurrentJet> 2C 63 16	
+		
+		// m_akIntDistance.Sort(IntDistanceSort)
+		59 01 <@m_akIntDistance> [@] ( 43 <IntDistanceSort> <NullRef> 16 ) 
+	
+	[#FinishedAggroCalc]
+					0F 00 <.iJet> 25 
+/*(0x0047/0x002B)*/ 0F 00 <.iIndex> 25 
+/*(0x0052/0x0032)*/ [#label_0x0052]
+/*(0x0052/0x0032)*/ 07 [@label_0x07B2] 96 00 <.iIndex> 36 01 <@m_akIntDistance> 16 
+/*(0x006A/0x0042)*/ 	0F 00 <.kInterceptor> 35 <XGInterceptionUI.TIntDistance.kInterceptor> <@TIntDistance> 00 00 10 00 <.iIndex> 01 <@m_akIntDistance> 
+/*(0x009A/0x005E)*/ 	07 [@label_0x00AC] 72 00 <.kInterceptor> 2A 16 
+/*(0x00A9/0x0069)*/ 		06 [@label_0x07A4] 
+/*(0x00AC/0x006C)*/ 	[#label_0x00AC]
+/*(0x00AC/0x006C)*/ 	54 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 00 01 <@m_kSquadron> 26 16 
+/*(0x00CA/0x007E)*/
+/*(0x00CB/0x007F)*/ 	0F 35 <XGInterceptionUI.TIntJet.EShipType> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 19 00 <.kInterceptor> [@] <XGShip.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 
+/*(0x0124/0x00B8)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtJetName> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_strCallsign> 00 ( 01 <XGShip_Interceptor.m_strCallsign> ) 
+/*(0x018F/0x00F7)*/ 	0F 35 <XGInterceptionUI.TIntJet.iIndex> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 00 <.iIndex> 
+/*(0x01D2/0x011E)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGInterceptionUI.TIntJet.txtOffense> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 01 <@m_strLabelLoadout> 
+
+						// CALCULATE CHANCE TO HIT FOR PREVIEW
+						// iIndex = SHIPWEAPON(HANGAR().ItemTypeToShipWeapon(kInterceptor.m_eWeapon)).iToHit;
+						// iIndex += Min(kInterceptor.m_iConfirmedKills * AimBonusPerKill, MaxBonusForKills);
+						// if(kInterceptor.GetRange() == 1
+						// [
+						//		iIndex += AGG_AimBonus
+						// ]
+						// if(kInterceptor.GetRange() == 2
+						// [
+						//		iIndex -= DEF_AimPenalty
+						// ]
+						// switch(m_kUFO.GetType)
+						// case: 4
+						// case: 5
+						// case: 9
+						// case: 10
+						// case: 11
+						//		iIndex -= PenaltyToHitSmallUFO;
+						//		break;
+						// case: 7
+						// case: 8
+						// case: 13
+						// case: 14
+						//		iIndex += BonusToHitLargeUFO;
+						//		break;
+						// default:
+						//		break;
+						// if kInterceptor.IsDamaged()
+						// [
+						//		iIndex -= DamagedJetAimPenalty
+						// iIndex = Clamp(iIndex, 5, 95)
+						
+						0F 00 <.iIndex> 35 <XGStrategyActorNativeBase.TShipWeapon.iToHit> <XGStrategyActorNativeBase.TShipWeapon> 00 00 1B <SHIPWEAPON> 38 3A 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.ItemTypeToShipWeapon.ReturnValue> 00 ( 1B <ItemTypeToShipWeapon> 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_eWeapon> 00 ( 01 <XGShip_Interceptor.m_eWeapon> ) 16 ) 16
+						A1 00 <.iIndex> F9 90 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_iConfirmedKills> 00 ( 01 <XGShip_Interceptor.m_iConfirmedKills> ) 1D <!AimBonusPerKill> 16 1D <!MaxBonusForKills> 16 16
+						07 [@DEFstance] 9A 19 00 <.kInterceptor> [@] <XGShip.GetRange.ReturnValue> 00 ( 1B <GetRange> 16 ) 2C 01 16 
+							A1 00 <.iIndex> 2C <!AGG_AimBonus> 16
+						[#DEFstance]
+						07 [@UFOSize] 9A 19 00 <.kInterceptor> [@] <XGShip.GetRange.ReturnValue> 00 ( 1B <GetRange> 16 ) 2C 02 16 
+							A2 00 <.iIndex> 2C <!DEF_AimPenalty> 16
+						[#UFOSize]
+						05 <XGShip.GetType.ReturnValue> 00 19 01 <@m_kUFO> [@] <XGShip.GetType.ReturnValue> 00 ( 1B <GetType> 16 )
+							0A [@case5] 2C 04
+							[#case5]
+							0A [@case9] 2C 05
+							[#case9]
+							0A [@case10] 2C 09
+							[#case10]
+							0A [@case11] 2C 0A
+							[#case11]			
+							0A [@case7] 2C 0B
+								A2 00 <.iIndex> 2C <!PenaltyToHitSmallUFO> 16
+								06 [@EndCase]
+							[#case7]
+							0A [@case8] 2C 07
+							[#case8]
+							0A [@case13] 2C 08
+							[#case13]
+							0A [@case14] 2C 0D
+							[#case14]
+							0A [@default] 2C 0E
+								A1 00 <.iIndex> 2C <!BonusToHitLargeUFO> 16
+								06 [@EndCase]
+							[#default]
+							0A FF FF
+								06 [@EndCase]
+							[#EndCase]
+						07 [@ClampAim] 19 00 <.kInterceptor> [@] <XGShip.IsDamaged.ReturnValue> 00 ( 1B <IsDamaged> 16 ) 
+							A2 00 <.iIndex> 1D <!DamagedJetAimPenalty> 16 
+						[#ClampAim]
+						0F 00 <.iIndex> FB 00 <.iIndex> 2C 05 2C 5F 16
+						
+						//INITIALIZING kTag TO GET ACCESS TO ITS IntValueX STRUCT MEMBERS
+						// kTag = XGParamTag(XComEngine(class'Engine'.static.GetEngine()).LocalizeContext.FindTag("XGParam"));
+						0F 00 <.kTag> 2E <XComGame.XGParamTag> 19 19 2E <XComGame.XComEngine> 12 20 <Engine.Engine> [@] <Engine.Engine.GetEngine.ReturnValue> 00 ( 1C <Engine.Engine.GetEngine> 16 ) [@] <XComGame.XComEngine.LocalizeContext> 00 ( 01 <XComGame.XComEngine.LocalizeContext> ) [@] <XComGame.XGLocalizeContext.FindTag.ReturnValue> 00 ( 1B <FindTag> 1F <%t "XGParam"> 16 ) 
+						
+						//CALCULATING AVERAGE DPS TAKING INTO ACCOUNT UFO'S ARMOR AND SHIP'S AP
+						//ACCOUNTING ALSO FOR CRIT CHANCE AND DAMAGE
+						//kTag.StrValue0 = "0";
+						//kTag.StrValue2 = "0";
+						//NextShipWeapon:
+						//if(int(kTag.StrValue0) < kInterceptor.m_kTShip.arrWeapons.Length)
+						// [
+						//	kTag.StrValue1 = string(kInterceptor.m_kTShip.arrWeapons[int(kTag.StrValue0)])
+						//	IntValue0 = SHIPWEAPON(int(kTag.StrValue1)).iDamage;
+						//	IntValue0 *= 1.25;
+						//	IntValue0 *= (1.0 + float(kInterceptor.m_iConfirmedKills) * 0.01)
+						//	if(LABS().IsResearched(m_kUFO.GetType() + 57))
+						//		[
+						//			IntValue0 *= 1.10
+						//		]
+						//	IntValue1 = SHIPWEAPON(int(kTag.StrValue1)).iAP;
+						//	IntValue2 = int(SHIPWEAPON(int(kTag.StrValue1)).fFiringTime * 100.0);
+						//		now storing DPS in kTag.IntValue0
+						//	IntValue0 = ((intValue0 * iIndex) / IntValue2);
+						//  	now calculating DamageMitigation and storing it in IntValue1
+						//	IntValue1 = Clamp(5 * (m_kUFO.m_kTShip.iAP - (IntValue1 + kInterceptor.m_kTShip.iAP)), 0, 95);
+						//		now applying DamageMitigation to DPS
+						//	IntValue0 *= (100.0 - float(IntValue1)) / 100.0;
+						//		now addjusting for CritChance/Damage
+						//	IntValue1 = SHIPWEAPON(int(kTag.StrValue1)).iAP;
+						//	IntValue1 = Clamp((5 * ((IntValue1 + kInterceptor.m_kTShip.iAP) - m_kUFO.m_kTShip.iAP)) / 2, <CritMinChance>, <CritMaxChance>);
+						//	IntValue0 += int((float(IntValue1) / 100.0) * (float(IntValue0) * ( <CritDamageMultiplier> - 1.0) )) ;
+						//		checking for secondary weapon
+						//	if(int(StrValue0) > 0)
+						// 	[
+						//		IntValue0 *= <SparrowhawkDamageDivisor>;
+						// 	]
+						//		now storing temporary IntValue0 in StrValue2;
+						//	StrValue2 = string(IntValue0 + int(StrValue2));
+						//	StrValue0 = string(int(StrValue0) + 1);
+						//	goto NextShipWeapon;
+						// ]
+						// 		finally storing DPS in IntValue0
+						//	IntValue0 = int(StrValue2);
+						//		...and Aim in IntValue1
+						//	IntValue1 = iIndex;
+						//		...and Aggro in StrValue0
+						//	StrValue0 = string(m_akIntDistance[iJet].iMiles);
+						//		... and restoring proper value of iIndex
+						//	iIndex = iJet;
+						//
+						//	NOW LET'S PUT IT TO PSEUDO, UH....
+						
+						0F <!StrValue0> 1F <%t "0">
+						0F <!StrValue2> 1F <%t "0">
+						[#NextShipWeapon]
+						07 [@StoreDPS] 96 38 4A <!StrValue0> 36 35 <XGStrategyActorNativeBase.TShip.arrWeapons> <!Interceptor_m_kTShip> 16
+							0F <!StrValue1> 38 52 10 38 4A <!StrValue0> 35 <XGStrategyActorNativeBase.TShip.arrWeapons> <!Interceptor_m_kTShip>
+							0F <!IntValue0> 35 <XGStrategyActorNativeBase.TShipWeapon.iDamage> <XGStrategyActorNativeBase.TShipWeapon> 00 00 1B <SHIPWEAPON> 38 4A <!StrValue1> 16 
+							9F <!IntValue0> 1E <%f 1.25> 16
+							9F <!IntValue0> AE 1E <%f 1.0> AB 38 3F 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_iConfirmedKills> 00 ( 01 <XGShip_Interceptor.m_iConfirmedKills> ) 1E <%f 0.01> 16 16 16
+							07 [@DamageDone] 19 1B <LABS> 16 [@] <XGFacility_Labs.IsResearched.ReturnValue> 00 ( 1B <IsResearched> 92 38 3A 19 01 <@m_kUFO> [@] <XGShip.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 39 16 16 ) 
+								9F <!IntValue0> 1E <%f 1.1> 16
+							[#DamageDone]	
+							0F <!IntValue1> 35 <XGStrategyActorNativeBase.TShipWeapon.iAP> <XGStrategyActorNativeBase.TShipWeapon> 00 00 1B <SHIPWEAPON> 38 4A <!StrValue1> 16 
+							0F <!IntValue2> 38 44 AB 35 <XGStrategyActorNativeBase.TShipWeapon.fFiringTime> <XGStrategyActorNativeBase.TShipWeapon> 00 00 1B <SHIPWEAPON> 38 4A <!StrValue1> 16 1E <%f 100> 16
+							0F <!IntValue0> 91 90 <!IntValue0> 00 <.iIndex> 16 <!IntValue2> 16 
+							0F <!IntValue1> FB 90 2C 05 93 35 <XGStrategyActorNativeBase.TShip.iArmor> <XGStrategyActorNativeBase.TShip> 00 00 19 01 <@m_kUFO> [@] <XGShip.m_kTShip> 00 ( 01 <XGShip.m_kTShip> ) 92 <!IntValue1> 35 <XGStrategyActorNativeBase.TShip.iAP> <!Interceptor_m_kTShip> 16 16 16 25 2C 5F 16
+							9F <!IntValue0> AC AF 1E <%f 100> 38 3F <!IntValue1> 16 1E <%f 100> 16 16 
+							0F <!IntValue1> 35 <XGStrategyActorNativeBase.TShipWeapon.iAP> <XGStrategyActorNativeBase.TShipWeapon> 00 00 1B <SHIPWEAPON> 38 4A <!StrValue1> 16 
+							0F <!IntValue1> FB 91 90 2C 05 93 92 <!IntValue1> 35 <XGStrategyActorNativeBase.TShip.iAP> <!Interceptor_m_kTShip> 16 35 <XGStrategyActorNativeBase.TShip.iArmor> <XGStrategyActorNativeBase.TShip> 00 00 19 01 <@m_kUFO> [@] <XGShip.m_kTShip> 00 ( 01 <XGShip.m_kTShip> ) 16 16 2C 02 16 <!CritMinChance> <!CritMaxChance> 16
+							A1 <!IntValue0>	38 44 AB AC 38 3F <!IntValue1> 1E <%f 100> 16 AB 38 3F <!IntValue0> AF <!CritDamageMultiplier> 1E <%f 1.0> 16 16 16 16 
+							07 [@StoreTempData] 97 38 4A <!StrValue0> 25 16 
+								9F <!IntValue0> 1E <!SparrowhawkDamageDivisor> 16
+							[#StoreTempData]
+							0F <!StrValue2> 38 53 92 <!IntValue0> 38 4A <!StrValue2> 16
+							0F <!StrValue0> 38 53 92 26 38 4A <!StrValue0> 16
+							06 [@NextShipWeapon]
+						[#StoreDPS]
+						0F <!IntValue0> 38 4A <!StrValue2>
+						0F <!IntValue1> 00 <.iIndex>
+						0F <!StrValue0> 38 53 35 <XGInterceptionUI.TIntDistance.iMiles> <@TIntDistance> 00 00 10 00 <.iJet> 01 <@m_akIntDistance>	
+						0F 00 <.iIndex> 00 <.iJet>
+						
+
+
+						// SET DIFFERENT COLOR FOR 'DAMAGED BUT AVAILABLE' JET
+						// if (kInterceptor.IsDamaged() && kInterceptor.GetFuelPct() == 1.0 )
+						07 [@label_StatusBasedColor] 82 19 00 <.kInterceptor> [@] <XGShip.IsDamaged.ReturnValue> 00 ( 1B <IsDamaged> 16 ) 18 [@] ( B4 19 00 <.kInterceptor> [@] <XGShip_Interceptor.GetFuelPct.ReturnValue> 00 ( 1B <GetFuelPct> 16 ) 1E <%f 1.0> 16 16 )
+						
+							// m_kSquadron.arrJets[iJet].txtStatus.iState = AggroDamagedColor
+							0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtStatus> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 2C <!AggroDamagedColor> 
+							
+							//goto SkippedStatusColor
+							06 [@label_SkippedStatusColor]
+							
+						[#label_StatusBasedColor]	
+/*(0x0332/0x01FA)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtStatus> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 19 00 <.kInterceptor> [@] <XGShip.GetStatusUIState.ReturnValue> 00 ( 1B <GetStatusUIState> 16 ) 
+
+						[#label_SkippedStatusColor]
+/*(0x039E/0x023E)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtDistance> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 25 
+/*(0x0611/0x03C9)*/ 	07 [@label_0x0664] 9A 00 <.iJet> 01 <@m_iCurrentJet> 16 
+/*(0x0628/0x03D8)*/ 		14 2D 35 <XGInterceptionUI.TIntJet.bHighlighted> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 27 
+/*(0x0664/0x03FC)*/ 	[#label_0x0664]
+/*(0x0664/0x03FC)*/ 	07 [@label_0x06CE] 19 01 <@m_kInterception> [@] <XGInterception.HasInterceptor.ReturnValue> 00 ( 1B <HasInterceptor> 00 <.kInterceptor> 16 ) 
+/*(0x068F/0x041B)*/ 	0F 35 <XGInterceptionUI.TIntJet.iState> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 2C 05 	
+						/*-------------------------------------------------------------------------------------------
+						Here comes part for Interceptors selected to Launch. I will use the fact that we are 
+						currently looping through the sorted m_akIntDistance array and will sort m_kInterception.m_arrInterceptors. 
+						Sorting m_arrInterceptors is important for further aircombat mechanics. I am removing kInterceptor
+						from m_arrInterceptors and adding it back - it lands at the end of array for now. But once the loop is over
+						all selected interceptors will have been removed and added back in aggro descending order.*/
+						
+						//m_kInterception.m_arrInterceptors.RemoveItem(kInterceptor)
+						//m_kInterception.m_arrInterceptors.AddItem(kInterceptor)
+						
+						56 19 01 <@m_kInterception> [@] <XGInterception.m_arrInterceptors> 00 ( 01 <XGInterception.m_arrInterceptors> ) [@] ( 00 <.kInterceptor> 16 ) 
+						55 19 01 <@m_kInterception> [@] <XGInterception.m_arrInterceptors> 00 ( 01 <XGInterception.m_arrInterceptors> ) [@] ( 00 <.kInterceptor> 16 ) 
+						
+											
+						//ALSO, ADDING HERE DIFFERENT COLOR FOR STATUS/AGGRO LABEL DEPENDING ON DAMAGED/GOOD
+						// if kInterceptor.IsDamaged()
+						07 [@label_ColorForGood] 19 00 <.kInterceptor> [@] <XGShip.IsDamaged.ReturnValue> 00 ( 1B <IsDamaged> 16 ) 
+						
+							0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtStatus> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 2C <!AggroDamagedColor> 
+							
+							//goto SelectedColorSet
+							06 [@label_SelectedColorSet]
+							
+						[#label_ColorForGood]	
+							//m_kSquadron.arrJets[iJet].txtStatus.iState = 4
+							0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtStatus> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 2C <!AggroLabelColor> 
+						
+						[#label_SelectedColorSet]
+						/*---------------------------------------------------------------------------------------------------
+						Finally I am redirecting txt.Status.StrValue to localized m_strLabelThinkMilesAway which
+						was supposed to show distance from UFO to Interceptor - for us it will show stance, DPS and Aim%.
+						Also AGGRO will be added to Weapon's line.
+						---------------------------------------------------------------------------------------------------*/
+						//EXPANDING WEAPON INFO WITH AGGRO
+						//....@ "aggro:" @ kTag.StrValue0)
+						0F 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGInterceptionUI.TIntJet.txtOffense> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> A8 19 00 <.kInterceptor> [@] <XGShip_Interceptor.GetWeaponString.ReturnValue> 00 ( 1B <GetWeaponString> 16 ) 70 1F <%t "("> A8 38 53 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_iConfirmedKills> 00 ( 01 <XGShip_Interceptor.m_iConfirmedKills> ) A8 01 <@m_strLabelMaxSpeed> A8 1F <%t "aggro:"> <!StrValue0> 16 16 16 16 16 
+						
+						//DISPLAYING STANCE, DPS AND AIM IN THE 'LAUNCH' LINE
+						// kTag.StrValue1 = kInterceptor.GetStanceLabel()
+						0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue1> 00 ( 01 <XComGame.XGParamTag.StrValue1> ) 19 00 <.kInterceptor> [@] <XGShip.GetStanceLabel.ReturnValue> 00 ( 1B <GetStanceLabel> 16 ) 
+						
+						//m_kSquadron.arrJets[iJet].txtStatus.StrValue = class'XComLocalizer'.static.ExpandString(m_strLabelThinkMilesAway);
+						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtStatus> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelThinkMilesAway> 4A 16 ) 
+						
+						//CHANGING COLOR OF NAME AND WEAPON LABELS TO HeaderSelectedColor
+						//m_kSquadron.arrJets[iJet].txtJetName.StrValue = class'UIUtilities'.GetHTMLColoredText(m_kSquadron.arrJets[iJet].txtJetName.StrValue, HeaderSelectedColor)
+						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtJetName> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 
+						1B <GetHTMLColoredText> 
+							35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtJetName> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron>
+							2C <!HeaderSelectedColor>
+							4A
+						16 )
+						
+						//m_kSquadron.arrJets[iJet].txtOffense.StrValue = class'UIUtilities'.GetHTMLColoredText(m_kSquadron.arrJets[iJet].txtOffense.StrValue, HeaderSelectedColor)
+						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtOffense> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 
+						1B <GetHTMLColoredText> 
+							35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtOffense> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron>
+							2C <!HeaderSelectedColor>
+							2C 11
+						16 )
+						
+						/*------------------------------------------------------------------------------------------------*/
+/*(0x06CB/0x043F)*/ 		06 [@label_0x0798] 
+/*(0x06CE/0x0442)*/ 	[#label_0x06CE]
+/*(0x0228/0x0150)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGInterceptionUI.TIntJet.txtOffense> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> A8 19 00 <.kInterceptor> [@] <XGShip_Interceptor.GetWeaponString.ReturnValue> 00 ( 1B <GetWeaponString> 16 ) 70 1F <%t "("> A8 38 53 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_iConfirmedKills> 00 ( 01 <XGShip_Interceptor.m_iConfirmedKills> ) 01 <@m_strLabelMaxSpeed> 16 16 16 						
+/*(0x02C6/0x01B6)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGInterceptionUI.TIntJet.txtStatus> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 19 00 <.kInterceptor> [@] <XGShip_Interceptor.GetStatusString.ReturnValue> 00 ( 1B <GetStatusString> 16 ) 
+/*(0x06CE/0x0442)*/ 	07 [@label_0x075D] 84 9B 19 00 <.kInterceptor> [@] <XGShip_Interceptor.GetStatus.ReturnValue> 00 ( 1B <GetStatus> 16 ) 25 16 18 [@] ( 2D 35 <XGInterceptionUI.TIntDistance.bOutOfRange> <@TIntDistance> 00 00 10 00 <.iIndex> 01 <@m_akIntDistance> 16 ) 
+/*(0x071F/0x047B)*/ 		0F 35 <XGInterceptionUI.TIntJet.iState> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 26 
+/*(0x075A/0x049E)*/ 		06 [@label_0x0798] 
+/*(0x075D/0x04A1)*/ 	[#label_0x075D]
+/*(0x075D/0x04A1)*/ 	0F 35 <XGInterceptionUI.TIntJet.iState> <@TIntJet> 00 00 10 00 <.iJet> 35 <XGInterceptionUI.TIntSquadron.arrJets> <@TIntSquadron> 00 01 01 <@m_kSquadron> 25 
+/*(0x0798/0x04C4)*/ 	[#label_0x0798]
+/*(0x0798/0x04C4)*/ 	A1 00 <.iJet> 26 16 
+/*(0x07A4/0x04CC)*/ 	[#label_0x07A4]
+/*(0x07A4/0x04CC)*/ 	A5 00 <.iIndex> 16 
+/*(0x07AF/0x04D3)*/ 	06 [@label_0x0052] 
+/*(0x07B2/0x04D6)*/ [#label_0x07B2]
+/*(0x07B2/0x04D6)*/ 04 0B 
+/*(0x07B4/0x04D8)*/ 53 

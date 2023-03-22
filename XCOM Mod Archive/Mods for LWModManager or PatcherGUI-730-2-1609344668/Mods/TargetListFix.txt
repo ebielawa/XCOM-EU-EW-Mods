@@ -1,0 +1,18 @@
+MOD_NAME = TargetList&Radar Fix
+AUTHOR = Lafiir
+DESCRIPTION = Because the TargetList is in the top-left when using a Controller, activating the Radar causes an UI glitch. This Patch simply moves the list further to the right.
+
+UPK_FILE = XComGame.upk
+OBJECT = UISightlineHUD_SightlineContainer.OnInit : AUTO
+[REPLACEMENT_CODE]
+1C <UI_FxsPanel.OnInit> 16
+07 [@label_0x0039] 19 01 <UI_FxsPanel.manager> [@] <UIFxsMovie.IsMouseActive.ReturnValue> 00 ( 1B <IsMouseActive> 16 )
+    1B <AS_AnchorToBottomRight> 16
+    06 [@label_0x00DF]
+[#label_0x0039]
+    1B <AS_AnchorToTopLeft> 28 16
+[#label_0x00DF]
+19 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.MyWatchVariableMgr> 00 ( 01 <Engine.WorldInfo.MyWatchVariableMgr> ) [@] <Engine.WatchVariableMgr.RegisterWatchVariable.ReturnValue> 00 ( 1B <RegisterWatchVariable> 2E <Class.XComTacticalController> 01 <UI_FxsPanel.controllerRef> 21 <m_kActiveUnit> 17 43 <UpdateActiveUnit> <NullRef> 4A 16 )
+1B <UpdateActiveUnit> 16
+04 0B
+53

@@ -1,0 +1,65 @@
+UPK_FILE=xcomstrategygame.upk
+//----------------------------------------------------------------------------------
+// DISPLAYING UFO STANCE (AND TIME UNTIL OUTRUN) ON UFO-CONTACT CARD
+// AS WELL AS UFO HULL STRENGTH FOR RESEARCHED UFO
+//----------------------------------------------------------------------------------
+OBJECT = UIMissionControl_UFORadarContactAlert.UpdateData : AUTO
+ALIAS=UFOIndex:10 35 <XGMissionControlUI.TMCMenu.iHighlight> <XGMissionControlUI.TMCMenu> 00 00 19 1B <GetMgr> 16 [@] <XGMissionControlUI.m_kMenu> 00 ( 01 <XGMissionControlUI.m_kMenu> ) 19 1B <GetMgr> 16 [@] <XGMissionControlUI.m_arrMenuUFOs> 00 ( 01 <XGMissionControlUI.m_arrMenuUFOs> ) 
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 0F 00 <.kAlert> 19 1B <GetMgr> 4A 16 [@] <XGMissionControlUI.m_kCurrentAlert> 00 ( 01 <XGMissionControlUI.m_kCurrentAlert> ) 
+/*(0x002A/0x001E)*/ 0F 00 <.colorState> 45 19 19 19 2E <Class.XComHeadquartersGame> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComHeadquartersGame.GetGameCore.ReturnValue> 00 ( 1B <GetGameCore> 16 ) [@] <XGStrategy.GetHQ.ReturnValue> 00 ( 1B <GetHQ> 16 ) [@] <XGHeadQuarters.IsHyperwaveActive.ReturnValue> 00 ( 1B <IsHyperwaveActive> 16 ) [@] ( 2C 0A ) [@] ( 2C 03 ) 
+
+				07 [@InterceptionIsOn] 72 01 <@m_kInterceptedUFO> 2A 16 
+					0F 01 <@m_kInterceptedUFO> 19 19 1B <GetMgr> 16 [@] <XGStrategyActorNativeBase.AI.ReturnValue> 00 ( 1B <AI> 16 ) [@] <XGStrategyAI.GetUFO.ReturnValue> 00 ( 1B <GetUFO> <!UFOIndex> 16 )
+					
+					1B <AS_SetContact> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 25 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 00 <.colorState> 4A 16 ) 
+					A8 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 25 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 70 1F <%t " ("> 70 19 01 <@m_kInterceptedUFO> [@] <XGShip.GetStanceLabel.ReturnValue> 00 ( 1B <GetStanceLabel> 16 ) 1F <%t ")"> 16 16 16 16
+					
+					06 [@proceed]
+					[#InterceptionIsOn]
+					//EXPAND UFO ID STRING WITH STANCE OF UFO AND EXPECTED 'TIME UNTIL OUTRUN'
+/*(0x0120/0x00CC)*/ 1B <AS_SetContact> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 25 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 00 <.colorState> 4A 16 ) 
+					A8 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 25 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert>
+					45 97 36 19 19 01 <@m_kInterceptMgr> [@] <XGInterceptionUI.m_kInterception> 00 ( 01 <XGInterceptionUI.m_kInterception> ) [@] <XGInterception.m_arrInterceptors> 00 ( 01 <XGInterception.m_arrInterceptors> ) 25 16 
+					[@] 
+					( 70 1F <%t " (">
+					70 19 01 <@m_kInterceptedUFO> [@] <XGShip.GetStanceLabel.ReturnValue> 00 ( 1B <GetStanceLabel> 16 ) A8 1F <%t ", "> 
+					70 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGInterceptionUI.TIntTarget.txtSpeed> <XGInterceptionUI.TIntTarget> 00 01 19 01 <@m_kInterceptMgr> [@] <XGInterceptionUI.m_kTarget> 00 ( 01 <XGInterceptionUI.m_kTarget> ) 
+					1F <%t "s)">
+					16 16 16 16 )
+					[@]
+					( 70 1F <%t " ("> 70 19 01 <@m_kInterceptedUFO> [@] <XGShip.GetStanceLabel.ReturnValue> 00 ( 1B <GetStanceLabel> 16 ) 1F <%t ")"> 16 16 )
+					16 16 
+					
+					[#proceed]
+/*(0x00BC/0x0088)*/ 1B <AS_SetTitle> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCAlert.txtTitle> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 00 <.colorState> 4A 16 ) 16 
+/*(0x01B7/0x012F)*/ 1B <AS_SetLocation> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 26 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 00 <.colorState> 4A 16 ) 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 26 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 
+
+					//COMBINING CLASS AND SIZE IN ONE ROW
+/*(0x024E/0x0192)*/ 1C <@AS_SetSize> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB A8 80 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 02 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 7E 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 02 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 1F <%t ":"> 16 16 70 1F <%t "("> 70 80 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 03 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 7E 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 03 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 1F <%t ":"> 16 16 1F <%t "):"> 16 16 16 16 00 <.colorState> 4A 16 ) 
+			A8 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 02 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 
+				70 1F <%t "("> 70 
+				45 19 19 1B <GetMgr> 16 [@] <XGStrategyActorNativeBase.LABS.ReturnValue> 00 ( 1B <LABS> 16 ) [@] <XGFacility_Labs.IsResearched.ReturnValue> 00 ( 1B <IsResearched> 92 38 3A 19 01 <@m_kInterceptedUFO> [@] <XGShip.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 39 16 16 )
+				[@] 
+				( 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 03 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> )
+				[@]
+				( 1F <%t "???"> ) 
+				1F <%t ")">
+			16 16 16  
+			16 
+				//REPLACE SIZE STRING WITH UFO ARMOR - IF RESEARCHED
+/*(0x02E7/0x01F3)*/ 1B <AS_SetClass> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 70 12 20 <Class.XGSoldierUI> [@] <XGSoldierUI.m_strArmor> 00 ( 02 <XGSoldierUI.m_strArmor> ) 1F <%t ":"> 16 16 00 <.colorState> 4A 16 ) 
+				45 19 19 1B <GetMgr> 16 [@] <XGStrategyActorNativeBase.LABS.ReturnValue> 00 ( 1B <LABS> 16 ) [@] <XGFacility_Labs.IsResearched.ReturnValue> 00 ( 1B <IsResearched> 92 38 3A 19 01 <@m_kInterceptedUFO> [@] <XGShip.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 39 16 16 )
+				[@] 
+				( A8 38 53 19 01 <@m_kInterceptedUFO> [@] <XGShip.m_iHP> 00 ( 01 <XGShip.m_iHP> ) A8 1F <%t "/"> 38 53 19 01 <@m_kInterceptedUFO> [@] <XGShip.GetHullStrength.ReturnValue> 00 ( 1B <GetHullStrength> 16 ) 16 16 )
+				[@]
+				( 1F <%t "???"> )  
+				16 
+/*(0x0380/0x0258)*/ 07 [@label_0x0409] 9A 00 <.colorState> 2C 0A 16 
+/*(0x0390/0x0264)*/ 	1C <@AS_SetHyperwaveDataSlim> 01 <UIMissionControl_UFOAlert.m_strHyperwavePanelTitle> EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 04 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 04 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 
+/*(0x0409/0x02AD)*/ [#label_0x0409]
+/*(0x0409/0x02AD)*/ 07 [@label_0x042A] FE 01 <@m_nCachedState> 21 <UFOContact> 16 
+/*(0x0420/0x02C0)*/ 	1B <UpdateButtonText> 16 
+/*(0x042A/0x02CA)*/ [#label_0x042A]
+/*(0x042A/0x02CA)*/ 04 0B 
+/*(0x042C/0x02CC)*/ 53 

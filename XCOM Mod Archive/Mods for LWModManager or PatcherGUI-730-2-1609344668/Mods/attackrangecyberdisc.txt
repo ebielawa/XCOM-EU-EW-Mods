@@ -1,0 +1,9 @@
+DESCRIPTION= cyberdiscattack range
+UPK_FILE=XComGame.upk
+OBJECT=XGAIBehavior_Cyberdisc.GetReasonableAttackRange
+[BEFORE_HEX]
+04 AB 1E 00 00 40 41 38 3F 2C 40 16
+//return 12.0 * float(64)
+[AFTER_HEX]
+04 AB 1E 00 00 F0 41 38 3F 2C 40 16
+//return 30.0 * float(64)

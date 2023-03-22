@@ -1,0 +1,325 @@
+MOD_NAME=SQUADRON UNLEASHED CONFIGURATOR
+AUTHOR=szmind
+DESCRIPTION=Requires Squadron Unleashed 1.1.b This little addition allows for quick configuration of parameters used in Squadron Unleashed without necessity to re-install whole mod. You can patch over any configuration without uninstalling the previos one. Just set new parameters and apply patch. Then set others and patch. If you decide to remove the whole mod just use the main uninstall script of the whole mod - no necessity to uninstall configs. If you plan to use it often you can consider turning off generating uninstall script of each config (if so, uncomment the line just 2 lines below).
+
+UPK_FILE=XcomStrategyGame.upk
+UNINSTALL=FALSE 						
+//----------------------------------------------- 
+//SHIP SELECTION AND LITTLE COLOR MANAGEMENT
+// For alternative color codes see end of config section
+//-----------------------------------------------
+ALIAS=RefuellingHours:<%b 6>			//<%b X> means: X hours to refuel a jet 
+ALIAS=MinHP_PctToLaunch:<%f 0.50>		//<%f 0.XX> means: if a jet has >XX% HP it can be launched
+ALIAS=MinSquadronSize:<%b 1>			//self explanatory
+ALIAS=MaxSquadronSize:<%b 6>			//self explanatory
+ALIAS=DamagedJetSpeedModifier:<%f 0.80>	//<%f 0.XX> means: a damaged jet flies at XX% geoscape speed (and has only XX% of contact time) 
+ALIAS=DamagedJetAimPenalty:<%i 25>		//<%i XX> means: a damaged jet suffer -XX penalty to aim
+ALIAS=AggroLabelColor:04 				//color of label for 'non-damaged' ships; default 04 (yellow)
+ALIAS=AggroDamagedColor:0A				//color of label for 'damaged' ships; default 0A (orange)
+ALIAS=HeaderSelectedColor:07 			//color of name/weapon's labels for 'non-damaged' ships; default 07 (cyan)
+ALIAS=EngageWeaponStringFontSize:<%b 18>//font size of weapon's label on the battle screen
+ALIAS=EngageWeaponStringColorNormal:05 	//color code of weapon's label for non-damaged ships, on the battle screen; default 05 (white)
+ALIAS=EngageWeaponStringColorDamaged:0C //color code of weapon's label for damaged ships, on the battle screen; default 0C (orange)
+ALIAS=EngageHPBarColor:07				//color code of "HP bar" of supporting ships, on the battle screen, default: cyan (07)
+//----------------------------------------------- 
+//'UFO Interception Tweak' mod incorporation; 
+// with permission of SpazmoJones (aka Eclipse666) and with credit to him
+//-----------------------------------------------
+ALIAS=SpazmoFactor:<%f 1.0>		//time MULTIPLIER/damage DIVISOR (don't you dare setting zero :) from "UFO Interception Tweak" by SpazmoJones (here default at 1.0)
+ALIAS=SloMoPlayback:<%f 1.0>	//you can slow down time passing during engagement with this; set it < 1.0 (or speed up > 1.0)
+//------------------------------------------------
+// COMBAT MECHANICS RELATED STAFF
+//------------------------------------------------
+ALIAS=PenaltyToHitSmallUFO:<%b 10>		//<%b XX> means: shots at small-sized UFOs suffer -XX penalty to aim
+ALIAS=BonusToHitLargeUFO:<%b 15>		//<%b XX> means: shots at large-sized UFOs have +15 bonus to aim
+ALIAS=AGG_JetVulnerability:<%f 1.25>	//<%f 1.XX> means: AGG jet receives +XX% damage
+ALIAS=UFO_StanceLimit:<%b 3>			//1=UFO always on BAL, 2=UFO picks only AGG/BAL, 3=all stances available (default)
+
+//CONTACT TIME = SLOWEST_JET_SPEED / UFO_SPEED x 30s
+ALIAS=SpeedBoostForDEFUFO:<%f 1.40> 	//battle speed of DEF UFO is multiplied by this changing contact time, example 1 / 1.33 = 0.75 (75% of normal contact time)
+ALIAS=SpeedDownForAGGUFO:<%f 0.65>		//battle speed of AGG UFO is multiplied by this changing contact time, example: 1 / 0.67 = 1.50 (150% of normal contact time)
+
+ALIAS=CooldownModForAGGUFO:<%f 0.80>	// multiplier for cooldown UFO weapons' on AGG - changinf firing speedd, example: 1/0.75 = 1.33 (133% firing speed)
+ALIAS=AGG_AimBonus:<%b 17>				//<%b XX> means: XCOM jets (only XCOM!) with AGG stance have +XX bonus to aim
+ALIAS=DEF_AimPenalty:<%b 15>			//<%b XX> means: ships (ALL) with DEF stance have -XX penalty to aim
+ALIAS=DEFHitToMiss:1D <%i 20>			//<%i XX> means: XX% of hits at XCOM jet (only XCOM!) on DEF stance are turned into a miss
+ALIAS=AimBonusPerKill:<%i 3>			//<%i X> means: +X to aim per each kill
+ALIAS=MaxBonusForKills:<%i 30>			//<%i XX> means: +XX is maximum bonus for kills
+ALIAS=BAL_SupportHitRisk:1D <%i 20>		//<%i XX> means: XX percent chance for supporting XCOM ship on BAL to be hit by "lone bullet"
+ALIAS=AGG_SupportHitRisk:1D <%i 40>		//<%i XX> means: XX percent chance for supporting XCOM ship on AGG to be hit by "lone bullet"
+ALIAS=LoneBulletDamageScaler:1E <%f 0.80>//<%f 0.XX> means: lone bullets deal XX% damage
+ALIAS=AutoAbortThreshold:1E <%f 0.25>	//<%f 0.XX> means: at XX% of HP a supporting ship auto-disengages; 0.0 would mean 'never abort'
+ALIAS=CritMaxChance:1D <%i 25>			//<%i XX> means: max XX% chance for crit hit
+ALIAS=CritMinChance:1D <%i 5>			//<%i XX> means: min XX% chance for crit hit
+ALIAS=CritDamageMultiplier:<%f 1.5>		//<%f X.Y> means: crit damage = normal damage * X.Y
+ALIAS=UFODestructionChanceScaler:<%f 1.0>	//fraction of original LW destruction chance, e.g. 0.75 would mean 75% of orig LW chance
+ALIAS=UFODestructionPctThreshold:<%b 10>	//<%b XX> means: -XX to chance of destruction (see below for more info) 
+/*************************************************
+UFO destruction modifiers: you can scale original LW chance of UFO destruction with one simple factor.
+This still means that even a small overkill translates into small chance of destruction.
+Therefore you can also set a minimum threshold of overkill above which the chance starts occuring at all.
+The threshold translates into percent chance that must be accumulated before it is applied at all.
+So for example setting threshold at 20 means that if chance of destruction is < 20% UFO crashes without checking the chance.
+Well, actually the check is performed but you get a +20 handicap (your dice rolls 20-120 instead of 0-100)
+If you overkill for 30% chance with the above setting the actual chance will be (30 - 20)= 10%
+**********************************************/
+//-----------------------------------------------
+// MISCELLANEOUS
+//-----------------------------------------------
+ALIAS=SparrowhawkDamageDivisor:<%f 0.50> 	//<%f 0.XX> means: Sparrowhawks damage = stingray damage * 0.XX
+ALIAS=SparrowhawkWeaponType:<%b 116>	//This number determines that Sparrowhawk project gives 'Stingray' as secondary weapon; 
+										//if you have a crazy idea to change it look for other codes at the end
+ALIAS=AggroIncreaseForAGG:<%b 2>		//<%b X> means: +X to aggro of a ship picking AGG stance 
+ALIAS=AggroDecreaseForDEF:<%b 2>		//<%b X> means: -X to aggro of a ship picking AGG stance 
+
+/*---------------------------------------------------------
+						Alternative color codes 
+						01  - Grey
+						02  - Green (original)
+						03  - Red
+						04  - Yellow
+						05  - White
+						06  - Green (original)
+						07	- Cyan (basic)
+						08	- Cyan
+						09	- Cyan
+						0A  - Orange
+						0B  - Purple
+						0C  - Orange
+						other  - Cyan
+--------------------------------------------------------*/
+/*---------------------------------------------------------
+						Alternative weapon codes 
+						(to replace Stingray with sth different - as Sparrowhawk project result)
+						117 - Cannon (Phoenix/Coilgun)
+						116 - Stingray
+						118 - Avalanche
+						119 - Laser
+						120 - Plasma
+						121 - EMP Cannon
+						122 - Fusion Lance
+--------------------------------------------------------*/
+
+/**********************************************************************************************************
+				MODDING SECTION - APPLIANCE OF THE SETTINGS
+**********************************************************************************************************/
+OBJECT = XGShip_Interceptor.EquipWeapon
+[FIND_HEX]
+//ENGINEERING().IsFoundryTechResearched(27)
+19 1B 39 0D 00 00 00 00 00 00 16 0C 00 E6 35 00 00 00 1B EC 17 00 00 00 00 00 00 2C 1B 16
+//m_kTShip.arrWeapons.AddItem(HANGAR().ItemTypeToShipWeapon
+55 35 70 25 00 00 7B 25 00 00 00 00 01 48 4B 00 00 2C 00 38 3A 19 1B 1A 14 00 00 00 00 00 00 16 13 00 59 37 00 00 00 1B D3 18 00 00 00 00 00 00 2C:END
+MODDED_CODE=<!SparrowhawkWeaponType>
+
+OBJECT = XGFacility_Hangar.DetermineInterceptorStatus
+FIND_CODE=0F 19 00 <.kInterceptor> [@] <XGShip_Interceptor.m_iHoursDown> 00 ( 01 <XGShip_Interceptor.m_iHoursDown> ) 2C:END
+MODDED_CODE=<!RefuellingHours>
+FIND_HEX=07 B4 00 B3 19 00 D0 36 00 00 0A 00 F4 4B 00 00 00 1B 31 12 00 00 00 00 00 00 16 1E:END
+MODDED_CODE=<!MinHP_PctToLaunch>
+
+OBJECT = XGFacility_Hangar.Update
+FIND_HEX=07 42 04 B3 19 00 B2 36 00 00 0A 00 F4 4B 00 00 00 1B 31 12 00 00 00 00 00 00 16 1E:END
+MODDED_CODE=<!MinHP_PctToLaunch>
+
+OBJECT = XGInterception.ToggleInterceptor
+FIND_HEX=0F 00 5C 58 00 00 FB 00 5C 58 00 00:END
+MODDED_CODE=2C <!MinSquadronSize> 2C <!MaxSquadronSize>
+FIND_HEX=0F 01 5E 58 00 00 F9 01 5E 58 00 00 38 44 AB 1E:END
+MODDED_CODE=<!DamagedJetSpeedModifier>
+
+OBJECT = XGShip.GetScreenSpeedPerSecond
+FIND_HEX=0F 00 7B 4B 00 00 1C 8A FD FF FF 1C 68 FD FF FF 1B FD 24 00 00 00 00 00 00 38 44 AB 1E:END
+MODDED_CODE=<!DamagedJetSpeedModifier>
+FIND_HEX=38 3F 1B 60 13 00 00 00 00 00 00 16 16 16 1B FE 24 00 00 00 00 00 00 38 44 AB 1E:END
+MODDED_CODE=<!DamagedJetSpeedModifier>
+
+OBJECT = XGInterceptionUI.UpdateCurrentTarget
+FIND_HEX=0F 19 00 70 42 00 00 09 00 88 FB FF FF 00 01 88 FB FF FF F9 19 00 70 42 00 00 09 00 88 FB FF FF 00 01 88 FB FF FF AB 1E:END
+MODDED_CODE=<!DamagedJetSpeedModifier>
+FIND_HEX=45 9A 19 01 54 42 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 26 16 05 00:END
+MODDED_CODE=1E <!SpeedDownForAGGUFO> 05 00 1E <!SpeedBoostForDEFUFO>
+FIND_HEX=80 38 55 AB AB 1E:END
+MODDED_CODE=<!SpazmoFactor>
+
+OBJECT = XGInterceptionEngagement.GetTimeUntilOutrun
+FIND_HEX=45 9A 19 2E 15 4C 00 00 00 47 41 00 00 09 00 DF 4B 00 00 00 01 DF 4B 00 00 25 16 05 00 1E 00 00 80 3F 05 00 1E:END
+MODDED_CODE=<!DamagedJetSpeedModifier>
+FIND_HEX=0F 00 46 41 00 00 AC 38 3F 35 76 25 00 00 7B 25 00 00 00 00 19 00 48 41 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 1E:END
+MODDED_CODE=<!SpazmoFactor>
+[FIND_HEX]
+9A 19 00 48 41 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 2C 01 16
+B6 00 46 41 00 00 1E:END
+MODDED_CODE=<!SpeedDownForAGGUFO>
+[FIND_HEX]
+9A 19 00 48 41 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 2C 02 16
+B6 00 46 41 00 00 1E:END
+MODDED_CODE=<!SpeedBoostForDEFUFO>
+
+OBJECT = XGInterceptionEngagement.UpdateWeapons
+FIND_HEX=B8 10 00 57 41 00 00 19 00 59 41 00 00 09 00 41 4B 00 00 00 01 41 4B 00 00 AB 1E:END
+MODDED_CODE=<!CooldownModForAGGUFO>
+FIND_HEX=45 9A 00 58 41 00 00 25 16 01 00 25 4F 00:END
+MODDED_CODE=FB 90 1D <!AimBonusPerKill> 19 10 93 00 <.iShip> 26 16 19 01 <@m_kInterception> [@] <XGInterception.m_arrInterceptors> 00 ( 01 <XGInterception.m_arrInterceptors> ) [@] <XGShip_Interceptor.m_iConfirmedKills> 00 ( 01 <XGShip_Interceptor.m_iConfirmedKills> ) 16 25 1D <!MaxBonusForKills> 16
+FIND_HEX=2C 0B A2 00 56 41 00 00 2C:END
+MODDED_CODE=<!PenaltyToHitSmallUFO>
+FIND_HEX=2C 0E A1 00 56 41 00 00 2C:END
+MODDED_CODE=<!BonusToHitLargeUFO>
+[FIND_HEX]
+9A 19 00 59 41 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 2C 01 16
+A1 00 56 41 00 00 2C:END
+MODDED_CODE=<!AGG_AimBonus>
+[FIND_HEX]
+19 00 59 41 00 00 0A 00 5C 4B 00 00 00 1B C3 17 00 00 00 00 00 00 16
+A2 00 56 41 00 00 1D:END
+MODDED_CODE=<!DamagedJetAimPenalty>
+[FIND_HEX]
+9A 19 00 59 41 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 2C 02 16
+A2 00 56 41 00 00 2C:END
+MODDED_CODE=<!DEF_AimPenalty>
+[FIND_HEX]
+9B 00 57 41 00 00 25 16
+9F 35 EB 0C 00 00 F0 0C 00 00 00 01 00 5C 41 00 00 1E:END
+MODDED_CODE=<!SparrowhawkDamageDivisor>
+
+OBJECT = UIShipLoadout.RealizeSelected
+FIND_HEX=1B E9 02 00 00 00 00 00 00 25 12 20 6E FE FF FF 09 00 5E F9 FF FF 00 02 5E F9 FF FF 70 70 70 38 53 F9 93 35 44 03 00 00 4C 03 00 00 00 00 00 EB 14 00 00 2C:END 
+MODDED_CODE=<!DEF_AimPenalty>
+FIND_HEX=5F 16 1F 7C 00 16 70 38 53 F9 35 44 03 00 00 4C 03 00 00 00 00 00 EB 14 00 00 2C 5F 16 1F 7C 00 16 16 70 38 53 F9 92 35 44 03 00 00 4C 03 00 00 00 00 00 EB 14 00 00 2C:END
+MODDED_CODE=<!AGG_AimBonus>
+FIND_HEX=0F 00 EC 14 00 00 38 53 38 44 AB 38 3F 00 F0 14 00 00 AC 38 3F F9 93 35 44 03 00 00 4C 03 00 00 00 00 00 EB 14 00 00 2C:END
+MODDED_CODE=<!DEF_AimPenalty>
+FIND_HEX=0F 00 EC 14 00 00 70 00 EC 14 00 00 70 1F 7C 00 38 53 38 44 AB 38 3F 00 F0 14 00 00 AC 38 3F F9 92 35 44 03 00 00 4C 03 00 00 00 00 00 EB 14 00 00 2C:END
+MODDED_CODE=<!AGG_AimBonus>
+
+OBJECT = XGHangarUI.BuildShipWeaponCard 
+FIND_HEX=A1 35 7A FB FF FF B3 F9 FF FF 00 01 00 85 3E 00 00 FB 90 1D:END
+MODDED_CODE=<!AimBonusPerKill>
+FIND_HEX=19 2E 15 4C 00 00 01 67 3E 00 00 09 00 E2 4B 00 00 00 01 E2 4B 00 00 16 25 1D:END
+MODDED_CODE=<!MaxBonusForKills>
+FIND_HEX=F5 AC 38 3F 93 35 7A FB FF FF B3 F9 FF FF 00 01 00 85 3E 00 00 2C:END
+MODDED_CODE=<!DEF_AimPenalty>
+FIND_HEX=F4 AC 38 3F 92 35 7A FB FF FF B3 F9 FF FF 00 01 00 85 3E 00 00 2C:END
+MODDED_CODE=<!AGG_AimBonus>
+
+OBJECT = XGInterceptionUI.UpdateSquadron
+FIND_HEX=9A 35 72 25 00 00 7B 25 00 00 00 00 19 00 75 42 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 2C 01 16 A1 00 74 42 00 00 2C:END
+MODDED_CODE=<!AggroIncreaseForAGG>
+FIND_HEX=9A 35 72 25 00 00 7B 25 00 00 00 00 19 00 75 42 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 2C 02 16 A2 00 74 42 00 00 2C:END
+MODDED_CODE=<!AggroDecreaseForDEF>
+FIND_HEX=A1 00 74 42 00 00 F9 90 19 00 75 42 00 00 09 00 E2 4B 00 00 00 01 E2 4B 00 00:END
+MODDED_CODE=1D <!AimBonusPerKill> 16 1D <!MaxBonusForKills>
+[FIND_HEX]
+9A 19 00 75 42 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 2C 01 16
+A1 00 74 42 00 00 2C:END
+MODDED_CODE=<!AGG_AimBonus>
+[FIND_HEX]
+9A 19 00 75 42 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 2C 02 16
+A2 00 74 42 00 00 2C:END
+MODDED_CODE=<!DEF_AimPenalty>
+FIND_HEX=2C 0B A2 00 74 42 00 00 2C:END
+MODDED_CODE=<!PenaltyToHitSmallUFO>
+FIND_HEX=2C 0E A1 00 74 42 00 00 2C:END
+MODDED_CODE=<!BonusToHitLargeUFO>
+[FIND_HEX]
+19 00 75 42 00 00 0A 00 5C 4B 00 00 00 1B C3 17 00 00 00 00 00 00 16
+A2 00 74 42 00 00 1D:END
+MODDED_CODE=<!DamagedJetAimPenalty>
+FIND_HEX=0F 19 00 72 42 00 00 09 00 88 FB FF FF 00 01 88 FB FF FF FB 91 90 2C 05 93 92 19 00 72 42 00 00 09 00 88 FB FF FF 00 01 88 FB FF FF 35 74 25 00 00 7B 25 00 00 00 00 19 00 75 42 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 16 35 73 25 00 00 7B 25 00 00 00 00 19 01 54 42 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 16 16 2C 02 16:END
+MODDED_CODE=<!CritMinChance> <!CritMaxChance>
+[FIND_HEX]
+A1 19 00 72 42 00 00 09 00 89 FB FF FF 00 01 89 FB FF FF 38 44 AB AC 38 3F 19 00 72 42 00 00 09 00 88 FB FF FF 00 01 88 FB FF FF 1E 00 00 C8 42 16 AB 38 3F 19 00 72 42 00 00 09 00 89 FB FF FF 00 01 89 FB FF FF AF 1E:END
+MODDED_CODE=<!CritDamageMultiplier>
+[FIND_HEX]
+97 38 4A 19 00 72 42 00 00 09 00 01 F9 FF FF 00 01 01 F9 FF FF 25 16
+9F 19 00 72 42 00 00 09 00 89 FB FF FF 00 01 89 FB FF FF 1E:END
+MODDED_CODE=<!SparrowhawkDamageDivisor>
+FIND_HEX=0F 35 A9 FA FF FF 97 F9 FF FF 00 00 35 A8 11 00 00 B1 11 00 00 00 00 10 00 73 42 00 00 35 42 42 00 00 43 42 00 00 00 01 01 5C 42 00 00 2C:END
+MODDED_CODE=<!AggroDamagedColor>
+FIND_HEX=0F 35 A9 FA FF FF 97 F9 FF FF 00 00 35 A8 11 00 00 B1 11 00 00 00 00 10 00 73 42 00 00 35 42 42 00 00 43 42 00 00 00 01 01 5C 42 00 00 2C:END
+MODDED_CODE=<!AggroDamagedColor>
+FIND_HEX=0F 35 A9 FA FF FF 97 F9 FF FF 00 00 35 A8 11 00 00 B1 11 00 00 00 00 10 00 73 42 00 00 35 42 42 00 00 43 42 00 00 00 01 01 5C 42 00 00 2C:END
+MODDED_CODE=<!AggroLabelColor>
+FIND_HEX=0F 35 E6 F8 FF FF 97 F9 FF FF 00 00 35 AF 11 00 00 B1 11 00 00 00 00 10 00 73 42 00 00 35 42 42 00 00 43 42 00 00 00 01 01 5C 42 00 00 12 20 65 FE FF FF 59 00 4D F9 FF FF 00 1B 35 12 00 00 00 00 00 00 35 E6 F8 FF FF 97 F9 FF FF 00 00 35 AF 11 00 00 B1 11 00 00 00 00 10 00 73 42 00 00 35 42 42 00 00 43 42 00 00 00 01 01 5C 42 00 00 2C:END
+MODDED_CODE=<!HeaderSelectedColor>
+FIND_HEX=0F 35 E6 F8 FF FF 97 F9 FF FF 00 00 35 AC 11 00 00 B1 11 00 00 00 00 10 00 73 42 00 00 35 42 42 00 00 43 42 00 00 00 01 01 5C 42 00 00 12 20 65 FE FF FF 5A 00 4D F9 FF FF 00 1B 35 12 00 00 00 00 00 00 35 E6 F8 FF FF 97 F9 FF FF 00 00 35 AC 11 00 00 B1 11 00 00 00 00 10 00 73 42 00 00 35 42 42 00 00 43 42 00 00 00 01 01 5C 42 00 00 2C:END
+MODDED_CODE=<!HeaderSelectedColor>
+
+OBJECT = UIInterceptionEngagement.OnInit
+FIND_HEX=45 97 19 19 19 01 7A 0C 00 00 09 00 E1 41 00 00 00 01 E1 41 00 00 0B 00 72 41 00 00 00 1B 3F 13 00 00 00 00 00 00 26 16 09 00 DF 4B 00 00 00 01 DF 4B 00 00 25 16:END
+MODDED_CODE=02 00 2C <!EngageWeaponStringColorDamaged> 02 00 2C <!EngageWeaponStringColorNormal> 24 <!EngageWeaponStringFontSize> 
+
+OBJECT = XGInterceptionEngagement.GetSquadronStatusBrief
+FIND_HEX=45 96 00 81 41 00 00 38 44 AB 19 00 60 58 00 00 0A 00 F4 4B 00 00 00 1B 31 12 00 00 00 00 00 00 16 1E 00 00 C0 41 16 16 02 00 2C:END
+MODDED_CODE=<!EngageHPBarColor>
+
+OBJECT = UIInterceptionEngagement.TryAbort
+FIND_HEX=45 97 19 19 19 01 7A 0C 00 00 09 00 E1 41 00 00 00 01 E1 41 00 00 3D 00 72 41 00 00 00 1B 3F 13 00 00 00 00 00 00 19 19 01 7A 0C 00 00 09 00 E1 41 00 00 00 01 E1 41 00 00 09 00 E0 0C 00 00 00 01 E0 0C 00 00 16 09 00 DF 4B 00 00 00 01 DF 4B 00 00 25 16:END
+MODDED_CODE=02 00 2C <!EngageWeaponStringColorDamaged> 02 00 2C <!EngageWeaponStringColorNormal> 24 <!EngageWeaponStringFontSize>
+FIND_HEX=45 97 19 19 19 01 7A 0C 00 00 09 00 E1 41 00 00 00 01 E1 41 00 00 3D 00 72 41 00 00 00 1B 3F 13 00 00 00 00 00 00 19 19 01 7A 0C 00 00 09 00 E1 41 00 00 00 01 E1 41 00 00 09 00 E0 0C 00 00 00 01 E0 0C 00 00 16 09 00 DF 4B 00 00 00 01 DF 4B 00 00 25 16:END
+MODDED_CODE=02 00 2C <!EngageWeaponStringColorDamaged> 02 00 2C <!EngageWeaponStringColorNormal> 24 <!EngageWeaponStringFontSize>
+
+OBJECT = UIInterceptionEngagement.Playback
+FIND_HEX=B6 00 D4 0C 00 00 1E:END
+MODDED_CODE=<!SloMoPlayback>
+FIND_HEX=0F 35 6F 0C 00 00 73 0C 00 00 00 01 00 CE 0C 00 00 91 35 6F 0C 00 00 73 0C 00 00 00 01 00 CE 0C 00 00 38 44 1E:END
+MODDED_CODE=<!SpazmoFactor>
+[FIND_HEX]
+82 82 19 00 CB 0C 00 00 0A 00 82 4B 00 00 00 1B 01 18 00 00 00 00 00 00 16 18 1E 00 2D 35 6D 0C 00 00 73 0C 00 00 00 01 00 CE 0C 00 00 16 18 24 00 9A 19 00 CB 0C 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 2C 02 16 16
+14 2D 35 6D 0C 00 00 73 0C 00 00 00 01 00 CE 0C 00 00 97 A7 2C 64 16:END
+MODDED_CODE=<!DEFHitToMiss>
+FIND_HEX=82 9A 19 00 CB 0C 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 25 16 18 0C 00 96 A7 2C 64 16:END
+MODDED_CODE=<!BAL_SupportHitRisk>
+FIND_HEX=82 9A 19 00 CB 0C 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 26 16 18 0C 00 96 A7 2C 64 16:END
+MODDED_CODE=<!AGG_SupportHitRisk>
+[FIND_HEX]
+82 97 35 71 0C 00 00 73 0C 00 00 00 01 00 CE 0C 00 00 25 16 18 23 00 9A 19 00 CB 0C 00 00 0A 00 71 4B 00 00 00 1B 15 13 00 00 00 00 00 00 16 26 16 16
+9F 35 6F 0C 00 00 73 0C 00 00 00 00 00 CE 0C 00 00 1E:END
+MODDED_CODE=<!AGG_JetVulnerability>
+FIND_HEX=98 A7 2C 64 16 FB 91 93 92 35 45 03 00 00 4C 03 00 00 00 00 19 00 CC 0C 00 00 58 00 FD 00 00 00 00 1B 9D 2B 00 00 00 00 00 00 10 35 EE 0C 00 00 F0 0C 00 00 00 00 00 CA 0C 00 00 35 70 25 00 00 7B 25 00 00 00 01 19 00 CC 0C 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 16 35 74 25 00 00 7B 25 00 00 00 00 19 00 CC 0C 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 16 35 73 25 00 00 7B 25 00 00 00 00 19 00 CB 0C 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 16 2C 02 16:END
+MODDED_CODE=<!CritMinChance> <!CritMaxChance>
+FIND_HEX=9F 35 6F 0C 00 00 73 0C 00 00 00 00 00 CE 0C 00 00 1E:END
+MODDED_CODE=<!CritDamageMultiplier>
+FIND_HEX=0F 35 76 0C 00 00 78 0C 00 00 00 01 00 CD 0C 00 00 38 44 AB 38 3F 35 76 0C 00 00 78 0C 00 00 00 01 00 CD 0C 00 00:END
+MODDED_CODE=<!LoneBulletDamageScaler>
+FIND_HEX=82 B0 19 00 CC 0C 00 00 0A 00 F4 4B 00 00 00 1B 31 12 00 00 00 00 00 00 16:END
+MODDED_CODE=<!AutoAbortThreshold>
+
+OBJECT = XGInterceptionEngagement.UseConsumable
+[FIND_HEX]
+9A 00 BE 41 00 00 2C 7D 16
+A1 10 93 00 BE 41 00 00 00 BC 41 00 00 16 01 E2 0C 00 00 90 2C 02 38 44 1E:END
+MODDED_CODE=<!SpazmoFactor>
+[FIND_HEX]
+9A 00 BE 41 00 00 2C 7F 16
+A1 10 93 00 BE 41 00 00 00 BC 41 00 00 16 01 E2 0C 00 00 90 2C 02 38 44 1E:END
+MODDED_CODE=<!SpazmoFactor>
+
+OBJECT = XGInterceptionEngagement.UpdateEngagementResult
+FIND_HEX=9F 19 19 01 E9 0C 00 00 09 00 18 41 00 00 00 01 18 41 00 00 09 00 43 4B 00 00 00 01 43 4B 00 00 AB 1E:END
+MODDED_CODE=<!SpazmoFactor> 1E <!UFODestructionChanceScaler>
+FIND_HEX=99 92 A7 2C 64 16 2C:END
+MODDED_CODE=<!UFODestructionPctThreshold>
+FIND_HEX=99 92 A7 2C 64 16 2C:END
+MODDED_CODE=<!UFODestructionPctThreshold>
+FIND_HEX=99 92 A7 2C 64 16 2C:END
+MODDED_CODE=<!UFODestructionPctThreshold>
+FIND_HEX=99 92 A7 2C 64 16 2C:END
+MODDED_CODE=<!UFODestructionPctThreshold>
+FIND_HEX=99 92 A7 2C 64 16 2C:END
+MODDED_CODE=<!UFODestructionPctThreshold>
+
+OBJECT = XGGeoscape.OnUFODetected
+FIND_HEX=0F 35 72 25 00 00 7B 25 00 00 00 00 19 00 E6 3C 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 1C 71 FD FF FF 2C:END
+MODDED_CODE=<!UFO_StanceLimit>
+
+OBJECT=UIMissionControl_UFORadarContactAlert.BeginInterception
+FIND_HEX=0F 35 72 25 00 00 7B 25 00 00 00 00 19 00 90 11 00 00 09 00 48 4B 00 00 00 01 48 4B 00 00 1C 71 FD FF FF 2C:END
+MODDED_CODE=<!UFO_StanceLimit>
+
+UPK_FILE=xcomgame.upk
+
+OBJECT = UIItemCards.UpdateData
+FIND_HEX=1B 62 06 00 00 00 00 00 00 25 01 6D 1D 00 00 70 70 70 38 53 F9 93 9C 35 15 0C 00 00 1A 0C 00 00 00 00 01 59 1D 00 00 2C 7F 16 2C:END
+MODDED_CODE=<!DEF_AimPenalty>
+FIND_HEX=38 53 F9 92 9C 35 15 0C 00 00 1A 0C 00 00 00 00 01 59 1D 00 00 2C 7F 16 2C:END
+MODDED_CODE=<!AGG_AimBonus>

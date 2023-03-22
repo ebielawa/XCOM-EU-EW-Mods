@@ -1,0 +1,1060 @@
+[UIModToggles]
+m_strModTogglesTitle=PAQUETES MOD DISPONIBLES
+
+[UIModShell]
+m_strTitle="ADMINISTRADOR DE MOD"
+m_strSelectModsButton=SELECCIONAR MODS
+m_strBackToModsButton=VOLVER A MODS
+m_strSelectPackagesButton="PAQUETES MOD"
+m_strConfigureModsButton=CONFIGURAR MOD SELECCIONADO
+m_strConfigureModMgrButton=CONFIGURAR ADMINISTRADOR DE MOD
+m_strResetAllButton="RESTAURAR TODOS LOS VALORES PREDETERMINADOS"
+m_strResetModButton="RESTAURAR LOS VALORES PREDETERMINADOS"
+m_strRestoreDefaultsModOptions=RESTABLECER OPCIONES
+m_strRestoreDefaultsModList=RESTABLECER LISTA MOD
+m_strRestoreDefaultsDialog="Elija lo que desea restaurar".
+m_strResetModListWarning="La lista de modificaciones seleccionadas se restablecerá a las selecciones predeterminadas (según lo establecido en DefaultModsProfile.ini). ¿Confirmas?"
+m_strNoOptions=NO HAY OPCIONES DISPONIBLES
+m_strGamepadScrollHelp=Desplazar texto
+m_strGamepadBackToListHelp=Lista de desplazamiento
+m_strResetDefaults="¿Está seguro de que desea restaurar la configuración predeterminada para este mod?"
+m_strResetAllDefaults="Advertencia: ¿Esta operación restaurará la configuración predeterminada para TODOS LOS MODS?"
+m_strSettingsChanged="Se han guardado nuevas configuraciones. Es posible que algunos de los cambios requieran volver a cargar la partida guardada o reiniciar la misión ".
+m_strDontShowAnymore=NO MOSTRAR ESTO OTRA VEZ
+m_strBuildingOptionsProgress=OPCIONES DE CONSTRUCCIÓN
+
+[UIModManager]
+m_strModsMenuButton="MENÚ MODS"
+m_strNoDescription=No hay descripción disponible.
+m_strMissingPackage="<FONT COLOR='#FF0000'>El paquete requerido no se pudo cargar! Probablemente falta el archivo <XGParam:StrValue0/> dentro de CookedPCConsole y sus subcarpetas.</FONT>"
+m_strDisabledPackage="<FONT COLOR='#FF0000'>El paquete requerido para este mod está deshabilitado a través del menú Mod Packages. Habilitar opción <XGParam:StrValue0/> en el menú Mod Packages para ejecutar este mod.</FONT>"
+m_strModsInPackage=Habilite este paquete para obtener acceso a:
+
+[UIModSharedContainer]
+;----------------------------------------------------------
+;USING .INT (OR OTHER LOCALIZATION) FILE
+;----------------------------------------------------------
+;The way you should organize entries in this  section is like this:
+;
+;m_arrVarName="UIModManager"
+;m_arrVarFriendlyName="Configurar administrador de mods"
+;m_arrVarDescription=Opciones de ajuste del administrador de mods.
+;
+;Lines like the above should be always coming in threes, whenever you put a line m_arrVarName it MUST be followed by m_arrVarFriendlyName and m_arrVarDescription. 
+;You can make m_arrVarFriendlyName="" and m_arrVarDescription="" if you don't need them but they must be there or you will screw auto-search algorithms
+;m_arrVarName=SomeName is 99% times as good as m_arrVarName="SomeName" so suit yourself. 
+;The above is more relevant to descriptions:
+;
+;m_arrVarDescription="Some description with inline \"quote\""
+;or
+;m_arrVarDescription=Some description with inline"qoute"
+;
+;Credits - a block of lines for certain mod should start with BEGIN_ModName and end with END_ModName, just like below:
+
+m_arrCreditsModMgr=BEGIN_UIModManager
+m_arrCreditsModMgr=<h1>UI MOD MANAGER</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=Szymon 'szmind' Zminda
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Design By</h3>
+m_arrCreditsModMgr='szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Programming</h3>
+m_arrCreditsModMgr='szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>UI Programming</h3>
+m_arrCreditsModMgr='szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Debugging and Quality Assurance</h3>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=Guess who?
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=Yeah, you guessed :)\n'szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Special thanks to:</h3>
+m_arrCreditsModMgr=Loriendal - for initial tests and bug reporting
+m_arrCreditsModMgr=kdm2k6 - for tests of gamepad support
+m_arrCreditsModMgr=Lafiir - for even more tests of gamepad support and bug reports
+m_arrCreditsModMgr=AzXeus - for priceless advice on avoiding runaway loops:)
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Contact</h3>
+m_arrCreditsModMgr=szmind@gmail.com\nDiscord: szmind#7068
+m_arrCreditsModMgr=END_UIModManager
+
+m_arrCreditsModMgr=BEGIN_XComSpawnMutator
+m_arrCreditsModMgr=<h1>Random Spawns</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComSpawnMutator
+
+m_arrCreditsModMgr=BEGIN_XComLZMutator
+m_arrCreditsModMgr=<h1>Landing Zones</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComLZMutator
+
+m_arrCreditsModMgr=BEGIN_XComBombMutator
+m_arrCreditsModMgr=<h1>Bomb Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComBombMutator
+
+m_arrCreditsModMgr=BEGIN_XComSpawnAlienMutator
+m_arrCreditsModMgr=<h1>Drop-In Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComSpawnAlienMutator
+
+m_arrCreditsModMgr=BEGIN_XComPodSpawnMutator
+m_arrCreditsModMgr=<h1>Pod Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComPodSpawnMutator
+
+m_arrCreditsModMgr=BEGIN_XComMeldSpawnMutator
+m_arrCreditsModMgr=<h1>MELD Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComMeldSpawnMutator
+
+m_arrCreditsModMgr=BEGIN_Sightlines
+m_arrCreditsModMgr=<h1>LINE OF SIGHT INDICATOR</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=tracktwo
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Design and Programming</h3>
+m_arrCreditsModMgr=tracktwo
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Special thanks to:</h3>
+m_arrCreditsModMgr=szmind - for this cool credits' screen and in-game options menu :)
+m_arrCreditsModMgr=END_Sightlines
+
+m_arrVarName="UIModManager"
+m_arrVarFriendlyName="Mod Manager options"
+m_arrVarDescription="Change options of mod manager."
+
+m_arrVarName="UIModManager.m_bShowChangesWarning"
+m_arrVarFriendlyName="Saving options dialog"
+m_arrVarDescription="Each time you change mod settings during a running game you will be warned that some changes may require reloading/restarting. Turn this reminder on/off using this option."
+
+m_arrVarName="UIModManager.m_bShowExitWarning"
+m_arrVarFriendlyName="Ignore changes dialog"
+m_arrVarDescription="Each time you exit mods menu without saving options you will be warned about it. Turn this warning on/off using this option."
+
+m_arrVarName="UIModManager.m_bShowResetWarning"
+m_arrVarFriendlyName="Restore defaults dialog"
+m_arrVarDescription="Each time you try to reset mod settings to their default values you will be asked for confirmation. Turn this warning on/off using this option."
+
+m_arrVarName="UIModManager.m_bSortMods_ByAlphabet"
+m_arrVarFriendlyName="Sort mods by name"
+m_arrVarDescription="When this option is checked (default setting) the list of mods is sorted alphabetically (this applies to the list of packages as well). You can turn it off by unchecking this option and mods will be unsorted - in order of appearance in DefaultMutatorLoader.ini (or close to it)."
+
+m_arrVarName="UIModManager.m_bSortMods_SelectedFirst"
+m_arrVarFriendlyName="Selected mods on top"
+m_arrVarDescription="When this option is checked mods that are currently turned ON will appear on top of the list (sorted alphabetically or not - depending on \"Sort mods by name\" setting). This applies to the list of packages as well. The list is re-sorted each time you switch between tabs (not each time you toggle a mod)."
+
+m_arrVarName="UIModManager.m_bEnsurePerformance"
+m_arrVarFriendlyName="Ensure Performance"
+m_arrVarDescription="When this option is checked majority of dropdown lists in mod's configuration window will be replaced with a spinner (horizontal box with left/right arrows). In return you will not experience too long pauses when switching to/from a configuration window with numerous dropdown lists."
+
+m_arrVarName="XComLZMutator"
+m_arrVarFriendlyName="LW - Landing Zones"
+m_arrVarDescription="Enables randomized locations of landing zone for XCom squad. Makes the game less repetitive as XCom squad can be deployed in different spots on the same map."
+
+m_arrVarName="XComBombMutator"
+m_arrVarFriendlyName="LW - Bomb Locations"
+m_arrVarDescription="Smarter location of the bomb on bomb disposal missions. Control proximity of power nodes vs landing zone location and initial timer of the bomb."
+
+m_arrVarName="XComSpawnMutator"
+m_arrVarFriendlyName="LW - Random Spawns"
+m_arrVarDescription="<font color='#00FF00'>This is not a standalone mod.</font> However its options are shared by the following mods: LW - Bomb Locations, LW - Meld Locations, LW - Landing zones, LW - Drop-in Locations, LW - Pod Locations."
+
+m_arrVarName="XComMeldSpawnMutator"
+m_arrVarFriendlyName="LW - Meld Locations"
+m_arrVarDescription="Smarter location of meld containers - by default one easy and one hard container. Allows for control of proximity location as well as max number of containers."
+
+m_arrVarName="XComPodSpawnMutator"
+m_arrVarFriendlyName="LW - Pod Locations"
+m_arrVarDescription="Randomizes locations of alien pods (including commander's pod) while obeying restrictions on proximity to landing zone, covert operative and avoiding (or not) capture zones (on data recovery missions)."
+
+m_arrVarName="XComSpawnAlienMutator"
+m_arrVarFriendlyName="LW - Drop-in Locations"
+m_arrVarDescription="Makes alien reinforcements more challenging (by default). Allows for control of several factors determining spawning mechanics (e.g. disable auto-overwatch of drop-ins). The settings will not apply to New Foundland site-recon mission.\n<FONT COLOR='#00FF00' SIZE='16'>You can expand the list of exlusions in DefaultRandomSpawns.ini</FONT>"
+
+m_arrVarName="XComLZMutator.XComFCMutator"
+m_arrVarFriendlyName="Funding Council (LW)"
+m_arrVarDescription="I have no idea what it does :) If you do, contact me via nexusmods or on Discord (szmind#7068)."
+
+m_arrVarName="XComSpawnMutator.PLAYER_PROXIMITY"
+m_arrVarFriendlyName="Proximity to player"
+m_arrVarDescription="Minimum distance in meters (1 Tile=1,6 m) between landing zone and the location of an object: meld container, alien pod, location of alien drop-in. Increase it to allow  locations further from player. Decrease to allow locations closer to player.\nDefault: 29 (18 tiles) which is standard visual range."
+
+m_arrVarName="XComSpawnMutator.OP_PROXIMITY"
+m_arrVarFriendlyName="Proximity to CovertOp"
+m_arrVarDescription="Minimum distance in meters (1 Tile=1,6 m) between covert operative and the location of an object: meld container, alien pod, location of alien drop-in. Increase it to allow  locations further from player. Decrease to allow locations closer to player.\nDefault: 32 (20 tiles) which is 2 tiles beyond visual range."
+
+m_arrVarName="XComSpawnMutator.AVOID_CAPTURE_ZONES"
+m_arrVarFriendlyName="Avoid Capture Zones"
+m_arrVarDescription="Makes capture zones on data recovery missions a"forbidden location" for spawning meld containers, EXALT pods or EXALT drop-in reinforcements."
+
+m_arrVarName="XComBombMutator.INITIAL_TIMER_VALUE"
+m_arrVarFriendlyName="Initial bomb timer"
+m_arrVarDescription="At start of mission the timer of the bomb will be set to this number of turns.\nDefault in 1.1: 5.\nDefault in 1.0: 4."
+
+m_arrVarName="XComBombMutator.PLAYER_PROXIMITY"
+m_arrVarFriendlyName="Proximity to player"
+m_arrVarDescription=This setting replaces the general setting in"LW - Random Spawns". Controls distance in meters (1 Tile=1,6 m) of valid locations for power nodes and bomb. Increase it to make nodes appear further from player. Decrease to allow nodes closer to player.\nDefault: 8 (5 tiles).
+
+m_arrVarName="XComMeldSpawnMutator.NumContainers"
+m_arrVarFriendlyName="Number of containers"
+m_arrVarDescription=Increase/decrease max number of meld containers that will be created (on small maps there might be not enough suitable places to place the max number).\nDefault: 3.
+
+m_arrVarName="XComMeldSpawnMutator.EqSlope"
+m_arrVarFriendlyName=""
+m_arrVarDescription=This is a multiplier for the number of"blue moves" required to reach the container from the landing zone. A human-readable formula would be:"NumberOfTurns=TilesFromLandingZone x EqSlope + EqConst". Exact formula:\nDestroyedOnTurn=(DistToPlayer / (96 x 8)) x EqSlope + EqConst. You can read (96 x 8) as 8 tiles which is roughly"a standard blue move".\nDefault value: 1.55.\n\nEXAMPLE:\nEqSlope=1.50\nEqConst=1.0\nA container within 30 tiles would have a timer set to 30/8 x 1.50 + 1.0=6 turns.\nA container within 50 tiles would have the timer set to 50/8 x 1.5 + 1.0=10 turns.
+
+m_arrVarName="XComMeldSpawnMutator.EqConst"
+m_arrVarFriendlyName=""
+m_arrVarDescription=This is minimum threshold for the initial timer. It is further increased with distance between container and landing zone. A human-readable formula would be:"NumberOfTurns=TilesFromLandingZone x EqSlope + EqConst". Exact formula:\nDestroyedOnTurn=(DistToPlayer / (96 x 8)) x EqSlope + EqConst. You can read (96 x 8) as 8 tiles which is roughly"a standard blue move".\nDefault value: 1.0.\n\nEXAMPLE:\nEqSlope=1.50\nEqConst=1.0\nA container within 30 tiles would have a timer set to 30/8 x 1.50 + 1.0=6 turns.\nA container within 50 tiles would have the timer set to 50/8 x 1.50 + 1.0=10 turns.
+
+m_arrVarName="XComSpawnAlienMutator.MIN_DROP_DIST"
+m_arrVarFriendlyName="Min drop distance"
+m_arrVarDescription=A minimum valid distance (in meters, 1 tile=1,6 m) between alien/EXALT reinforcements drop-in and XCOM unit.\nDefaults to 7 (4 tiles). Cannot be too close to Maximum drop distance. The mod ensures that Max > Min + 7.
+
+m_arrVarName="XComSpawnAlienMutator.MAX_DROP_DIST"
+m_arrVarFriendlyName="Max drop distance"
+m_arrVarDescription="A maximum valid distance (in meters, 1 tile=1,6 m) between alien/EXALT reinforcements drop-in and XCOM unit.\nDefault: 32 (20 tiles)."
+
+m_arrVarName="XComSpawnAlienMutator.USE_OVERWATCH"
+m_arrVarFriendlyName="Overwatch on drop-in"
+m_arrVarDescription="Checking this option (default setting) forces drop-in enemies to go on overwatch."
+
+m_arrVarName="XComSpawnAlienMutator.DROP_TO_COVER"
+m_arrVarFriendlyName="Drop to cover"
+m_arrVarDescription="Checking this option (default setting) forces drop-in enemies to prioritize locations with cover - preferably elevated ones."
+
+m_arrVarName="XComSpawnAlienMutator.REVEAL_SPAWN"
+m_arrVarFriendlyName="Reveal all drop-ins"
+m_arrVarDescription="Checking this option (default setting) shows ALL drop-in events - even if XCOM team cannot see the enemy after drop-in. Uncheck this option for extra challenge: you will not see enemies dropping-in to locations not seen by XCOM."
+
+m_arrVarName="Sightlines"
+m_arrVarFriendlyName="Line of Sight Indicator"
+m_arrVarDescription="The LoS Indicator is a mod to bring the feature of XCOM2 back to XCOM EW/LW. With this mod enabled, while moving the cursor around to select a tile for movement enemies visible from the pointed location are indicated graphically on the screen.\n\nThe mod contains several configurable variables that may be of interest, see the options tab.\n<FONT COLOR='#00FF00'>New settings (including enable/disable mod) take effect immediately, NO NEED TO RELOAD.</FONT>"
+
+m_arrVarName="Sightlines.SightIndicator"
+m_arrVarFriendlyName="Indicator Style"
+m_arrVarDescription="Pick one of the following values:\n\nGreen Disc - A green disc surrounds visible units.\nOrange Disc - An orange disc surrounds visible units.\nGold Disc - A gold disc surrounds visible units.\nOverwatch Icon - LW only. The overwatch indicator on the unit flag is added to visible units. The indicator will be of XCOM cyan color, and will toggle between cyan and red on aliens on overwatch. See also OW Blinking Interval."
+
+m_arrVarName="Sightlines.SightIndicator.1"
+m_arrVarFriendlyName="Green Disc"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SightIndicator.2"
+m_arrVarFriendlyName="Orange Disc"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SightIndicator.3"
+m_arrVarFriendlyName="Gold Disc"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SightIndicator.0"
+m_arrVarFriendlyName="Overwatch Icon"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.OVERWATCH_TOGGLE_DELAY"
+m_arrVarFriendlyName="OW Blinking Interval"
+m_arrVarDescription="LW only. Amount of time (in seconds) to delay between the red and cyan states of the overwatch indicator when showing LoS to an alien which is currently on overwatch. This setting is only useful when Indicator Style is set to \"Overwatch Icon\".\nDefault: 0.50."
+
+m_arrVarName="Sightlines.SIGHTLINE_TICK_DELAY"
+m_arrVarFriendlyName="Update delay"
+m_arrVarDescription="Amount of time (in seconds) for game engine to wait between refreshes of LoS information. The lower this value the faster the UI will update when hovering over new tiles. This value may have a large impact on game performance - set it to a value that feels right for your system.\nDefault: 1.0."
+
+m_arrVarName="Sightlines.SHOW_FRIENDLY_INDICATORS"
+m_arrVarFriendlyName="Show Indicator For:"
+m_arrVarDescription="If you choose \"All units\" indicators will also be shown on friendly units (e.g. XCom). This may be useful to assist in determining whether an ally will be in LoS to act as a target for certain abilities. Default setting is \"Enemies only\" as the additional indicators may be distracting to some."
+
+m_arrVarName="Sightlines.SHOW_FRIENDLY_INDICATORS.True"
+m_arrVarFriendlyName="All units"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SHOW_FRIENDLY_INDICATORS.False"
+m_arrVarFriendlyName="Enemies only"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.USE_TOGGLE_HOTKEY"
+m_arrVarFriendlyName="Use toggle hotkey"
+m_arrVarDescription="Controls whether LoS updates and indicators are always on (false, the default) or on only when a hotkey is pressed (true). If enabled, pressing the hotkey once will enable LoS updates, updated on the \"Update delay\" frequency as before. Pressing the hotkey again will turn off all indicators and disable LoS updates. This option can be used if you find the automatic updates slow the game down too much, or if the always-on indicators are distracting. <FONT COLOR='#5CD16C'>The hotkey must be specified in DefaultInput.ini in your config folder in the XComGame.XComTacticalInput section.</FONT> Searching the file for \"Ability Shortcuts\" should get you into the right place. The new hotkey can be added with a line such as:\n\n<FONT COLOR='#5CD16C'>.Bindings=(Name=\"L\", Command=\"marketing\", alt=TRUE)</FONT>\n\nThis assigns the hotkey Alt-L to the 'marketing' command, which was a debug mode I've commandeered for this mod. The key can be adjusted to any key you prefer, including gamepad buttons."
+
+m_arrVarName="RevealMod"
+m_arrVarFriendlyName="Reveal Mods"
+m_arrVarDescription="Open up selectible options related to pod reveal e.g. get extra yellow move (only move, no shooting) for ALL soldiers to reposition whenever spotting a new enemy pod. Make revealed aliens call their friends (in line of sight) immediately on reveal or at the end of alien's turn."
+
+m_arrVarName="RevealMod.ImmediateChainReveal"
+m_arrVarFriendlyName="Immediate Chain Reveal"
+m_arrVarDescription="Whenever a new pod is revealed it will trigger/reveal all pod in its line of sight. There is no further chaining like A can see B who can see C (if C is not seen by A it is not revealed). The feature might lead to swarming pod reveal on small maps or with unlucky pod placement. On the other hand it makes you be sure that there are no more hidden pods in line of sight of just activated pod. Therefore you can quite safely cut distance to that pod without being surprised by unexpected pod reveal while approaching."
+
+m_arrVarName="RevealMod.EndOfTurnChainReveal"
+m_arrVarFriendlyName="End Of Turn Chain Reveal"
+m_arrVarDescription="This is similar to Call Friends On Pod Reveal. At the end of each alien's turn all active aliens will trigger/reveal any other pod within its line of sight. The check for line of sight is performed alien-to-alien. So it is enough that active alien can see at least one member of another 'dormant' pod to trigger that other pod. The feature is supposed to bring on some realism, so that aliens who can see their commrades fighting XCOM do not sit like ducks. On the other hand - on swarming missions - this might lead to relatively quick mass-reveal."
+
+m_arrVarName="RevealMod.BailoutMoveOnPodReveal"
+m_arrVarFriendlyName="Bail out Move On Pod Reveal"
+m_arrVarDescription="Whenever XCOM unit reveals a new pod all XCOM units that have already ended their turns are granted 1 yellow move to reposition. It will not work for hunkered down, suppressing or overwatching units though."
+
+m_arrVarName="XComStrategyAIMutatorON"
+m_arrVarFriendlyName="New Artificial Intelligence"
+m_arrVarDescription="Option to enable alternative and fully customizable artificial intelligence. Configurable in DefaultStrategyAIMod.ini.\nAdded all the updates that did not get into the release of long War 1.0.\n<FONT COLOR='#00ff00'>Attention! It is strongly recommended to enable or disable this mod before starting a new game. And don't change the settings.</FONT>"
+
+m_arrVarName="XComStrategyAIMutatorON.EnableAlienResearchON"
+m_arrVarFriendlyName="Enable Alien Research"
+m_arrVarDescription="If research is disabled, new species appearance will depend solely on current month number."
+
+m_arrVarName="XComStrategyAIMutatorON.EnableAlienResourcesON"
+m_arrVarFriendlyName="Enable Alien Resources"
+m_arrVarDescription="Resources allow aliens to field additional number of aliens, if disabled there will be no additional aliens on mission."
+
+m_arrVarName="XComStrategyAIMutatorON.EnableAlienLeadersON"
+m_arrVarFriendlyName="Enable Alien Leaders"
+m_arrVarDescription="Alien leaders appearance depends on research level, if disabled no leaders will appear on mission. Does not depend on EnableAlienResearch option."
+
+m_arrVarName="XComStrategyAIMutatorON.EnableAmbushUFOsON"
+m_arrVarFriendlyName="Enable Ambush UFOs"
+m_arrVarDescription="Allows aliens to create ambush missions if their aggression level is high enough."
+
+m_arrVarName="XComStrategyAIMutatorON.EnableRandomCommandersON"
+m_arrVarFriendlyName="Enable Random Commanders"
+m_arrVarDescription="Allows enable Random Commanders on missions."
+
+m_arrVarName="XComStrategyAIMutatorON.AlwaysSpawnAtLeastOneMainAlienON"
+m_arrVarFriendlyName="Spawn Main Alien"
+m_arrVarDescription="Always Spawn At Least One Main Alien on missions."
+
+m_arrVarName="XComStrategyAIMutatorON.SurviveCrashPodPct"
+m_arrVarFriendlyName="Survive Crash Pod Pct"
+m_arrVarDescription="Percentage of pods and aliens per pod to survive during the crash."
+
+m_arrVarName="XComStrategyAIMutatorON.DynamicAliensMultiplier"
+m_arrVarFriendlyName="Dynamic Aliens Multiplier"
+m_arrVarDescription="Number of additional reinforcements per month"
+
+m_arrVarName="XComStrategyAIMutatorON.MaxPodsOnExaltRaid"
+m_arrVarFriendlyName="Max Pods On Exalt Raid"
+m_arrVarDescription="Pod numbers for Exalt base and Alien base assault. No monthly modifiers."
+
+m_arrVarName="XComStrategyAIMutatorON.AlienBaseSoldierPodChance"
+m_arrVarFriendlyName=Alien Base Pod Chance""
+m_arrVarDescription="Alien bases spawn Special and Elite 85/15. These types of pods are defined below."
+
+m_arrVarName="XComStrategyAIMutatorON.ForcedChryssalidHivePodType1"
+m_arrVarFriendlyName="Forced Chryssalid Hive Pod"
+m_arrVarDescription="Forced missions are eFCM_ChryssalidHive (Site Recon), eFCM_Slingshot_LowFriends (Friends in Low Places), etc."
+
+m_arrVarName="XComStrategyAIMutatorON.DiffDecreaseProbabilityON"
+m_arrVarFriendlyName="Decrease probability"
+m_arrVarDescription="Decrease probability for species that have PodDifficulty > MissionDifficulty. If false, pods that have PodDifficulty > MissionDifficulty will be completely disallowed for the mission. If true such pods will heave their PodChance divided by DiffProbabilityDivisor*(PodDifficulty - MissionDifficulty) (see below). By default PodDifficulty=0. For abductions MissionDifficulty equals to abduction difficulty (0...3). For UFOs it equals to UFO size (0...4). All the other missions have difficulty set to 100 for now (i.e. are not affected by pod difficulty settings)."
+
+m_arrVarName="XComStrategyAIMutatorON.PodsDifficultyMultiplier"
+m_arrVarFriendlyName="Pods Difficulty Multiplier"
+m_arrVarDescription="Mission difficulty affects number of pods: for higher difficulties DifficultyMultiplier*Difficulty is added to the number and for lower difficulties it is subtracted."
+
+m_arrVarName="XComStrategyAIMutatorON.ShipSizeMultiplier"
+m_arrVarFriendlyName="Ship Size Multiplier"
+m_arrVarDescription="Ship size affects number of pods: ShipSizeMultiplier*ShipSize pods are added for bigger ships."
+
+m_arrVarName="CoverBonus"
+m_arrVarFriendlyName="Tactical Settings"
+m_arrVarDescription="Tactical settings menu. For example, bonuses received from cover. Also, the settings that are built into the subject, if by default he cannot hide behind cover. Accuracy penalties received for poisoning. The ability to shoot during a panic, etc."
+
+m_arrVarName="CoverBonus.LOW_COVER_BONUSON"
+m_arrVarFriendlyName="Low Cover Bonus"
+m_arrVarDescription="Setting the low cover bonus.\nDefault: 30."
+
+m_arrVarName="CoverBonus.HIGH_COVER_BONUSON"
+m_arrVarFriendlyName="High Cover Bonus"
+m_arrVarDescription="Setting the high cover bonus.\nDefault: 45."
+
+m_arrVarName="CoverBonus.AIR_EVADE_DEFON"
+m_arrVarFriendlyName="Air Evade Bonus"
+m_arrVarDescription="The defense increase a unit gains from air evasion bonus (Has char prop eCP_AirEvade).\nDefault: 30."
+
+m_arrVarName="CoverBonus.NO_COVER_DEFON"
+m_arrVarFriendlyName="No Cover Defence"
+m_arrVarDescription="Innate defense value generally for units who can't take cover (Has char prop eCP_NoCover).\nDefault: 30."
+
+m_arrVarName="CoverBonus.POISONED_AIM_PENALTYON"
+m_arrVarFriendlyName="Poisoned Aim Penaly"
+m_arrVarDescription="Offense penalty when you have been hit with acid.\nDefault: 20."
+
+m_arrVarName="CoverBonus.HUNKER_DOWN_WHEN_PANICKEDON"
+m_arrVarFriendlyName="Hunkers down when panicked"
+m_arrVarDescription="If the roll is less this number, the unit hunkers down, otherwise they shoot (if possible); this roll is separate from attemping to run.\nDefault: 0.20.\nDefault in Long war 1.0: 0."
+
+m_arrVarName="CoverBonus.SHOOT_WHEN_PANICKEDON"
+m_arrVarFriendlyName="Shoot when panicked"
+m_arrVarDescription="When a unit panics, random roll from 0 to this number - 1 (e.g. 0.40)\nDefault: 0.10.\nDefault in Long war 1.0: 0."
+
+m_arrVarName="CoverBonus.PANIC_SHOT_HIT_PENALTYON"
+m_arrVarFriendlyName="Panic shot"
+m_arrVarDescription="Shots taken while panicking subtract this amount from their normal chance to hit.\nDefault: 80."
+
+m_arrVarName="CoverBonus.FatigueMod"
+m_arrVarFriendlyName="Soldier's Fatigue"
+m_arrVarDescription="A %-based scaler for fatigue timeout; 100=100%; 0 should mostly eliminate except for adders.\nDefault: 100."
+
+m_arrVarName="CoverBonus.OficcerFatigueMod"
+m_arrVarFriendlyName="Oficcer's Fatigue"
+m_arrVarDescription="Hours of fatigue per officer level.\nDefault: 12."
+
+m_arrVarName="CoverBonus.CB_AIRANDSPACE_BONUSON"
+m_arrVarFriendlyName="Extra fatigue"
+m_arrVarDescription="Hours extra fatigue after missions PER critical wound a soldier has suffered in the campaign.\nDefault: 24."
+
+m_arrVarName="CoverBonus.HQ_STARTING_MONEYON"
+m_arrVarFriendlyName="Master bonuses"
+m_arrVarDescription="Master Sergeants will roll on a small harcoded stat bonus table every X mission.\nDefault: 4."
+
+m_arrVarName="StrategySettings"
+m_arrVarFriendlyName="Various Settings"
+m_arrVarDescription="Various little related game settings. Which allow you to pretty much return the game to the LW 1.0 or EW settings.\n<FONT COLOR='#00ff00'>Attention! Some settings works ONLY in the new game!</FONT>"
+
+m_arrVarName="StrategySettings.Item_Losses"
+m_arrVarFriendlyName="Item Losses"
+m_arrVarDescription="Chance of Item Loss.\n1) In total loss games, when a soldier is killed or left behind and...\n2) In NON-Total Loss Games, when a soldier is killed or left behind on a mission failure only (Aliens salvaged gear).\nDefault: 40."
+
+m_arrVarName="StrategySettings.Country_Losses"
+m_arrVarFriendlyName="Country Losses"
+m_arrVarDescription="If we lose this number of countries from the X-Com project, we're cooked.\nDefault in LW 1.0: 16.\nDefault in EU-EW: 8."
+
+m_arrVarName="StrategySettings.DW_factor"
+m_arrVarFriendlyName="DW factor"
+m_arrVarDescription="SW_MARATHON is the master coefficient (variable) governing mission density and frequency, resource acquisition, XP and some costs in Dynamic War. If increased to 1, everything will be at roughly normal LW levels, but the alien mission AI works differently, so it will be a different campaign. Going above 1 is fine if you want a campaign even longer than the default when when DW is turned off. There are probably high and low ends to this number where things start to break down both balance-wise and possibly technically (possibly around 0.2 and 3.0).\nDefault: 0.50.\nDefault in LW Rebalance: 1.00."
+
+m_arrVarName="StrategySettings.DW_factor.0.20"
+m_arrVarFriendlyName="0.20"
+m_arrVarDescription=""
+
+m_arrVarName="StrategySettings.DW_factor.0.50"
+m_arrVarFriendlyName="0.50"
+m_arrVarDescription=""
+
+m_arrVarName="StrategySettings.DW_factor.1.00"
+m_arrVarFriendlyName="1.00"
+m_arrVarDescription=""
+
+m_arrVarName="StrategySettings.DW_factor.2.00"
+m_arrVarFriendlyName="2.00"
+m_arrVarDescription=""
+
+m_arrVarName="StrategySettings.DW_factor.3.00"
+m_arrVarFriendlyName="3.00"
+m_arrVarDescription=""
+
+m_arrVarName="StrategySettings.BARRACKS_CAPACITYON"
+m_arrVarFriendlyName="Barracks capacity"
+m_arrVarDescription="Select the capacity of the barracks.\nDefault: 100.\nMinimum: 24. Maximum: 200.\n<FONT COLOR='#00ff00'>Works ONLY in the new game!</FONT>"
+
+m_arrVarName="StrategySettings.HQ_STARTING_MONEYON"
+m_arrVarFriendlyName="Bonus every X mission"
+m_arrVarDescription="Master Sergeants will roll on a small harcoded stat bonus table every xth mission."
+
+m_arrVarName="StrategySettings.SOLDIER_COSTON"
+m_arrVarFriendlyName="Soldier Cost"
+m_arrVarDescription="Soldier cost on all difficulties.\nDefault: 25."
+
+m_arrVarName="StrategySettings.LOW_AIMON"
+m_arrVarFriendlyName="Starting Aim"
+m_arrVarDescription="Minimum starting aim for rookie; Midpoint set by soldier character entry; Max=(2 * Mid) - Min.\nDefault: 58."
+
+m_arrVarName="StrategySettings.LOW_MOBILITYON"
+m_arrVarFriendlyName="Starting Mobility"
+m_arrVarDescription="Minimum starting mobility for rookie; Midpoint set in soldier character entry;  Max=(2 * Mid) - Min.\nDefault: 11."
+
+m_arrVarName="StrategySettings.HIGH_MOBILITYON"
+m_arrVarFriendlyName="Starting Defence"
+m_arrVarDescription="Relative starting defense, added to amounts in Characters= and BalanceMods entries.\nDefault: -5."
+
+m_arrVarName="StrategySettings.LOW_WILLON"
+m_arrVarFriendlyName="Starting Will"
+m_arrVarDescription="Minimum Starting Will for rookie; midpoint set by soldier character entry; Max=(2 * Mid) - Min.\nDefault: 16."
+
+m_arrVarName="StrategySettings.HIGH_WILLON"
+m_arrVarFriendlyName="Starting HP"
+m_arrVarDescription="Minimum Starting hp for rookie; midpoint set by soldier character entry; Max=(2 * Mid) - Min.\nDefault: 3."
+
+m_arrVarName="StrategySettings.COUNCIL_FIGHT_TILESON"
+m_arrVarFriendlyName="Lone Wolf distance"
+m_arrVarDescription="Lone Wolf minimum distance in tiles.\nDefault: 7."
+
+m_arrVarName="StrategySettings.SW_FLANK_CRITON"
+m_arrVarFriendlyName="SW Crit bonus"
+m_arrVarDescription="SECOND WAVE: Crit bonus from Absolutely Critical.\nDefault: 100."
+
+m_arrVarName="StrategySettings.SW_ABDUCTION_SITESON"
+m_arrVarFriendlyName="SW Red Fog aim"
+m_arrVarDescription="SECOND WAVE: Red Fog aim penalty cap.\nDefault: 35."
+
+m_arrVarName="StrategySettings.SW_COVER_INCREASEON"
+m_arrVarFriendlyName="SW Red Fog mobility"
+m_arrVarDescription="SECOND WAVE: Red Fog mobility penalty cap.\nDefault: 6."
+
+m_arrVarName="StrategySettings.SW_RARE_PSION"
+m_arrVarFriendlyName="SW Wear and Tear"
+m_arrVarDescription="SECOND WAVE: Wear and Tear: % Chance an item is damaged after a mission regardless of soldier injury (items carried by injured soldiers will still make a separate roll).\nDefault: 20."
+
+
+m_arrVarName="XComShivsHAREXP"
+m_arrVarFriendlyName="Settings of Shivs"
+m_arrVarDescription="Turn On/Off gaining experience from Shivs. Also set a limit after which damage repairs are required."
+
+m_arrVarName="XComShivsHAREXP.XComShivXPSETTINGS"
+m_arrVarFriendlyName="Experience of Shivs"
+m_arrVarDescription="The experience that soldiers can get from Shiv. To gain experience, the soldier must see both Shiv and his target, which he will kill.\nConfigure how many % of experience the soldiers get.\nDefault: 50%."
+
+m_arrVarName="XComSHIVSHAREXP.RepairTime"
+m_arrVarFriendlyName="Repair of Shivs"
+m_arrVarDescription="The time in hours for which the Shivs will be repaired.\nDefault: 24."
+
+m_arrVarName="XComSHIVSHAREXP.ALLOY_SHIV_HP_BONUSON"
+m_arrVarFriendlyName="Alloy Shiv HP Repair"
+m_arrVarDescription="These are "base" hp bonuses that require repair.\nDefault: 10."
+
+m_arrVarName="XComSHIVSHAREXP.HOVER_SHIV_HP_BONUSON"
+m_arrVarFriendlyName="Hover Shiv HP Repair"
+m_arrVarDescription="These are "base" hp bonuses that require repair.\nDefault: 6."
+
+m_arrVarName="LoadoutManager"
+m_arrVarFriendlyName="Saving sets"
+m_arrVarDescription="Additional menu buttons allow you to save sets of things. Each class has its own 6 slots for sets of things.\n<FONT COLOR='#00ff00'>A game restart is required.</FONT>"
+
+m_arrVarName="INTERCEPTOR_MENU"
+m_arrVarFriendlyName="Aircraft Settings"
+m_arrVarDescription="Various aircrafts settings. And satellite settings. All what is available in DGC.ini."
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON"
+m_arrVarFriendlyName="Days to repair"
+m_arrVarDescription="Days to repair an interceptor with 100% damage. Setting this below 75 hours reportedly induces buggy behavior. If you play with this anyway, and get the 0-days-to-repair bug, set to 700+ hours until the bugs go away.\nDefault: 25 days (600 hours)."
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.96"
+m_arrVarFriendlyName="4 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.120"
+m_arrVarFriendlyName="5 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.144"
+m_arrVarFriendlyName="6 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.168"
+m_arrVarFriendlyName="7 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.192"
+m_arrVarFriendlyName="8 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.216"
+m_arrVarFriendlyName="9 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.240"
+m_arrVarFriendlyName="10 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.264"
+m_arrVarFriendlyName="11 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.288"
+m_arrVarFriendlyName="12 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.312"
+m_arrVarFriendlyName="13 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.336"
+m_arrVarFriendlyName="14 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.360"
+m_arrVarFriendlyName="15 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.384"
+m_arrVarFriendlyName="16 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.408"
+m_arrVarFriendlyName="17 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.432"
+m_arrVarFriendlyName="18 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.456"
+m_arrVarFriendlyName="19 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.480"
+m_arrVarFriendlyName="20 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.504"
+m_arrVarFriendlyName="21 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.528"
+m_arrVarFriendlyName="22 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.552"
+m_arrVarFriendlyName="23 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.576"
+m_arrVarFriendlyName="24 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.600"
+m_arrVarFriendlyName="25 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.624"
+m_arrVarFriendlyName="26 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.648"
+m_arrVarFriendlyName="27 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.672"
+m_arrVarFriendlyName="28 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.696"
+m_arrVarFriendlyName="29 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REPAIR_HOURSON.720"
+m_arrVarFriendlyName="30 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON"
+m_arrVarFriendlyName="Days to rearmed"
+m_arrVarDescription="Days to add any alien-technology-based weapon to an aircraft (Missile systems are hard-coded at 12 hours).\nDefault: 7 days."
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.24"
+m_arrVarFriendlyName="1 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.48"
+m_arrVarFriendlyName="2 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.72"
+m_arrVarFriendlyName="3 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.96"
+m_arrVarFriendlyName="4 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.120"
+m_arrVarFriendlyName="5 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.144"
+m_arrVarFriendlyName="6 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.168"
+m_arrVarFriendlyName="7 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.192"
+m_arrVarFriendlyName="8 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.216"
+m_arrVarFriendlyName="9 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.240"
+m_arrVarFriendlyName="10 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.264"
+m_arrVarFriendlyName="11 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.288"
+m_arrVarFriendlyName="12 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.312"
+m_arrVarFriendlyName="13 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_REARM_HOURSON.336"
+m_arrVarFriendlyName="14 days"
+m_arrVarDescription=""
+
+m_arrVarName="INTERCEPTOR_MENU.INTERCEPTOR_TRANSFER_TIMEON"
+m_arrVarFriendlyName="Transfer time"
+m_arrVarDescription="Hours to send interceptor to another continent.\nDefault: 36."
+
+m_arrVarName="INTERCEPTOR_MENU.UFO_INTERCEPTION_PCTON"
+m_arrVarFriendlyName="Detecting a UFO"
+m_arrVarDescription="Each interceptor has this % chance of detecting a UFO in any country on the continent it is stationed on with no satellite present. Doubled with foundry project.\nDefault: 4."
+
+m_arrVarName="INTERCEPTOR_MENU.ABDUCTION_REWARD_SCION"
+m_arrVarFriendlyName="Aim bonus"
+m_arrVarDescription="Cinematic Mode aim bonus for XCOM ground units and Friendly Skies bonus (To adjust the SECOND WAVE) for XCOM aircraft.\nDefault: 15."
+
+m_arrVarName="INTERCEPTOR_MENU.BASE_SKYRANGER_MAINTENANCEON"
+m_arrVarFriendlyName="Maintenance of Skyranger"
+m_arrVarDescription="How much $ per month does it cost to maintain a cargo plane (SR-77H).\nDefault: 20."
+
+m_arrVarName="INTERCEPTOR_MENU.SKYRANGER_CAPACITYON"
+m_arrVarFriendlyName="Skyranger capacity"
+m_arrVarDescription="Initial Squad Size. Capped at 12 regardless of upgrades.\n<FONT COLOR='#00ff00'>Changing this will ONLY affect new campaigns.</FONT>\nDefault: 6."
+
+m_arrVarName="INTERCEPTOR_MENU.SW_ELERIUM_HALFLIFEON"
+m_arrVarFriendlyName="EMP recover loot"
+m_arrVarDescription="A Chance of % EMP Cannon BONUS to recover intact loot and % of alloys recovered when UFO crashes because of an EMP-armed aircraft.\nDefault: 0.20."
+
+m_arrVarName="INTERCEPTOR_MENU.UPLINK_CAPACITYON"
+m_arrVarFriendlyName="Uplink Capacity"
+m_arrVarDescription="Satellites per uplink.\nDefault: 1."
+
+m_arrVarName="INTERCEPTOR_MENU.NEXUS_CAPACITYON"
+m_arrVarFriendlyName="Nexus Capacity"
+m_arrVarDescription="Satellites per Nexus.\nDefault: 2."
+
+m_arrVarName="WeaponSettings"
+m_arrVarFriendlyName="Weapon Settings"
+m_arrVarDescription="Various Weapon Settings. This is only part of the settings. More of them can be configured in DGC.INI."
+
+m_arrVarName="WeaponSettings.RangeON"
+m_arrVarFriendlyName="Flame thrower Range"
+m_arrVarDescription="Range of the flame thrower in tiles.\nDefault: 8.\nMinimum: 1. Maximum: 30."
+
+m_arrVarName="WeaponSettings.SweepAngleON"
+m_arrVarFriendlyName="Flamethrower angle of attack"
+m_arrVarDescription="The angle in degrees between the leftmost attacking side and the rightmost attacking side.\nDefault: 60.\nMinimum: 15. Maximum: 180."
+
+m_arrVarName="WeaponSettings.ArcThrower"
+m_arrVarFriendlyName="Arc Thrower"
+m_arrVarDescription="Choose your starting chance to stun an enemy.\nDefault: 0.65.\nDefault in Long War 1.0: 0.61."
+
+m_arrVarName="WeaponSettings.RocketScatter"
+m_arrVarFriendlyName="Rocket Scatter"
+m_arrVarDescription="Lower means more accurate rocket fire. Value is average meters of miss if shooting with 0 aim at a target 20 meters away.\n\n0.0 - No scatter.\n4.0 - Low scatter.\n7.8 - Normal scatter (Default).\n9.0 - Large scatter."
+
+m_arrVarName="WeaponSettings.RocketScatter.0.00"
+m_arrVarFriendlyName="No scatter"
+m_arrVarDescription=""
+
+m_arrVarName="WeaponSettings.RocketScatter.4.00"
+m_arrVarFriendlyName="Low scatter"
+m_arrVarDescription=""
+
+m_arrVarName="WeaponSettings.RocketScatter.7.80"
+m_arrVarFriendlyName="Normal scatter"
+m_arrVarDescription=""
+
+m_arrVarName="WeaponSettings.RocketScatter.9.00"
+m_arrVarFriendlyName="Large scatter"
+m_arrVarDescription=""
+
+m_arrVarName="WeaponSettings.COUNCIL_FUNDING_MULTIPLIER_HARDON"
+m_arrVarFriendlyName="HEAT Ammo and Warheads bonus"
+m_arrVarDescription="HEAT Ammo and Warheads bonus damage multiplier (100=double damage; 50=50% damage increase, etc.)."
+
+m_arrVarName="WeaponSettings.HQASSAULT_MIN_DAYSON"
+m_arrVarFriendlyName="Pistol degrades"
+m_arrVarDescription="Range (in meters) that pistol-slot weapon accuracy degrades.\nDefault: 14."
+
+m_arrVarName="WeaponSettings.ASSAULT_AIM_CLIMBON"
+m_arrVarFriendlyName="Riffle range threshold"
+m_arrVarDescription="Rate at which weapons with the eWP_Assault property lose aim when they are above the close range threshold.\nDefault: 6.0."
+
+m_arrVarName="WeaponSettings.SNIPER_AIM_FALLON"
+m_arrVarFriendlyName="Sniper Aim Fall"
+m_arrVarDescription="Rate at which weapons with the eWP_Sniper property lose aim when they are under the close range threshold.\nDefault: -5.0."
+
+m_arrVarName="WeaponSettings.CLOSE_RANGEON"
+m_arrVarFriendlyName="Distance penalties/bonuses"
+m_arrVarDescription="Distance at which close range penalties/bonuses are assessed.\nDefault: 14.0."
+
+m_arrVarName="WeaponSettings.AdditionalProximityMinesON"
+m_arrVarFriendlyName="Additional Proximity Mines"
+m_arrVarDescription="For MEC. Work with MEC Packmaster bonus.\nDefault: 1."
+
+m_arrVarName="WeaponSettings.AdditionalGrenadesON"
+m_arrVarFriendlyName="Additional Grenades"
+m_arrVarDescription="For MEC. Work with MEC Packmaster bonus.\nDefault: 1."
+
+m_arrVarName="WeaponSettings.AdditionalRestorativeMistShotsON"
+m_arrVarFriendlyName="Additional Restorative Mist"
+m_arrVarDescription="For MEC. Work with MEC Packmaster bonus.\nDefault: 1."
+
+m_arrVarName="WeaponSettings.AIM_CLIMBON"
+m_arrVarFriendlyName="AIM Climb"
+m_arrVarDescription="AIM Climb is the penalty NON-Sniper weapons get for every square of distance between them and the target, in this case a 3 AIM penalty per distance square.\nDefault: 3.0."
+
+m_arrVarName="WeaponSettings.ASSAULT_LONG_RANGE_MAX_PENALTYON"
+m_arrVarFriendlyName="Maximum penalty"
+m_arrVarDescription="Maximum penalty any weapont will incur, meaning no matter how far a target is away you will never incur more then a 100 AIM Penalty (or whatever you set this to).\nDefault: -100."
+
+m_arrVarName="WeaponSettings.EXALT_LOOT1ON"
+m_arrVarFriendlyName="Motion Tracker charges"
+m_arrVarDescription="Base charges for Motion Tracker item.\nDefault: 3."
+
+m_arrVarName="WeaponSettings.BASE_REMOVAL_DAYSON"
+m_arrVarFriendlyName="Motion Tracker range"
+m_arrVarDescription="Range of Motion Tracker item (any item with eAbility_TooCloseForComfort) in meters, so that (X Tiles - 27)/1.5.\nDefault: 35."
+
+m_arrVarName="MissionsSettings"
+m_arrVarFriendlyName="Mission's Settings"
+m_arrVarDescription="Various mission related settings. Mission timers and etc."
+
+m_arrVarName="MissionsSettings.AI_TERRORIZE_MOST_PANICKEDON"
+m_arrVarFriendlyName="AI terrorize most panicked"
+m_arrVarDescription="Chance the aliens will hit the highest-panicked adjacent country on several mission types.\nDefault: 85."
+
+m_arrVarName="MissionsSettings.UFO_CRASH_TIMERON"
+m_arrVarFriendlyName="UFO crash timer"
+m_arrVarDescription="UFO crash mission timer.\nDefault: 72."
+
+m_arrVarName="MissionsSettings.TERROR_TIMERON"
+m_arrVarFriendlyName="Terror timer"
+m_arrVarDescription="Terror mission timer.\nDefault: 48."
+
+m_arrVarName="MissionsSettings.UFO_LANDED_TIMERON"
+m_arrVarFriendlyName="UFO landed timer"
+m_arrVarDescription="UFO landed mission timer.\nDefault: 32."
+
+m_arrVarName="MissionsSettings.ABDUCTION_TIMERON"
+m_arrVarFriendlyName="Abduction timer"
+m_arrVarDescription="Abduction mission timer.\nDefault: 16."
+
+m_arrVarName="MissionsSettings.COUNCIL_DAYON"
+m_arrVarFriendlyName="Council days timer"
+m_arrVarDescription="A timer indicating how many days a new council mission may appear.\nDefault: 17."
+
+m_arrVarName="MissionsSettings.COUNCIL_RAND_DAYSON"
+m_arrVarFriendlyName="Council random days timer"
+m_arrVarDescription="A timer showing the interval within which a new council mission can appear if one is already available.\nDefault: 10."
+
+
+m_arrVarName="AliensSettings"
+m_arrVarFriendlyName="Aliens Settings"
+m_arrVarDescription="Various settings related to aliens and their abilities. And also the settings related to Ufo."
+
+m_arrVarName="AliensSettings.EXALT_LOOT2ON"
+m_arrVarFriendlyName="Minimum to-hit chance"
+m_arrVarDescription="This is the minimum to-hit chance for the alien to conclude it has a strong attack, good team attack target, or a potential kill shot, making it more likely to shoot than take other choices. Note low-aim aliens will decide they have a strong attack at lower to-hit, hardcoded at offense-30.\nDefault: 40.\nDefault EU-EW: 50."
+
+m_arrVarName="AliensSettings.UFO_HYPERWAVE_SURVIVEON"
+m_arrVarFriendlyName="Alien vulnerable target"
+m_arrVarDescription="This is the minimum to-hit chance for the alien to conclude it has a vulnerable target. This plays into whether it will move to try to get a choice shot. It may also affect abilities with a % to succeed.\nDefault: 45.\nDefault EU-EW: 55."
+
+m_arrVarName="AliensSettings.ABDUCTION_LURK_PCTON"
+m_arrVarFriendlyName="Abduction UFO pods"
+m_arrVarDescription="Alien pod behavior - chance they will lurk rather than patrol, on abduction mission types."
+
+m_arrVarName="AliensSettings.LARGE_UFO_LURK_PCTON"
+m_arrVarFriendlyName="Large UFO pods"
+m_arrVarDescription="Alien pod behavior - chance they will lurk rather than patrol, on large ships."
+
+m_arrVarName="AliensSettings.SMALL_UFO_LURK_PCTON"
+m_arrVarFriendlyName="Small UFO pods"
+m_arrVarDescription="Alien pod behavior - chance they will lurk rather than patrol, on small ships."
+
+m_arrVarName="AliensSettings.REFLECT_DMGON"
+m_arrVarFriendlyName="Reflect damage"
+m_arrVarDescription="Ethereal reflection will deal this percentage of damage (based on the original attack)."
+
+m_arrVarName="AliensSettings.UFO_FIND_SATON"
+m_arrVarFriendlyName="Search satellite"
+m_arrVarDescription="The probability that Ufo will find a satellite."
+
+m_arrVarName="AliensSettings.UFO_SECOND_PASS_FIND_SATON"
+m_arrVarFriendlyName="Second search satellite"
+m_arrVarDescription="The probability that the Ufo will find a satellite when searching again."
+
+m_arrVarName="AliensSettings.UFO_FIND_STEALTH_SATON"
+m_arrVarFriendlyName="Search stealth satellite"
+m_arrVarDescription="The probability that Ufo will find a stealth satellite."
+
+m_arrVarName="AliensSettings.UFO_SECOND_PASS_FIND_STEALTH_SATON"
+m_arrVarFriendlyName="Second search stealth satellite"
+m_arrVarDescription="The probability that the Ufo will find a stealth satellite when searching again."
+
+m_arrVarName="LabsSettings"
+m_arrVarFriendlyName="Lab Settings"
+m_arrVarDescription="Settings for laboratories, workshops and power plants. Multipliers that allow you to adjust the speed of research or production of items. Adjust the power of the generators. As well as the chances of creating a psionic, repairing items, and more."
+
+m_arrVarName="LabsSettings.PSI_NUM_TRAINING_SLOTSON"
+m_arrVarFriendlyName="Laboratory slots"
+m_arrVarDescription="Number of soldier slots (and thus soldiers who can be simultaneously trained) in PsiLabs, GeneLabs and Cybernetics Lab/Repair Bay.\nDefault: 6.\nDefault in LW 1.0: 3."
+
+m_arrVarName="LabsSettings.PSI_GIFT_CHANCEON"
+m_arrVarFriendlyName="Psi gift chance"
+m_arrVarDescription="Chance of successful training if soldier Will equals Psi Power's target will; (Lower this to .25 to bring back More Than Human SW option).\nDefault: 0.45."
+
+m_arrVarName="LabsSettings.BUILD_TIME"
+m_arrVarFriendlyName="Repair time"
+m_arrVarDescription="Percents of normal build time an item repair takes (also goes down with engineers and Adv Repair foundry project).\nDefault: 80."
+
+m_arrVarName="LabsSettings.m_fMecRepairCostModON"
+m_arrVarFriendlyName="Repair Cost"
+m_arrVarDescription="This is how much of the item cost in cash, alloys, elerium and meld is required to repair a damaged item.\nDefault: 0.20."
+
+m_arrVarName="LabsSettings.TECH_TIME_BALANCEON"
+m_arrVarFriendlyName="Tech Time"
+m_arrVarDescription="Multiplier for all tech iTime values. Time in hours for 1 scientist is (iTime * Tech_Time_Balance * 72).\nDefault: 10."
+
+m_arrVarName="LabsSettings.NUM_STARTING_SCIENTISTSON"
+m_arrVarFriendlyName="Starting Scientists"
+m_arrVarDescription="Number of scientists in new game.\nDefault: 10."
+
+m_arrVarName="LabsSettings.LAB_MINIMUMON"
+m_arrVarFriendlyName="Minimum Scientists"
+m_arrVarDescription="The number of scientists required for your first lab.\nDefault: 10."
+
+m_arrVarName="LabsSettings.LAB_MULTIPLEON"
+m_arrVarFriendlyName="New Labs"
+m_arrVarDescription="Number of scientists, required for each additional lab.\nDefault: 10. "
+
+m_arrVarName="LabsSettings.LAB_BONUSON"
+m_arrVarFriendlyName="Research Bonus"
+m_arrVarDescription="Bonus for reducing research time that you get for a lab.\nDefault: 0.2."
+
+m_arrVarName="LabsSettings.LAB_ADJACENCY_BONUSON"
+m_arrVarFriendlyName="Neighborhood laboratories"
+m_arrVarDescription="Neighborhood bonus for each additional laboratory.\nDefault: 0.1."
+
+m_arrVarName="StrategySettings.NUM_STARTING_ENGINEERSON"
+m_arrVarFriendlyName="Starting Engineers"
+m_arrVarDescription="Number of engineers in new game.\nDefault: 10."
+
+m_arrVarName="LabsSettings.WORKSHOP_MINIMUMON"
+m_arrVarFriendlyName="Minimum Engineers"
+m_arrVarDescription="The number of engineers required for your first workshop.\nDefault: 10."
+
+m_arrVarName="LabsSettings.WORKSHOP_MULTIPLEON"
+m_arrVarFriendlyName="New Workshops"
+m_arrVarDescription="Number of engineers, required for each additional workshop.\nDefault: 10. "
+
+m_arrVarName="LabsSettings.WORKSHOP_REBATE_PCTON"
+m_arrVarFriendlyName="Cost Refund"
+m_arrVarDescription="A 7% refund on foundry projects, item builds and production facilities.\nDefault: 10."
+
+m_arrVarName="LabsSettings.WORKSHOP_ENG_BONUSON"
+m_arrVarFriendlyName="Engineers per Workshop"
+m_arrVarDescription="The number of engineers given by each workshop.\nDefault: 10."
+
+m_arrVarName="LabsSettings.ABDUCTION_REWARD_ENGON"
+m_arrVarFriendlyName="Scaling factor"
+m_arrVarDescription="Scaling factor for time-to-complete item/foundry projects... Rate of time-decrease at optimal engineers.\nDefault: 0.03."
+
+m_arrVarName="LabsSettings.POWER_NORMALON"
+m_arrVarFriendlyName="Fission Plant"
+m_arrVarDescription="Fission Plant power.\nDefault: 8."
+
+m_arrVarName="LabsSettings.POWER_THERMALON"
+m_arrVarFriendlyName="Thermal Plant"
+m_arrVarDescription="Thermal Plant power.\nDefault: 25."
+
+m_arrVarName="LabsSettings.POWER_ELERIUMON"
+m_arrVarFriendlyName="Elerium Plant"
+m_arrVarDescription="Elerium Plant power.\nDefault: 35."
+
+m_arrVarName="LabsSettings.POWER_ADJACENCY_BONUSON"
+m_arrVarFriendlyName="Bonus power"
+m_arrVarDescription="Bonus power from two adjacent power plants of any type.\nDefault: 3."
+
+m_arrVarName="StrategySettings.StartStats"
+m_arrVarFriendlyName="Start stats"
+m_arrVarDescription="The starting characteristics of the soldiers."
+
+m_arrVarName="StrategySettings.SWsettings"
+m_arrVarFriendlyName="SW settings"
+m_arrVarDescription="Settings that affect some parameters of the Second Wave."
+
+m_arrVarName="CoverBonus.CoverAndDefense"
+m_arrVarFriendlyName="Covers And Defense"
+m_arrVarDescription="Various cover settings and armor settings."
+
+m_arrVarName="CoverBonus.PanicSettings"
+m_arrVarFriendlyName="Panic Settings"
+m_arrVarDescription="Panic response settings."
+
+m_arrVarName="CoverBonus.FatigueSettings"
+m_arrVarFriendlyName="Fatigue Settings"
+m_arrVarDescription="Fatigue settings, duration and impact."
+
+m_arrVarName="INTERCEPTOR_MENU.Interceptors"
+m_arrVarFriendlyName="Satellites"
+m_arrVarDescription="Satellites capacity settings."
+
+m_arrVarName="WeaponSettings.Flamethrower"
+m_arrVarFriendlyName="Flamethrower"
+m_arrVarDescription="Flamethrower settings."
+
+m_arrVarName="WeaponSettings.DistanceAimModifiers"
+m_arrVarFriendlyName="Aim Modifiers"
+m_arrVarDescription="Shooting distance, weapon degradation, as well as various penalties."
+
+m_arrVarName="WeaponSettings.PackmasterModifiers"
+m_arrVarFriendlyName="Packmaster Modifiers"
+m_arrVarDescription="The capacity of some items. How much can you carry with you."
+
+m_arrVarName="AliensSettings.Ufos"
+m_arrVarFriendlyName="Satellite searchs"
+m_arrVarDescription="Satellite search settings."
+
+m_arrVarName="LabsSettings.Scientists"
+m_arrVarFriendlyName="Scientists"
+m_arrVarDescription="Scientific laboratory settings."
+
+m_arrVarName="LabsSettings.Workshops"
+m_arrVarFriendlyName="Engineers"
+m_arrVarDescription="Workshop settings."
+
+m_arrVarName="LabsSettings.Powerstations"
+m_arrVarFriendlyName="Power plants"
+m_arrVarDescription="Power plant settings."

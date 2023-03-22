@@ -1,0 +1,272 @@
+UPK_FILE = xcomgame.upk
+OBJECT = XComAlienPodManager.QueuePodReveal : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 49 [@] ( 28 15 ) 
+/*(0x0005/0x0005)*/ 49 [@] ( 28 15 ) 
+/*(0x000A/0x000A)*/ 07 [@label_0x0053] 81 19 00 <.kPod> [@] <XComAlienPod.IsAlive.ReturnValue> 00 ( 1B <IsAlive> 16 ) 16 
+/*(0x002E/0x0026)*/ 	19 00 <.kPod> [@] <NullRef> 00 ( 71 21 <Inactive> 4A 4A 4A 16 ) 
+/*(0x0051/0x0041)*/ 	04 0B 
+/*(0x0053/0x0043)*/ [#label_0x0053]
+/*(0x0053/0x0043)*/ 07 [@label_0x0077] 19 00 <.kPod> [@] <XComAlienPod.m_bSkipActivateMatinee> 00 ( 2D 01 <XComAlienPod.m_bSkipActivateMatinee> ) 
+/*(0x0075/0x0059)*/ 	04 0B 
+/*(0x0077/0x005B)*/ [#label_0x0077]
+/*(0x0077/0x005B)*/ 07 [@label_0x00EE] 2D 00 <.bForcePatrol> 
+/*(0x0084/0x0064)*/ 	07 [@label_0x00C8] 84 9B 46 01 <@m_arrTripped> [@] ( 00 <.kPod> 16 ) 1D <%i -1> 16 18 [@] ( 9B 46 01 <@m_arrRevealed> [@] ( 00 <.kPod> 16 ) 1D <%i -1> 16 16 ) 
+/*(0x00C6/0x0096)*/ 		04 0B 
+/*(0x00C8/0x0098)*/ 	[#label_0x00C8]
+/*(0x00C8/0x0098)*/ 	55 01 <@m_arrTripped> [@] ( 00 <.kPod> 16 ) 
+/*(0x00DE/0x00A6)*/ 	71 21 <Waiting> 4A 4A 4A 16 
+/*(0x00EC/0x00B4)*/ 	04 0B 
+/*(0x00EE/0x00B6)*/ [#label_0x00EE]
+/*(0x00EE/0x00B6)*/ 07 [@label_0x013D] 72 19 00 <.kPod> [@] <XComAlienPod.m_kEnemy> 00 ( 01 <XComAlienPod.m_kEnemy> ) 2A 16 
+/*(0x0112/0x00CE)*/ 	0F 19 00 <.kPod> [@] <XComAlienPod.m_kEnemy> 00 ( 01 <XComAlienPod.m_kEnemy> ) 00 <.kRevealedTo> 
+/*(0x013A/0x00E6)*/ 	06 [@label_0x0174] 
+/*(0x013D/0x00E9)*/ [#label_0x013D]
+/*(0x013D/0x00E9)*/ 07 [@label_0x0174] 72 00 <.kRevealedTo> 2A 16 
+/*(0x014C/0x00F4)*/ 	0F 00 <.kRevealedTo> 19 00 <.kPod> [@] <XComAlienPod.m_kEnemy> 00 ( 01 <XComAlienPod.m_kEnemy> ) 
+/*(0x0174/0x010C)*/ [#label_0x0174]
+/*(0x0174/0x010C)*/ 07 [@label_0x01B9] 2D 01 <@m_bWaitForSaveLoad> 
+/*(0x0181/0x0115)*/ 	07 [@label_0x01B7] 9A 46 01 <@m_arrRevealPostponed> [@] ( 00 <.kPod> 16 ) 1D <%i -1> 16 
+/*(0x01A1/0x012D)*/ 		55 01 <@m_arrRevealPostponed> [@] ( 00 <.kPod> 16 ) 
+/*(0x01B7/0x013B)*/ 	[#label_0x01B7]
+/*(0x01B7/0x013B)*/ 	04 0B 
+/*(0x01B9/0x013D)*/ [#label_0x01B9]
+/*(0x01B9/0x013D)*/ 14 2D 00 <.bWillActivate> 82 81 19 00 <.kPod> [@] <XComAlienPod.bNeverActivate> 00 ( 2D 01 <XComAlienPod.bNeverActivate> ) 16 18 [@] ( 84 2D 00 <.bForceActivate> 18 [@] ( 19 00 <.kPod> [@] <XComAlienPod.HasVisibleEnemies.ReturnValue> 00 ( 1B <HasVisibleEnemies> 4A 16 ) 16 ) 16 ) 
+/*(0x0219/0x0181)*/ 07 [@label_0x0795] 82 2D 00 <.bWillActivate> 18 [@] ( 1B <GetIntersectingPods> 00 <.kPod> 00 <.arrIntersecting> 16 16 ) 
+/*(0x0247/0x01A3)*/ 	0F 00 <.vPodLoc> 19 00 <.kPod> [@] <XComAlienPod.GetPodLocation.ReturnValue> 00 ( 1B <GetPodLocation> 4A 16 ) 
+/*(0x0271/0x01C1)*/ 	07 [@label_0x02F8] 82 19 00 <.kPod> [@] <XComAlienPod.IsIn3x3Area.ReturnValue> 00 ( 1B <IsIn3x3Area> 16 ) 18 [@] ( 19 12 20 <Class.XComWorldData> [@] <XComWorldData.GetWorldData.ReturnValue> 00 ( 1B <GetWorldData> 16 ) [@] <XComWorldData.CheckClearanceForPodReveal.ReturnValue> 00 ( 1B <CheckClearanceForPodReveal> 00 <.vPodLoc> 16 ) 16 ) 
+/*(0x02D6/0x020E)*/ 		0F 00 <.kClearPod> 00 <.kPod> 
+/*(0x02E9/0x0219)*/ 		14 2D 00 <.bLookForClearPod> 28 
+/*(0x02F5/0x0221)*/ 		06 [@label_0x0304] 
+/*(0x02F8/0x0224)*/ 	[#label_0x02F8]
+/*(0x02F8/0x0224)*/ 	14 2D 00 <.bLookForClearPod> 27 
+/*(0x0304/0x022C)*/ 	[#label_0x0304]
+/*(0x0304/0x022C)*/ 	07 [@label_0x04E4] 2D 00 <.bLookForClearPod> 
+/*(0x0311/0x0235)*/ 		58 00 <.arrIntersecting> 00 <.kAltPod> 00 4A [@label_0x04E3] 
+/*(0x0328/0x0244)*/ 			0F 00 <.vPodLoc> 19 00 <.kAltPod> [@] <XComAlienPod.GetPodLocation.ReturnValue> 00 ( 1B <GetPodLocation> 4A 16 ) 
+/*(0x0352/0x0262)*/ 			07 [@label_0x04E2] 82 19 00 <.kAltPod> [@] <XComAlienPod.IsIn3x3Area.ReturnValue> 00 ( 1B <IsIn3x3Area> 16 ) 18 [@] ( 19 12 20 <Class.XComWorldData> [@] <XComWorldData.GetWorldData.ReturnValue> 00 ( 1B <GetWorldData> 16 ) [@] <XComWorldData.CheckClearanceForPodReveal.ReturnValue> 00 ( 1B <CheckClearanceForPodReveal> 00 <.vPodLoc> 16 ) 16 ) 
+/*(0x03B7/0x02AF)*/ 				07 [@label_0x044A] 72 00 <.kClearPod> 2A 16 
+/*(0x03C6/0x02BA)*/ 					0F 00 <.kClearPod> 00 <.kAltPod> 
+/*(0x03D9/0x02C5)*/ 					07 [@label_0x040B] 19 00 <.kClearPod> [@] <XComAlienPod.HasVisibleEnemies.ReturnValue> 00 ( 1B <HasVisibleEnemies> 4A 16 ) 
+/*(0x03FC/0x02E0)*/ 						0F 00 <.iClearVisVal> 2C 02 
+/*(0x0408/0x02E8)*/ 						06 [@label_0x0447] 
+/*(0x040B/0x02EB)*/ 					[#label_0x040B]
+/*(0x040B/0x02EB)*/ 					07 [@label_0x043C] 19 00 <.kClearPod> [@] <XComAlienPod.HasVisibleEnemies.ReturnValue> 00 ( 1B <HasVisibleEnemies> 27 16 ) 
+/*(0x042E/0x0306)*/ 						0F 00 <.iClearVisVal> 26 
+/*(0x0439/0x030D)*/ 						06 [@label_0x0447] 
+/*(0x043C/0x0310)*/ 					[#label_0x043C]
+/*(0x043C/0x0310)*/ 					0F 00 <.iClearVisVal> 25 
+/*(0x0447/0x0317)*/ 					[#label_0x0447]
+/*(0x0447/0x0317)*/ 					06 [@label_0x04E2] 
+/*(0x044A/0x031A)*/ 				[#label_0x044A]
+/*(0x044A/0x031A)*/ 				07 [@label_0x047C] 19 00 <.kAltPod> [@] <XComAlienPod.HasVisibleEnemies.ReturnValue> 00 ( 1B <HasVisibleEnemies> 4A 16 ) 
+/*(0x046D/0x0335)*/ 					0F 00 <.iAltVisVal> 2C 02 
+/*(0x0479/0x033D)*/ 					06 [@label_0x04B8] 
+/*(0x047C/0x0340)*/ 				[#label_0x047C]
+/*(0x047C/0x0340)*/ 				07 [@label_0x04AD] 19 00 <.kAltPod> [@] <XComAlienPod.HasVisibleEnemies.ReturnValue> 00 ( 1B <HasVisibleEnemies> 27 16 ) 
+/*(0x049F/0x035B)*/ 					0F 00 <.iAltVisVal> 26 
+/*(0x04AA/0x0362)*/ 					06 [@label_0x04B8] 
+/*(0x04AD/0x0365)*/ 				[#label_0x04AD]
+/*(0x04AD/0x0365)*/ 				0F 00 <.iAltVisVal> 25 
+/*(0x04B8/0x036C)*/ 				[#label_0x04B8]
+/*(0x04B8/0x036C)*/ 				07 [@label_0x04E2] 97 00 <.iAltVisVal> 00 <.iClearVisVal> 16 
+/*(0x04CF/0x037B)*/ 					0F 00 <.kClearPod> 00 <.kAltPod> 
+/*(0x04E2/0x0386)*/ 			[#label_0x04E2]
+/*(0x04E2/0x0386)*/ 			31 
+/*(0x04E3/0x0387)*/ 		[#label_0x04E3]
+/*(0x04E3/0x0387)*/ 		30 
+/*(0x04E4/0x0388)*/ 	[#label_0x04E4]
+/*(0x04E4/0x0388)*/ 	07 [@label_0x057E] 77 00 <.kClearPod> 2A 16 
+/*(0x04F3/0x0393)*/ 		56 00 <.arrIntersecting> [@] ( 00 <.kClearPod> 16 ) 
+/*(0x0509/0x03A1)*/ 		55 00 <.arrIntersecting> [@] ( 00 <.kPod> 16 ) 
+/*(0x051F/0x03AF)*/ 		0F 00 <.kPod> 00 <.kClearPod> 
+/*(0x0532/0x03BA)*/ 		07 [@label_0x057E] 72 19 00 <.kPod> [@] <XComAlienPod.m_kEnemy> 00 ( 01 <XComAlienPod.m_kEnemy> ) 2A 16 
+/*(0x0556/0x03D2)*/ 			0F 19 00 <.kPod> [@] <XComAlienPod.m_kEnemy> 00 ( 01 <XComAlienPod.m_kEnemy> ) 00 <.kRevealedTo> 
+/*(0x057E/0x03EA)*/ 	[#label_0x057E]
+/*(0x057E/0x03EA)*/ 	58 00 <.arrIntersecting> 00 <.kAltPod> 00 4A [@label_0x0794] 
+/*(0x0595/0x03F9)*/ 		14 19 00 <.kAltPod> [@] <XComAlienPod.m_bSkipActivateMatinee> 00 ( 2D 01 <XComAlienPod.m_bSkipActivateMatinee> ) 27 
+/*(0x05B6/0x040E)*/ 		07 [@label_0x0602] 72 19 00 <.kAltPod> [@] <XComAlienPod.m_kEnemy> 00 ( 01 <XComAlienPod.m_kEnemy> ) 2A 16 
+/*(0x05DA/0x0426)*/ 			0F 19 00 <.kAltPod> [@] <XComAlienPod.m_kEnemy> 00 ( 01 <XComAlienPod.m_kEnemy> ) 00 <.kRevealedTo> 
+/*(0x0602/0x043E)*/ 		[#label_0x0602]
+/*(0x0602/0x043E)*/ 		07 [@label_0x06AF] 9A 46 01 <@m_arrRevealed> [@] ( 00 <.kAltPod> 16 ) 1D <%i -1> 16 
+/*(0x0622/0x0456)*/ 			58 19 00 <.kAltPod> [@] <XComAlienPod.m_arrAlien> 00 ( 01 <XComAlienPod.m_arrAlien> ) 00 <.kAlien> 00 4A [@label_0x0670] 
+/*(0x064E/0x0472)*/ 				14 19 00 <.kAlien> [@] <XGUnitNativeBase.m_bInPodReveal> 00 ( 2D 01 <XGUnitNativeBase.m_bInPodReveal> ) 27 
+/*(0x066F/0x0487)*/ 				31 
+/*(0x0670/0x0488)*/ 			[#label_0x0670]
+/*(0x0670/0x0488)*/ 			30 
+/*(0x0671/0x0489)*/ 			19 00 <.kAltPod> [@] <XComAlienPod.PlayRevealPodMatinee.ReturnValue> 00 ( 1B <PlayRevealPodMatinee> 01 <@m_kUnit> 16 ) 
+/*(0x0699/0x04A5)*/ 			55 01 <@m_arrRevealed> [@] ( 00 <.kAltPod> 16 ) 
+/*(0x06AF/0x04B3)*/ 		[#label_0x06AF]
+/*(0x06AF/0x04B3)*/ 		07 [@label_0x0793] 9A 46 01 <@m_arrActivation> [@] ( 00 <.kAltPod> 16 ) 1D <%i -1> 16 
+/*(0x06CF/0x04CB)*/ 			57 01 <@m_arrActivation> [@] ( 25 00 <.kAltPod> 16 ) 
+/*(0x06E6/0x04DA)*/ 			19 00 <.kAltPod> [@] <NullRef> 00 ( 1B <MarkEnemySeen> 16 ) 
+/*(0x0705/0x04F1)*/ 			07 [@label_0x0793] 82 77 19 01 <@m_kPlayer> [@] <XGAIPlayer.m_kOvermindHandler> 00 ( 01 <XGAIPlayer.m_kOvermindHandler> ) 2A 16 18 [@] ( 19 19 01 <@m_kPlayer> [@] <XGAIPlayer.m_kOvermindHandler> 00 ( 01 <XGAIPlayer.m_kOvermindHandler> ) [@] <XGAIPlayerOvermindHandler.bEnabled> 00 ( 2D 01 <XGAIPlayerOvermindHandler.bEnabled> ) 16 ) 
+/*(0x0762/0x052E)*/ 				19 01 <@m_kPlayer> [@] <NullRef> 00 ( 1B <OnReveal> 01 <@m_kUnit> 00 <.kRevealedTo> 16 ) 
+/*(0x0793/0x054F)*/ 		[#label_0x0793]
+/*(0x0793/0x054F)*/ 		31 
+/*(0x0794/0x0550)*/ 	[#label_0x0794]
+/*(0x0794/0x0550)*/ 	30 
+/*(0x0795/0x0551)*/ [#label_0x0795]
+/*(0x0795/0x0551)*/ 07 [@label_0x07BA] 9B 46 01 <@m_arrRevealPostponed> [@] ( 00 <.kPod> 16 ) 1D <%i -1> 16 
+/*(0x07B5/0x0569)*/ 	04 0B 
+/*(0x07B7/0x056B)*/ 	06 [@label_0x085B] 
+/*(0x07BA/0x056E)*/ [#label_0x07BA]
+/*(0x07BA/0x056E)*/ 07 [@label_0x085B] 84 19 00 <.kPod> [@] <Core.Object.IsInState.ReturnValue> 00 ( 61 19 21 <Patrol> 4A 16 ) 18 [@] ( 19 00 <.kPod> [@] <XComAlienPod.m_bSkipCinematic> 00 ( 2D 01 <XComAlienPod.m_bSkipCinematic> ) 16 ) 
+/*(0x0803/0x05A3)*/ 	14 19 00 <.kPod> [@] <XComAlienPod.m_bSkipCinematic> 00 ( 2D 01 <XComAlienPod.m_bSkipCinematic> ) 27 
+/*(0x0824/0x05B8)*/ 	19 00 <.kPod> [@] <NullRef> 00 ( 1B <AbortMovement> 16 ) 
+/*(0x0843/0x05CF)*/ 	55 01 <@m_arrRevealPostponed> [@] ( 00 <.kPod> 16 ) 
+/*(0x0859/0x05DD)*/ 	04 0B 
+/*(0x085B/0x05DF)*/ [#label_0x085B]
+/*(0x085B/0x05DF)*/ 07 [@label_0x09BF] 9A 46 01 <@m_arrRevealed> [@] ( 00 <.kPod> 16 ) 1D <%i -1> 16 
+/*(0x087B/0x05F7)*/ 	58 19 00 <.kPod> [@] <XComAlienPod.m_arrAlien> 00 ( 01 <XComAlienPod.m_arrAlien> ) 00 <.kAlien> 00 4A [@label_0x08C9] 
+/*(0x08A7/0x0613)*/ 		14 19 00 <.kAlien> [@] <XGUnitNativeBase.m_bInPodReveal> 00 ( 2D 01 <XGUnitNativeBase.m_bInPodReveal> ) 27 
+/*(0x08C8/0x0628)*/ 		31 
+/*(0x08C9/0x0629)*/ 	[#label_0x08C9]
+/*(0x08C9/0x0629)*/ 	30 
+/*(0x08CA/0x062A)*/ 	07 [@label_0x09BF] 81 19 00 <.kPod> [@] <XComAlienPod.IsMoving.ReturnValue> 00 ( 1B <IsMoving> 16 ) 16 
+/*(0x08EE/0x0646)*/ 		19 00 <.kPod> [@] <XComAlienPod.PlayRevealPodMatinee.ReturnValue> 00 ( 1B <PlayRevealPodMatinee> 01 <@m_kUnit> 16 ) 
+/*(0x0916/0x0662)*/ 		55 01 <@m_arrRevealed> [@] ( 00 <.kPod> 16 ) 
+/*(0x092C/0x0670)*/ 		07 [@label_0x09BF] 19 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_kDesc> 00 ( 01 <XGBattle.m_kDesc> ) [@] <XGBattleDesc.m_bIsTutorial> 00 ( 2D 01 <XGBattleDesc.m_bIsTutorial> ) 
+/*(0x09AC/0x06C0)*/ 			1B <ActivateRevealPodEvent> 00 <.kPod> 16 
+/*(0x09BF/0x06CF)*/ [#label_0x09BF]
+/*(0x09BF/0x06CF)*/ 07 [@label_0x0A54] 19 2E <Class.XGAIPlayer> 19 2E <Class.XGBattle_SP> 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle_SP.GetAIPlayer.ReturnValue> 00 ( 1B <GetAIPlayer> 16 ) [@] <XGAIPlayer.m_bSkipAI> 00 ( 2D 01 <XGAIPlayer.m_bSkipAI> ) 
+/*(0x0A52/0x072E)*/ 	04 0B 
+/*(0x0A54/0x0730)*/ [#label_0x0A54]
+/*(0x0A54/0x0730)*/ 07 [@label_0x0B4E] 2D 00 <.bWillActivate> 
+/*(0x0A61/0x0739)*/ 	07 [@label_0x0B44] 9A 46 01 <@m_arrActivation> [@] ( 00 <.kPod> 16 ) 1D <%i -1> 16 
+/*(0x0A81/0x0751)*/ 		55 01 <@m_arrActivation> [@] ( 00 <.kPod> 16 ) 
+/*(0x0A97/0x075F)*/ 		19 00 <.kPod> [@] <NullRef> 00 ( 1B <MarkEnemySeen> 16 ) 
+/*(0x0AB6/0x0776)*/ 		07 [@label_0x0B44] 82 77 19 01 <@m_kPlayer> [@] <XGAIPlayer.m_kOvermindHandler> 00 ( 01 <XGAIPlayer.m_kOvermindHandler> ) 2A 16 18 [@] ( 19 19 01 <@m_kPlayer> [@] <XGAIPlayer.m_kOvermindHandler> 00 ( 01 <XGAIPlayer.m_kOvermindHandler> ) [@] <XGAIPlayerOvermindHandler.bEnabled> 00 ( 2D 01 <XGAIPlayerOvermindHandler.bEnabled> ) 16 ) 
+/*(0x0B13/0x07B3)*/ 			19 01 <@m_kPlayer> [@] <NullRef> 00 ( 1B <OnReveal> 01 <@m_kUnit> 00 <.kRevealedTo> 16 ) 
+/*(0x0B44/0x07D4)*/ 	[#label_0x0B44]
+/*(0x0B44/0x07D4)*/ 	1B <UpdateCurrState> 16 
+
+// Mutate("XComAlienPodManager.QueuePodReveal")
+19 19 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <Engine.GameInfo.BaseMutator> 00 ( 01 <Engine.GameInfo.BaseMutator> ) [@] <NullRef> 00 ( 1B <Mutate> 1F <%t "XComAlienPodManager.QueuePodReveal"> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) 16 )
+
+/*(0x0B4E/0x07DE)*/ [#label_0x0B4E]
+/*(0x0B4E/0x07DE)*/ 04 0B 
+/*(0x0B50/0x07E0)*/ 53 
+
+
+OBJECT = XGPlayer.EndingTurn : AUTO
+
+[BEFORE_CODE]
+/*(0x0C79/0x0899)*/ 71 21 <Inactive> 4A 4A 4A 16 
+/*(0x0C87/0x08A7)*/ 08 
+/*(0x0C88/0x08A8)*/ 0B 
+/*(0x0C89/0x08A9)*/ 0B 
+/*(0x0C8A/0x08AA)*/ 0B 
+/*(0x0C8B/0x08AB)*/ 0C <Begin> <%u 0> <None> <%u 65535> 
+/*(0x0CA4/0x08C4)*/ 53
+ 
+[AFTER_CODE]
+
+					//CACHE DORMANT PODS FOR bNoMoveNextTurn
+					// Mutate("XGPlayer.EndingTurn")
+					19 19 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <Engine.GameInfo.BaseMutator> 00 ( 01 <Engine.GameInfo.BaseMutator> ) [@] <NullRef> 00 ( 1B <Mutate> 1F <%t "XGPlayer.EndingTurn"> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) 16 )
+					
+/*(0x0C79/0x0899)*/ 71 21 <Inactive> 4A 4A 4A 16 
+/*(0x0C87/0x08A7)*/ 08 
+/*(0x0C88/0x08A8)*/ 0B 
+/*(0x0C89/0x08A9)*/ 0B 
+/*(0x0C8A/0x08AA)*/ 0B 
+/*(0x0C8B/0x08AB)*/ 0C <Begin> <%u 0> <None> <%u 65535> 
+/*(0x0CA4/0x08C4)*/ 53 
+
+OBJECT = XComAlienPodManager.UpdateUnactivatedSeenPods : AUTO
+[REPLACEMENT_CODE]
+	//Mutate
+	19 19 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <Engine.GameInfo.BaseMutator> 00 ( 01 <Engine.GameInfo.BaseMutator> ) [@] <NullRef> 00 ( 1B <Mutate> 1F <%t "XComAlienPodManager.UpdateUnactivatedSeenPods"> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) 16 )
+
+
+/*(0x0000/0x0000)*/ 58 01 <@m_arrPod> 00 <.kPod> 00 4A [@label_0x0109] 
+/*(0x0017/0x000F)*/ 	07 [@label_0x0108] 82 19 00 <.kPod> [@] <XComAlienPod.m_bSeen> 00 ( 2D 01 <XComAlienPod.m_bSeen> ) 18 [@] ( 19 00 <.kPod> [@] <Core.Object.IsInState.ReturnValue> 00 ( 61 19 21 <Dormant> 4A 16 ) 16 ) 
+							//expanded HasVisibleEnemies with || m_bEnemySeen
+/*(0x0060/0x0044)*/ 		07 [@label_0x0108] 82 84 19 00 <.kPod> [@] <XComAlienPod.m_bEnemySeen> 00 ( 2D 01 <XComAlienPod.m_bEnemySeen> ) 18 [@] ( 19 00 <.kPod> [@] <XComAlienPod.HasVisibleEnemies.ReturnValue> 00 ( 1B <HasVisibleEnemies> 16 ) 16 ) 18 [@] ( 81 19 00 <.kPod> [@] <XComAlienPod.bNeverActivate> 00 ( 2D 01 <XComAlienPod.bNeverActivate> ) 16 16 )
+/*(0x00A9/0x0079)*/ 			07 [@label_0x00FE] 9A 46 01 <@m_arrActivation> [@] ( 00 <.kPod> 16 ) 1D <%i -1> 16 
+/*(0x00C9/0x0091)*/ 				55 01 <@m_arrActivation> [@] ( 00 <.kPod> 16 ) 
+/*(0x00DF/0x009F)*/ 				E7 70 1F <%t "Added pod to reveal queue: "> 38 56 00 <.kPod> 16 2A 16
+									19 00 <.kPod> [@] <NullRef> 00 ( 1B <MarkEnemySeen> 16 ) 
+/*(0x00FE/0x00B6)*/ 			[#label_0x00FE]
+/*(0x00FE/0x00B6)*/ 			1B <UpdateCurrState> 16 
+/*(0x0108/0x00C0)*/ 	[#label_0x0108]
+/*(0x0108/0x00C0)*/ 	31 
+/*(0x0109/0x00C1)*/ [#label_0x0109]
+/*(0x0109/0x00C1)*/ 30 
+/*(0x010A/0x00C2)*/ 04 0B 
+/*(0x010C/0x00C4)*/ 53 
+
+OBJECT = XComAlienPodManager.Active.BeginState : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 1B <SaveCamera> 16 
+/*(0x000A/0x000A)*/ 0F 01 <XComAlienPodManager.m_iActivePodIdx> 25 
+/*(0x0015/0x0011)*/ 1B <SortActivationList> 16 
+/*(0x001F/0x001B)*/ 14 2D 01 <XComAlienPodManager.m_bSpoken> 28 
+/*(0x002B/0x0023)*/ 0F 01 <XComAlienPodManager.m_iRevealedCount> 25 
+/*(0x0036/0x002A)*/ 1B <RevealNextPod> 16 
+/*(0x0040/0x0034)*/ 14 2D 01 <XComAlienPodManager.m_bIsBusy> 27 
+					
+					//marking begining of pod reveal sequence; will be used as flag to search for other pods visible by the first
+					14 2D 01 <XComAlienPodManager.m_bFirstResponse> 27 
+/*(0x004C/0x003C)*/ 04 0B 
+/*(0x004E/0x003E)*/ 53 
+
+OBJECT = XComAlienPodManager.RevealNextPod : AUTO
+[REPLACEMENT_CODE]
+
+/*(0x0000/0x0000)*/ 07 [@label_0x0012] 9A 36 01 <@m_arrActivation> 25 16 
+/*(0x0010/0x000C)*/ 	04 0B 
+/*(0x0012/0x000E)*/ [#label_0x0012]
+/*(0x0012/0x000E)*/ 07 [@label_0x00E7] 81 1B <AreAlienUnitsIdle> 16 16 
+/*(0x0021/0x001D)*/ 	58 01 <@m_arrActivation> 00 <.kPod> 00 4A [@label_0x00E4] 
+/*(0x0038/0x002C)*/ 		07 [@label_0x00E3] 19 00 <.kPod> [@] <Core.Object.IsInState.ReturnValue> 00 ( 61 19 21 <Dormant> 4A 16 ) 
+/*(0x005D/0x0049)*/ 			58 19 00 <.kPod> [@] <XComAlienPod.m_arrAlien> 00 ( 01 <XComAlienPod.m_arrAlien> ) 00 <.kUnit> 00 4A [@label_0x00E2] 
+/*(0x0089/0x0065)*/ 				07 [@label_0x00E1] 19 00 <.kUnit> [@] <XGUnit.IsMoving.ReturnValue> 00 ( 1B <IsMoving> 16 ) 
+/*(0x00AB/0x007F)*/ 					19 19 00 <.kUnit> [@] <XGUnitNativeBase.m_kCurrAction> 00 ( 01 <XGUnitNativeBase.m_kCurrAction> ) [@] <XGAction.StopMove.ReturnValue> 00 ( 1B <StopMove> 24 03 16 ) 
+/*(0x00E1/0x00A5)*/ 				[#label_0x00E1]
+/*(0x00E1/0x00A5)*/ 				31 
+/*(0x00E2/0x00A6)*/ 			[#label_0x00E2]
+/*(0x00E2/0x00A6)*/ 			30 
+/*(0x00E3/0x00A7)*/ 		[#label_0x00E3]
+/*(0x00E3/0x00A7)*/ 		31 
+/*(0x00E4/0x00A8)*/ 	[#label_0x00E4]
+/*(0x00E4/0x00A8)*/ 	30 
+/*(0x00E5/0x00A9)*/ 	04 0B 
+/*(0x00E7/0x00AB)*/ [#label_0x00E7]
+/*(0x00E7/0x00AB)*/ 07 [@label_0x01F6] 82 96 01 <@m_iActivePodIdx> 36 01 <@m_arrActivation> 16 18 [@] ( 19 10 01 <@m_iActivePodIdx> 01 <@m_arrActivation> [@] <XComAlienPod.IsActive.ReturnValue> 00 ( 1B <IsActive> 16 ) 16 ) 
+
+	//Mutate
+	19 19 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <Engine.GameInfo.BaseMutator> 00 ( 01 <Engine.GameInfo.BaseMutator> ) [@] <NullRef> 00 ( 1B <Mutate> 1F <%t "XComAlienPodManager.RevealNextPod"> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) 16 )
+
+/*(0x012D/0x00DD)*/ 	07 [@label_0x01B1] 9B 46 01 <@m_arrTripped> [@] ( 10 01 <@m_iActivePodIdx> 01 <@m_arrActivation> 16 ) 1D <%i -1> 16 
+/*(0x0157/0x00FB)*/ 		07 [@label_0x01AE] 81 19 10 01 <@m_iActivePodIdx> 01 <@m_arrActivation> [@] <XComAlienPod.HasBegunTrippedPatrol.ReturnValue> 00 ( 1B <HasBegunTrippedPatrol> 16 ) 16 
+/*(0x0185/0x011D)*/ 			19 10 01 <@m_iActivePodIdx> 01 <@m_arrActivation> [@] <NullRef> 00 ( 1B <InitTrippedPatrol> 16 ) 
+/*(0x01AE/0x013A)*/ 		[#label_0x01AE]
+/*(0x01AE/0x013A)*/ 		06 [@label_0x01F3] 
+/*(0x01B1/0x013D)*/ 	[#label_0x01B1]
+/*(0x01B1/0x013D)*/ 	07 [@label_0x01F3] 19 10 01 <@m_iActivePodIdx> 01 <@m_arrActivation> [@] <Core.Object.IsInState.ReturnValue> 00 ( 61 19 21 <Dormant> 4A 16 ) 
+/*(0x01E0/0x0160)*/ 		1B <RevealPod> 01 <@m_iActivePodIdx> 16 
+/*(0x01F3/0x016F)*/ 	[#label_0x01F3]
+/*(0x01F3/0x016F)*/ 	06 [@label_0x022C] 
+/*(0x01F6/0x0172)*/ [#label_0x01F6]
+/*(0x01F6/0x0172)*/ A5 01 <@m_iActivePodIdx> 16 
+/*(0x0201/0x0179)*/ 07 [@label_0x022C] 96 01 <@m_iActivePodIdx> 36 01 <@m_arrActivation> 16 
+/*(0x0219/0x0189)*/ 	1B <RevealPod> 01 <@m_iActivePodIdx> 16 
+/*(0x022C/0x0198)*/ [#label_0x022C]
+/*(0x022C/0x0198)*/ 07 [@label_0x0317] 82 82 82 81 2D 01 <@m_bSpoken> 16 18 [@] ( 96 01 <@m_iActivePodIdx> 36 01 <@m_arrActivation> 16 16 ) 18 [@] ( 97 01 <@m_iRevealedCount> 25 16 16 ) 18 [@] ( 84 9A 01 <@m_iActivePodIdx> 93 36 01 <@m_arrActivation> 26 16 16 18 [@] ( 82 19 10 92 01 <@m_iActivePodIdx> 26 16 01 <@m_arrActivation> [@] <Core.Object.IsA.ReturnValue> 00 ( C5 21 <XComAlienPod_Loot> 16 ) 18 [@] ( 9A 36 19 10 92 01 <@m_iActivePodIdx> 26 16 01 <@m_arrActivation> [@] <XComAlienPod.m_arrAlien> 00 ( 01 <XComAlienPod.m_arrAlien> ) 25 16 16 ) 16 ) 16 ) 
+/*(0x02E9/0x0221)*/ 	19 01 <@m_kUnit> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 20 4A 16 ) 
+/*(0x030B/0x023B)*/ 	14 2D 01 <@m_bSpoken> 27 
+/*(0x0317/0x0243)*/ [#label_0x0317]
+/*(0x0317/0x0243)*/ 04 0B 
+/*(0x0319/0x0245)*/ 53 
+//----------------------------------------------------------------------
+OBJECT = XComAlienPodManager.Active.RevealPods : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 49 [@] ( 28 15 )
+					//...again marking begining of pod reveal sequence - to handle trigger from state 'DynamicAI'
+					14 2D 01 <XComAlienPodManager.m_bFirstResponse> 27 
+/*(0x0005/0x0005)*/ 1B <RevealNextPod> 16 
+/*(0x000F/0x000F)*/ 04 0B 
+/*(0x0011/0x0011)*/ 53 
+//--------------------------------------------------------------------------

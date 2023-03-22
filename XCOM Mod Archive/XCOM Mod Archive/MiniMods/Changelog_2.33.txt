@@ -1,0 +1,182 @@
+v. 2.33
+- fixed graphical glitches related to Compact HP Display 
+- added color configuration of Compact HP Display inside new DefaultModCompactHP.ini + reworked layout of the bar
+- NEW FEATURE: Backpack "Threedom" (or even Fourdom) - 3 (4) small items on Squad Select screen will show up without scrolling.
+- NEW MODDING TOOL: Custom Abilities (use .ini to change cooldowns, duration, add/remove effects of abilities)
+
+v. 2.32
+NEW MOD: Compact HP Display - (use Ctrl+H) adds alternatvie display of unit's HP 
+- updated the embedded UI Mod Manager to latest version 1.4 (for overall compatibility)
+
+v. 2.31.2
+- fixed the bug with debug messages popping-up on map load and reinforcements
+
+v. 2.31.1
+- fixed a bug with Sequential OW not triggering against "walk-in" reinforcements
+
+v. 2.31.
+- NEW MOD/FEATURE (BETA): Custom sorting of soldier lists
+
+v. 2.30
+- NEW MOD: Show Perks on Soldier List
+- NEW MOD: Flash Bang Blindes (finally working)
+- optimized code to prevent CTDs on loading/starting tactical mission
+- improved (to be tested) reliability of Limit Chain Panic mod
+- fixed some bugs with "loading from save issues" that were supposed to be fixed in 2.26 :)
+- fixed the bug in Ammo Counter mod (0 ammo is now correctly displayed on the ammo bar)
+- fixed a quasi-bug with Kills Counter mod where the info would overlap other text
+
+v. 2.28
+- NEW MOD: Limit Chain Panic - let's you choose events that will not trigger squad panic test
+- NEW MOD: Kills' Counter - adds info about soldier's kills during the mission and in total
+- fixed a bug with wonky behavior of Perk Gives Items mod in Mods Menu
+- attempted to make EW-compatible version of Perk Gives Items (work in progress, requires tests)
+
+v. 2.26.2
+- NEW/IMPROVED MOD: Show Alien Ammo Consumption
+- fixed a bug in Clear Perks mod - found perks (e.g. Ammo Conservation) no longer get removed
+
+v. 2.26
+- NEW MOD: Squad Select Progress Indicator
+- NEW MOD: Show Alien Resources
+- fixed possible bugs with things "not being saved" like cash balance / items granted from perks etc.
+
+v. 2.24.2
+- Game Speed mod should be finally reliable :) Thanks to LW 1.1. community and Loriendal for bug-reporting
+
+v. 2.24
+- NEW MOD: Game speed shortcuts and reliable game speed (no reset after animations).
+- fixed the bug with Squad Select (pawns shifted in relation to slots)
+- Dead To Wounded moved in Mods Menu outside of MiscMiniMods
+- updated .RUS localization
+
+v.2.23.3
+- fixed a bug with Free Actions (grapple) mod; "Spiderman" can now be turned off without glithes
+- removed "rainbow" img from perk trees in 2.23.2 hotfix (appologies, it was testing trash)
+
+v. 2.23.2
+- fixed ManufactureExaltLoot - now works with United Humanity SW option
+v.2.23.1
+- UPDATED MOD: Improved Enemy Icons - shows hit/crit chance over ALL head icons
+- fixed a typo in the in-game description of Improved Enemy Icons (squad size vs squad sight)
+- fixed quasi-bug where config files of mod manager used to mess up DGC.ini in EW version
+
+v.2.23
+- NEW MOD: Improved Enemy Icons - larger icon of a leader (LW) and small indicator of OW/suppression added to enemy HUD icons (bonus for EW)
+- NEW MOD: Dead To Wounded - for those who hate their veterans die; killed soldiers return as gravely wounded if at least one soldier returned alive from mission
+- Ammo Counter Mod has now graphics :)
+- included (reliable) XComMutatorEnabler from Sightlines mod (tested)
+- EW version - Map Image Mod finally working, have fun! (tested)
+ 
+v.2.21.3
+- attempted fix for EW players regarding: Ammo Counter, Map Image and Clear Perks
+- Salvage Mod will not show pop-ups when extra salvage is 0 (possible with Random loot or non-UFO maps)
+
+v.2.21.2
+- fixed a bug where "Shadow Step" icon used to appear on F1 screen when it should not
+- fixed a bug when to-be-strangled unit could be no longer activated if the seeker got killed by OW fire
+v.2.21.1
+- fixed a bug with soldier pawns during dropship intro (related to PerksGiveItems) 
+- Covering Fire no longer triggers on: Steady Weapon, taking cover, reload weapon
+- Covering Fire has now compatibility check against LW Rebalance (no pop-up)
+- Reactive Targeting Sensors should now work with Sequential OW turned on - credits to PawelS for report and tests
+- fixed a bug which used to cause CTD in busy situations and Scout Sense on - credits to PawelS for report and tests
+v.2.21
+- NEW MOD: Stim And Go - using combat stims does not cost action point 
+- NEW MOD: Spiderman - using a grapple does not cost action point (you can set cooldown and/or charges)
+- fixed bug with turn counter showing +1 turn than it should
+- fixed reaction vs unstealthing seekers (normal OW works, not just CCS)
+- fixed a bug when despite killing unstealthing seeker the to-be-strangled soldier suffered strangle effects
+- hopefully finally fixed OW still often not triggering (appolgies, I had relied on faulty native functions)
+- fixed Scout Sense sometimes pointing to stunned alien.
+- special thanks to Loriendal for harassing me with bug reports of all sorts :)
+
+v.2.20.7.
+- removed annoying debug messages, whoops :)
+- Covering Fire now works correctly (stopped after my previous "fixes", argh!)
+- special thanks to knml, loriendal and MrAlienist for all the bug-reporting (the entry in Credits in-game screen will come with next update, or you can add yourself in MiniModsCollection.INT, lol)
+
+v.2.20.6
+- fixed the bug with Close Combat Specialist which did not work with Sequential OW
+- added an option to Seq Overwatch: "Faster CCS", Close Combat Specialist reacts faster
+
+v.2.20.5
+- REMOVED MINIMOD: Flash Bang Blinds - hence fixing visibility issues 
+- yet once more improved reaction processing code to prevent CTDs (fingers crossed)
+
+v.2.20.4
+- hopefully fixed frequent CTD bugs with Sequential Overwatch
+
+v.2.20.3
+- included correct XComMutator.u file, compatible with UI Mod Manager
+- fixed CTDs with "Smoke Blocks OW Fire" turned ON 
+- improved code to limit risk of CTDs with Sequential OW 2 (please, keep reporting CTDs)
+- Scout Sense button no longer appears when squad has visible enemies (it used to but it should not)
+- fixed a bug that used to cause weird aiming angles while shooting (was related to Covering Fire checks)
+- restoring default settings for Scout Sense will now correctly set distances for "vague" distance pop-ups (instead of setting 4 tiles all across the board)
+
+v.2.20.2
+- fixed a bug in Scout Sense mod that caused often crashes
+- fixed a potential bug in "Smoke blocks OW" that might have caused crashes 
+- fixed default settings for Perks Give Items
+
+v.2.20.1
+- fixed a buggy widget for "Time cut in days"
+- fixed some awkward default settings in Seq Overwatch , Shadow Step and Scout Sense
+- added possiblity for other mutator to alter perception info, icon color and cue visibility (check ReadMe)
+
+v.2.20
+- !!ADDED SUPPORT FOR IN-GAME MODS MENU (requires UI Mod Manager)
+- NEW MOD: Sequential Overwatch 2.0
+- NEW MOD: Scout Sense
+- NEW MOD: Shadow Step
+- NEW MOD: Perks Give Item Charges
+- NEW MOD: Smoke Blocks OW Fire (option in Seq OW 2.0)
+- NEW MOD: Flash Bang Blinds
+- NEW MOD: Show Turn Counter
+- NEW MOD: Continental Fellow Helper
+
+New options / improvements:
+- Meld Healing can be now disabled for SHIVs
+- Map image can now require sat coverage
+- Map image can be set to only appear once (per mission)
+- QoL addition: Perk descriptions on perk-tree view have smaller font, text scrolls faster. In most cases the whole description will fit into the window without scrolling.
+- QoL change: gamepad buttons for Make Items Available and Meld Healing swapped to match intuition (left / righ positioning) 
+
+Bug fixes:
+- fixed incorrect gamepad button-hints for the in-barracks buttons 
+- gamepad buttons no longer respond to MiniMod commands during soldier's customization
+- Make Items Available no longer strips gear from current soldier and immediately updates lockers (thanks Lafiir for pointing it out)
+- MELD healing button will now correctly re-appear when coming back from customization screen (thx Lafiir for the report)
+- clearing perks of a soldier On Mission now correctly unloads him from the Dropship (yet once more, thx Lafiir)
+- fixed a bug where fuel for reinforcements on HQ Assault did not get updated
+- fixed a bug where map image on squad select could shift units vs slots
+- fixed a quasi-bug where map image used to overlap Add Unit buttons
+- fixed a bug (huge thanks to kdm2k6) with map image flickering on occasion
+- soldier's pawn will no longer disappear after using MELD to purge fatigue (thx Lafir for the report)
+- tile counter no longer pops-up when unit targets itself (Medikit, Stims etc.)
+- overall - huge thanks to Lafiir for extended tests of gamepad support and bug reporting
+
+
+v.1.4
+- NEW MOD: Ammo Counter
+- NEW MOD: Distance PopUp
+- NEW MOD: Abduction Map Manager
+- NEW MOD: Map Image On Squad Select
+- NEW MOD: Salvage Mod
+
+v.1.3
+- NEW MOD: Manufacture Exalt Loot
+
+v.1.2
+- fuel is no longer announced for units that cannot fly
+- tactical mods should now work with EW version as well
+- NEW MOD: Disorient Exalt On Radar Hack
+
+v 1.1
+- fixed a bug where ClearPerks used to remove MEC's innate perks like OneForAll
+- added option of "confirmation dialogue" for Meld Healing (check .ini file)
+- Meld Heal button will no longer appear on fatigued soldiers if you set MELDHEAL_PURGE_FATIGUE=false
+- reworked buttons' screen position so that buttons have fixed position and hopefully do not overlap
+- NEW MOD: Officer's Iron Will
+- NEW MOD: Realistic Fuel Consumption

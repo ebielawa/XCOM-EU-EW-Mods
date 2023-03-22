@@ -1,0 +1,298 @@
+MOD_NAME=Display Soldier XP, PsiXP and Mobility in Battle
+AUTHOR=wghost81 aka Wasteland Ghost
+DESCRIPTION=Display soldier XP, PsiXP (for Gifted soldiers only) and Mobility while in battle (soldier info screen accessible with F1).
+
+Version: 2.0
+
+b15 class icons fixed, thanks to Oakeman.
+
+Compatible with Long War versions:
+ - b15
+
+UPK_FILE=XComGame.upk
+
+OBJECT=UIUnitGermanMode.UpdateHeader:AUTO
+[REPLACEMENT_CODE]
+//kChar = m_kUnit.GetCharacter()
+0F 00 <.kChar> 19 01 <@m_kUnit> 0A 00 <XGUnit.GetCharacter.ReturnValue> 00 1B <GetCharacter> 16
+//if(WorldInfo.NetMode == NM_Standalone)
+07 [@Multiplayer] 9A 38 3A 19 01 <Engine.Actor.WorldInfo> 09 00 <Engine.WorldInfo.NetMode> 00 01 <Engine.WorldInfo.NetMode> 38 3A 24 00 16
+    //if(m_kUnit.isHuman() || m_kUnit.IsShiv())
+    07 [@SPlabel1] 84 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.isHuman.ReturnValue> 00 1B <isHuman> 16 18 20 00 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.IsShiv.ReturnValue> 00 1B <IsShiv> 16 16
+        //if(kChar.m_kChar.iType == 1)
+        07 [@SPlabel2] 9A 35 <XGTacticalGameCoreNativeBase.TCharacter.iType> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kChar> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar> 26 16
+            //if(m_kUnit.SafeGetCharacterFullName() != "")
+            07 [@SPlabel4] 7B 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterFullName.ReturnValue> 00 1B <SafeGetCharacterFullName> 16 1F 00 16
+                //AS_SetSoldierInformation(m_kUnit.SafeGetCharacterFullName(), m_kUnit.SafeGetCharacterNickname(), "", "", false)
+                1B <AS_SetSoldierInformation> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterFullName.ReturnValue> 00 1B <SafeGetCharacterFullName> 16 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterNickname.ReturnValue> 00 1B <SafeGetCharacterNickname> 16 1F 00 1F 00 28 16
+            //goto J0x17C
+            06 [@SPlabel5]
+                [#SPlabel4]
+                //AS_SetSoldierInformation(m_kUnit.SafeGetCharacterName(), m_strCivilianNickname, "", "", false)
+                1B <AS_SetSoldierInformation> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterName.ReturnValue> 00 1B <SafeGetCharacterName> 16 01 <@m_strCivilianNickname> 1F 00 1F 00 28 16
+            [#SPlabel5]
+            //AS_SetUnitAllegiance(false)
+            1B <AS_SetUnitAllegiance> 28 16
+        //goto J0x3A2
+        06 [@SPlabel3]
+            [#SPlabel2]
+            //kCharacterSoldier = XGCharacter_Soldier(kChar)
+            0F 00 <.kCharacterSoldier> 2E <Class.XGCharacter_Soldier> 00 <.kChar>
+            //if(m_kUnit.IsATank())
+            07 [@SPlabel6] 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.IsATank.ReturnValue> 00 1B <IsATank> 16
+                //iRank = m_kUnit.GetSHIVRank()
+                0F 00 <.iRank> 19 01 <@m_kUnit> 0A 00 <XGUnit.GetSHIVRank.ReturnValue> 00 1B <GetSHIVRank> 16
+                //bIsShiv = true
+                14 2D 00 <.bIsShiv> 27
+            //goto J0x247
+            06 [@SPlabel7]
+                [#SPlabel6]
+                //iRank = kCharacterSoldier.m_kSoldier.iRank
+                0F 00 <.iRank> 35 <XGTacticalGameCoreNativeBase.TSoldier.iRank> <XGTacticalGameCoreNativeBase.TSoldier> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter_Soldier.m_kSoldier> 00 01 <XGCharacter_Soldier.m_kSoldier>
+                //bIsShiv = false
+                14 2D 00 <.bIsShiv> 28
+            [#SPlabel7]
+            //AS_SetSoldierInformation(m_kUnit.SafeGetCharacterFullName(), m_kUnit.SafeGetCharacterNickname(), class'UIUtilities'.static.GetClassLabel(kCharacterSoldier.m_kSoldier.kClass.eType, kCharacterSoldier.m_kChar.bHasPsiGift, class'XComPerkManager'.static.HasAnyGeneMod(kCharacterSoldier.m_kChar.aUpgrades)), class'UIUtilities'.static.GetRankLabel(iRank, bIsShiv), kCharacterSoldier.LeveledUp())
+            //---- modded code begin ----
+            //if (kCharacterSoldier.m_kChar.bHasPsiGift)
+            07 [@NoPsi] 35 <XGTacticalGameCoreNativeBase.TCharacter.bHasPsiGift> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar>
+                1B <AS_SetSoldierInformation>
+                    19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterFullName.ReturnValue> 00 1B <SafeGetCharacterFullName> 16
+                    //19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterNickname.ReturnValue> 00 1B <SafeGetCharacterNickname> 16
+                    //---- XP, PsiXP and Nickname ----
+                    70          // $ begin
+                        70          // $ begin
+                            70          // $ begin
+                                70          // $ begin
+                                    70          // $ begin
+                                        1F <%t "XP: ">
+                                        38 53       // IntToString
+                                            // kCharacterSoldier.GetXP()
+                                            19 00 <.kCharacterSoldier> 0A 00 <XGCharacter_Soldier.GetXP.ReturnValue> 00 1B <GetXP> 16
+                                    16          // $ end
+                                    1F <%t "/">
+                                16          // $ end
+                                38 53       // IntToString
+                                    // XComGameReplicationInfo(class'Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetXPRequired(kCharacterSoldier.m_kSoldier.iRank + 1)
+                                    19
+                                    19
+                                    2E <Class.XComGameReplicationInfo>
+                                    19
+                                    12 20 <Engine.Engine>
+                                    0A 00
+                                    <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00
+                                    1C <Engine.Engine.GetCurrentWorldInfo> 16
+                                    09 00
+                                    <Engine.WorldInfo.GRI> 00 01 <Engine.WorldInfo.GRI>
+                                    09 00
+                                    <XComGameReplicationInfo.m_kGameCore> 00 01 <XComGameReplicationInfo.m_kGameCore>
+                                    3E 00
+                                    <XGTacticalGameCore.GetXPRequired.ReturnValue> 00 1B <GetXPRequired>
+                                        92
+                                            35 <XGTacticalGameCoreNativeBase.TSoldier.iRank> <XGTacticalGameCoreNativeBase.TSoldier> 00 00
+                                            19
+                                            00 <.kCharacterSoldier>
+                                            09 00
+                                            <XGCharacter_Soldier.m_kSoldier> 00 01 <XGCharacter_Soldier.m_kSoldier>
+                                            26
+                                        16
+                                    16
+                            16          // $ end
+                            1F <%t "   ">
+                        16          // $ end
+                        70
+                            70          // $ begin
+                                70          // $ begin
+                                    70          // $ begin
+                                        70          // $ begin
+                                            1F <%t "PsiXP: ">
+                                            38 53       // IntToString
+                                                // kCharacterSoldier.GetPsiXP()
+                                                19 00 <.kCharacterSoldier> 0A 00 <XGCharacter_Soldier.GetPsiXP.ReturnValue> 00 1B <GetPsiXP> 16
+                                        16          // $ end
+                                        1F <%t "/">
+                                    16          // $ end
+                                    38 53       // IntToString
+                                        // XComGameReplicationInfo(class'Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetPsiXPRequired(kCharacterSoldier.m_kSoldier.iPsiRank + 1)
+                                        19
+                                        19
+                                        2E <Class.XComGameReplicationInfo>
+                                        19
+                                        12 20 <Engine.Engine>
+                                        0A 00
+                                        <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00
+                                        1C <Engine.Engine.GetCurrentWorldInfo> 16
+                                        09 00
+                                        <Engine.WorldInfo.GRI> 00 01 <Engine.WorldInfo.GRI>
+                                        09 00
+                                        <XComGameReplicationInfo.m_kGameCore> 00 01 <XComGameReplicationInfo.m_kGameCore>
+                                        3E 00
+                                        <XGTacticalGameCore.GetPsiXPRequired.ReturnValue> 00 1B <GetPsiXPRequired>
+                                            92
+                                                35 <XGTacticalGameCoreNativeBase.TSoldier.iPsiRank> <XGTacticalGameCoreNativeBase.TSoldier> 00 00
+                                                19
+                                                00 <.kCharacterSoldier>
+                                                09 00
+                                                <XGCharacter_Soldier.m_kSoldier> 00 01 <XGCharacter_Soldier.m_kSoldier>
+                                                26
+                                            16
+                                        16
+                                16          // $ end
+                                1F <%t "   ">
+                            16          // $ end
+                            // m_kUnit.SafeGetCharacterNickname()
+                            19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterNickname.ReturnValue> 00 1B <SafeGetCharacterNickname> 16
+                        16
+                    16          // $ end
+                    //---- end of XP, PsiXP and Nickname ----
+                    12 20 <Class.UIUtilities> AD 00 <UIUtilities.GetClassLabel.ReturnValue> 00 1B <GetClassLabel>
+					38 3A 35 <XGTacticalGameCoreNativeBase.TClass.eType> <XGTacticalGameCoreNativeBase.TClass> 00 00 35 <XGTacticalGameCoreNativeBase.TSoldier.kClass> <XGTacticalGameCoreNativeBase.TSoldier> 00 00 19 00 <UIUnitGermanMode.UpdateHeader.kCharacterSoldier> 09 00 <XGCharacter_Soldier.m_kSoldier> 00 01 <XGCharacter_Soldier.m_kSoldier>
+                    2D 35 <XGTacticalGameCoreNativeBase.TCharacter.bHasPsiGift> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar>
+                    12 20 <Class.XComPerkManager> 3B 00 <XComPerkManager.HasAnyGeneMod.ReturnValue> 00 1B <HasAnyGeneMod> 35 <XGTacticalGameCoreNativeBase.TCharacter.aUpgrades> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar> 16 16
+                    12 20 <Class.UIUtilities> 1D 00 <UIUtilities.GetRankLabel.ReturnValue> 00 1B <GetRankLabel> 00 <.iRank> 2D 00 <.bIsShiv> 16
+                    19 00 <.kCharacterSoldier> 0A 00 <XGCharacter_Soldier.LeveledUp.ReturnValue> 00 1B <LeveledUp> 16 16
+            06 [@SPlabel3]
+            [#NoPsi]
+                1B <AS_SetSoldierInformation>
+                    19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterFullName.ReturnValue> 00 1B <SafeGetCharacterFullName> 16
+                    //19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterNickname.ReturnValue> 00 1B <SafeGetCharacterNickname> 16
+                    //---- XP and Nickname ----
+                    70          // $ begin
+                        70          // $ begin
+                            70          // $ begin
+                                70          // $ begin
+                                    70          // $ begin
+                                        1F <%t "XP: ">
+                                        38 53       // IntToString
+                                            // kCharacterSoldier.GetXP()
+                                            19 00 <.kCharacterSoldier> 0A 00 <XGCharacter_Soldier.GetXP.ReturnValue> 00 1B <GetXP> 16
+                                    16          // $ end
+                                    1F <%t "/">
+                                16          // $ end
+                                38 53       // IntToString
+                                    // XComGameReplicationInfo(class'Engine'.static.GetCurrentWorldInfo().GRI).m_kGameCore.GetXPRequired(kCharacterSoldier.m_kSoldier.iRank + 1)
+                                    19
+                                    19
+                                    2E <Class.XComGameReplicationInfo>
+                                    19
+                                    12 20 <Engine.Engine>
+                                    0A 00
+                                    <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00
+                                    1C <Engine.Engine.GetCurrentWorldInfo> 16
+                                    09 00
+                                    <Engine.WorldInfo.GRI> 00 01 <Engine.WorldInfo.GRI>
+                                    09 00
+                                    <XComGameReplicationInfo.m_kGameCore> 00 01 <XComGameReplicationInfo.m_kGameCore>
+                                    3E 00
+                                    <XGTacticalGameCore.GetXPRequired.ReturnValue> 00 1B <GetXPRequired>
+                                        92
+                                            35 <XGTacticalGameCoreNativeBase.TSoldier.iRank> <XGTacticalGameCoreNativeBase.TSoldier> 00 00
+                                            19
+                                            00 <.kCharacterSoldier>
+                                            09 00
+                                            <XGCharacter_Soldier.m_kSoldier> 00 01 <XGCharacter_Soldier.m_kSoldier>
+                                            26
+                                        16
+                                    16
+                            16          // $ end
+                            1F <%t "   ">
+                        16          // $ end
+                        // m_kUnit.SafeGetCharacterNickname()
+                        19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterNickname.ReturnValue> 00 1B <SafeGetCharacterNickname> 16
+                    16          // $ end
+                    //---- end of XP and Nickname ----
+                    12 20 <Class.UIUtilities> AD 00 <UIUtilities.GetClassLabel.ReturnValue> 00 1B <GetClassLabel>
+					38 3A 35 <XGTacticalGameCoreNativeBase.TClass.eType> <XGTacticalGameCoreNativeBase.TClass> 00 00 35 <XGTacticalGameCoreNativeBase.TSoldier.kClass> <XGTacticalGameCoreNativeBase.TSoldier> 00 00 19 00 <UIUnitGermanMode.UpdateHeader.kCharacterSoldier> 09 00 <XGCharacter_Soldier.m_kSoldier> 00 01 <XGCharacter_Soldier.m_kSoldier>
+                    2D 35 <XGTacticalGameCoreNativeBase.TCharacter.bHasPsiGift> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar>
+                    12 20 <Class.XComPerkManager> 3B 00 <XComPerkManager.HasAnyGeneMod.ReturnValue> 00 1B <HasAnyGeneMod> 35 <XGTacticalGameCoreNativeBase.TCharacter.aUpgrades> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar> 16 16
+                    12 20 <Class.UIUtilities> 1D 00 <UIUtilities.GetRankLabel.ReturnValue> 00 1B <GetRankLabel> 00 <.iRank> 2D 00 <.bIsShiv> 16
+                    19 00 <.kCharacterSoldier> 0A 00 <XGCharacter_Soldier.LeveledUp.ReturnValue> 00 1B <LeveledUp> 16 16
+        [#SPlabel3]
+        //AS_SetUnitStats(m_strHealthLabel @ string(Max(m_kUnit.GetUnitMaxHP(), m_kUnit.m_aCurrentStats[0])), m_strWillLabel @ string(GetWillBonus(m_kUnit)), m_strOffenseLabel @ string(m_kUnit.GetOffense()), m_strDefenseLabel @ string(GetDefenseBonus(m_kUnit)))
+        //1B <AS_SetUnitStats> A8 01 <@m_strHealthLabel> 38 53 FA 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.GetUnitMaxHP.ReturnValue> 00 1B <GetUnitMaxHP> 16 1A 25 19 01 <@m_kUnit> 09 00 <XGUnitNativeBase.m_aCurrentStats> 00 01 <XGUnitNativeBase.m_aCurrentStats> 16 16 A8 01 <@m_strWillLabel> 38 53 1B <GetWillBonus> 01 <@m_kUnit> 16 16 A8 01 <@m_strOffenseLabel> 38 53 19 01 <@m_kUnit> 0A 00 <XGUnit.GetOffense.ReturnValue> 00 1B <GetOffense> 16 16 A8 01 <@m_strDefenseLabel> 38 53 1B <GetDefenseBonus> 01 <@m_kUnit> 16 16 16
+        //Mobility and HP
+        //---- modded code begin ----
+        //AS_SetUnitStats(m_strHealthLabel @ string(Max(m_kUnit.GetUnitMaxHP(), m_kUnit.m_aCurrentStats[0])), m_strWillLabel @ string(GetWillBonus(m_kUnit)), m_strOffenseLabel @ string(m_kUnit.GetOffense()), m_strDefenseLabel @ string(GetDefenseBonus(m_kUnit)));
+        1B <AS_SetUnitStats>
+            70
+                70
+                    70
+                        1F <%t "Mobility: ">
+                        38 53
+                            19 01 <@m_kUnit> 0B 00 <XGUnitNativeBase.GetMaxPathLength.ReturnValue> 00 1B <GetMaxPathLength> 4A 16
+                    16
+                    1F <%t "  ">
+                16
+                A8
+                    01 <@m_strHealthLabel>
+                    38 53
+                        FA
+                            19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.GetUnitMaxHP.ReturnValue> 00 1B <GetUnitMaxHP> 16
+                            1A 25 19 01 <@m_kUnit> 09 00 <XGUnitNativeBase.m_aCurrentStats> 00 01 <XGUnitNativeBase.m_aCurrentStats>
+                        16
+                16
+            16
+            A8
+                01 <@m_strWillLabel>
+                38 53
+                    1B <GetWillBonus> 01 <@m_kUnit> 16
+            16
+            A8
+                01 <@m_strOffenseLabel>
+                38 53
+                    19 01 <@m_kUnit> 0A 00 <XGUnit.GetOffense.ReturnValue> 00 1B <GetOffense> 16 16
+            A8
+                01 <@m_strDefenseLabel>
+                38 53
+                1B <GetDefenseBonus> 01 <@m_kUnit> 16
+            16
+        16
+        //---- modded code end ----
+        //AS_SetUnitAllegiance(false)
+        1B <AS_SetUnitAllegiance> 28 16
+    //goto J0x4EA
+    06 [@end]
+        [#SPlabel1]
+        //AS_SetAlienInformation(class'UIUtilities'.static.GetHTMLColoredText(m_kUnit.SafeGetCharacterName(), 3), false, m_kUnit.IsExalt())
+        1B <AS_SetAlienInformation> 12 20 <Class.UIUtilities> 2C 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterName.ReturnValue> 00 1B <SafeGetCharacterName> 16 2C 03 4A 16 28 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.IsExalt.ReturnValue> 00 1B <IsExalt> 16 16
+        //AS_SetUnitAllegiance(true)
+        1B <AS_SetUnitAllegiance> 27 16
+//goto end
+06 [@end]
+    [#Multiplayer]
+    //bIsFriendly = m_kUnit.IsMine()
+    14 2D 00 <.bIsFriendly> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.IsMine.ReturnValue> 00 1B <IsMine> 16
+    //AS_SetUnitAllegiance(!bIsFriendly)
+    1B <AS_SetUnitAllegiance> 81 2D 00 <.bIsFriendly> 16 16
+    //if(m_kUnit.isHuman() || m_kUnit.IsShiv())
+    07 [@MPlabel1] 84 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.isHuman.ReturnValue> 00 1B <isHuman> 16 18 20 00 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.IsShiv.ReturnValue> 00 1B <IsShiv> 16 16
+        //kCharacterSoldier = XGCharacter_Soldier(kChar)
+        0F 00 <.kCharacterSoldier> 2E <Class.XGCharacter_Soldier> 00 <.kChar>
+        //if(m_kUnit.IsATank())
+        07 [@MPlabel2] 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.IsATank.ReturnValue> 00 1B <IsATank> 16
+            //iRank = m_kUnit.GetSHIVRank()
+            0F 00 <.iRank> 19 01 <@m_kUnit> 0A 00 <XGUnit.GetSHIVRank.ReturnValue> 00 1B <GetSHIVRank> 16
+            //bIsShiv = true
+            14 2D 00 <.bIsShiv> 27
+        //goto J0x630
+        06 [@MPlabel3]
+            [#MPlabel2]
+            //iRank = kCharacterSoldier.m_kSoldier.iRank
+            0F 00 <.iRank> 35 <XGTacticalGameCoreNativeBase.TSoldier.iRank> <XGTacticalGameCoreNativeBase.TSoldier> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter_Soldier.m_kSoldier> 00 01 <XGCharacter_Soldier.m_kSoldier>
+            //bIsShiv = false
+            14 2D 00 <.bIsShiv> 28
+        [#MPlabel3]
+        //AS_SetSoldierInformation(class'UIUtilities'.static.GetHTMLColoredText(m_kUnit.SafeGetCharacterFullName(), ((bIsFriendly) ? 0 : 3)), class'UIUtilities'.static.GetHTMLColoredText(m_kUnit.SafeGetCharacterNickname(), ((bIsFriendly) ? 0 : 3)), class'UIUtilities'.static.GetClassLabel(m_kUnit.GetSoldierClass(), kCharacterSoldier.m_kChar.bHasPsiGift, class'XComPerkManager'.static.HasAnyGeneMod(kCharacterSoldier.m_kChar.aUpgrades)), class'UIUtilities'.static.GetRankLabel(iRank, bIsShiv), kCharacterSoldier.LeveledUp())
+        1B <AS_SetSoldierInformation> 12 20 <Class.UIUtilities> 3C 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterFullName.ReturnValue> 00 1B <SafeGetCharacterFullName> 16 45 2D 00 <.bIsFriendly> 01 00 25 02 00 2C 03 4A 16 12 20 <Class.UIUtilities> 3C 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterNickname.ReturnValue> 00 1B <SafeGetCharacterNickname> 16 45 2D 00 <.bIsFriendly> 01 00 25 02 00 2C 03 4A 16 12 20 <Class.UIUtilities> AD 00 <UIUtilities.GetClassLabel.ReturnValue> 00 1B <GetClassLabel> 38 3A 19 01 <@m_kUnit> 0A 00 <XGUnit.GetSoldierClass.ReturnValue> 00 1B <GetSoldierClass> 16 2D 35 <XGTacticalGameCoreNativeBase.TCharacter.bHasPsiGift> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar> 12 20 <Class.XComPerkManager> 3B 00 <XComPerkManager.HasAnyGeneMod.ReturnValue> 00 1B <HasAnyGeneMod> 35 <XGTacticalGameCoreNativeBase.TCharacter.aUpgrades> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 00 <.kCharacterSoldier> 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar> 16 16 12 20 <Class.UIUtilities> 1D 00 <UIUtilities.GetRankLabel.ReturnValue> 00 1B <GetRankLabel> 00 <.iRank> 2D 00 <.bIsShiv> 16 19 00 <.kCharacterSoldier> 0A 00 <XGCharacter_Soldier.LeveledUp.ReturnValue> 00 1B <LeveledUp> 16 16
+    //goto J0x876
+    06 [@end]
+        [#MPlabel1]
+        //AS_SetAlienInformation(class'UIUtilities'.static.GetHTMLColoredText(m_kUnit.SafeGetCharacterName(), ((bIsFriendly) ? 0 : 3)), bIsFriendly, m_kUnit.IsExalt())
+        1B <AS_SetAlienInformation> 12 20 <Class.UIUtilities> 3C 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.SafeGetCharacterName.ReturnValue> 00 1B <SafeGetCharacterName> 16 45 2D 00 <.bIsFriendly> 01 00 25 02 00 2C 03 4A 16 2D 00 <.bIsFriendly> 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.IsExalt.ReturnValue> 00 1B <IsExalt> 16 16
+        //AS_SetUnitStats(class'UIUtilities'.static.GetHTMLColoredText(m_strHealthLabel @ string(m_kUnit.GetUnitMaxHP()), ((bIsFriendly) ? 0 : 3)), class'UIUtilities'.static.GetHTMLColoredText(m_strWillLabel @ string(GetWillBonus(m_kUnit)), ((bIsFriendly) ? 0 : 3)), class'UIUtilities'.static.GetHTMLColoredText(m_strOffenseLabel @ string(m_kUnit.GetOffense()), ((bIsFriendly) ? 0 : 3)), class'UIUtilities'.static.GetHTMLColoredText(m_strDefenseLabel @ string(GetDefenseBonus(m_kUnit)), ((bIsFriendly) ? 0 : 3)))
+        1B <AS_SetUnitStats> 12 20 <Class.UIUtilities> 49 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> A8 01 <@m_strHealthLabel> 38 53 19 01 <@m_kUnit> 0A 00 <XGUnitNativeBase.GetUnitMaxHP.ReturnValue> 00 1B <GetUnitMaxHP> 16 16 45 2D 00 <.bIsFriendly> 01 00 25 02 00 2C 03 4A 16 12 20 <Class.UIUtilities> 3D 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> A8 01 <@m_strWillLabel> 38 53 1B <GetWillBonus> 01 <@m_kUnit> 16 16 45 2D 00 <.bIsFriendly> 01 00 25 02 00 2C 03 4A 16 12 20 <Class.UIUtilities> 49 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> A8 01 <@m_strOffenseLabel> 38 53 19 01 <@m_kUnit> 0A 00 <XGUnit.GetOffense.ReturnValue> 00 1B <GetOffense> 16 16 45 2D 00 <.bIsFriendly> 01 00 25 02 00 2C 03 4A 16 12 20 <Class.UIUtilities> 3D 00 <UIUtilities.GetHTMLColoredText.ReturnValue> 00 1B <GetHTMLColoredText> A8 01 <@m_strDefenseLabel> 38 53 1B <GetDefenseBonus> 01 <@m_kUnit> 16 16 45 2D 00 <.bIsFriendly> 01 00 25 02 00 2C 03 4A 16 16
+[#end]
+//return
+04 0B
+//EOS
+53

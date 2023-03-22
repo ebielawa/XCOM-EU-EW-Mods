@@ -1,0 +1,378 @@
+[UIModToggles]
+m_strModTogglesTitle=AVAILABLE MOD PACKAGES
+
+[UIModShell]
+m_strTitle=MOD MANAGER
+m_strSelectModsButton=SELECT MODS
+m_strBackToModsButton=BACK TO MODS
+m_strSelectPackagesButton=MOD PACKAGES
+m_strConfigureModsButton=CONFIGURE SELECTED MOD
+m_strConfigureModMgrButton=CONFIGURE MOD MANAGER
+m_strResetAllButton=RESET ALL
+m_strResetModButton=RESET
+m_strRestoreDefaultsDialog="Choose what you want to restore."
+m_strResetModListWarning="List of selected mods will be reset to default selections (as set in DefaultModsProfile.ini). Do you confirm?"
+m_strRestoreDefaultsModOptions=RESET OPTIONS
+m_strRestoreDefaultsModList=RESET MOD LIST
+m_strNoOptions=NO AVAILABLE OPTIONS
+m_strGamepadScrollHelp=Scroll Text
+m_strGamepadBackToListHelp=Scroll List
+m_strResetDefaults="Are you sure you want to restore the default settings for this mod?"
+m_strResetAllDefaults="Warning: This operation will restore default settings for ALL MODS?"
+m_strSettingsChanged="New settings have been saved. Some of the changes might require reloading the savegame or restarting the mission."
+m_strDontShowAnymore=DON'T SHOW THIS AGAIN
+m_strBuildingOptionsProgress=BUILDING OPTIONS
+
+m_strProfilesButton=MANAGE PROFILES
+m_strEmptyProfile=<FONT COLOR='#FF0000'>(EMPTY PROFILE)</FONT>
+m_strEmptyProfileWarning="This profile is empty. No settings can be loaded!"
+m_strNewProfileTitle="NEW PROFILE"
+m_strNewProfileButton="NEW"
+m_strEditProfileTitle="EDIT PROFILE"
+m_strEditProfileButton="EDIT"
+m_strEditProfileDialog="Select what you would like to edit."
+m_strEditProfileNameButton="EDIT NAME"
+m_strEditProfileDescButton="EDIT DESCRIPTION"
+m_strLoadProfileTitle="LOAD PROFILE"
+m_strLoadProfileButton="LOAD"
+m_strLoadProfileDialog="The list of selected mods as well as all the options of all the mods will be restored from the selected mod profile. Do you confirm?"
+m_strDeleteProfileTitle="DELETE PROFILE"
+m_strDeleteProfileFailedTitle="DELETING THE PROFILE FAILED"
+m_strDeleteProfileButton="DELETE"
+m_strDeleteProfileDialog="Are you sure you want to delete profile:"
+m_strDeleteProfileFailed="You cannot delete the sole existing profile. Create a new profile first."
+m_strSaveProfileTitle="SAVE PROFILE"
+m_strSaveProfileButton="SAVE"
+m_strSaveProfileDialog="The list of selected mods as well as all the settings of all mods will be saved to the selected profile."
+m_strSaveProfileConfirmOverwrite=<font color='#ffff00'>The selected profile already contains saved data. Overwrite?</font>
+
+[UIModManager]
+m_strModsMenuButton="MODS MENU"
+m_strNoDescription=No available description.
+m_strMissingPackage="<FONT COLOR='#FF0000'>Required package could not be loaded!! Probably missing file <XGParam:StrValue0/> inside CookedPCConsole and its subfolders.</FONT>"
+m_strDisabledPackage="<FONT COLOR='#FF0000'>Package required for this mod is disabled via Mod Packages menu. Enable option <XGParam:StrValue0/> in Mod Packages menu to run this mod.</FONT>"
+m_strModsInPackage=Enable this package to gain access to:
+m_sModProfilePrefix=Profile
+[UIModSharedContainer]
+;----------------------------------------------------------
+;USING .INT (OR OTHER LOCALIZATION) FILE
+;----------------------------------------------------------
+;The way you should organize entries in this  section is like this:
+;
+;m_arrVarName=CustomStrategyAI
+;m_arrVarFriendlyName=Strategy AI Mod
+;m_arrVarDescription=This mod provides options for customizing aliens' behaviour on strategic level.
+;
+;Lines like the above should be always coming in threes, whenever you put a line m_arrVarName it MUST be followed by m_arrVarFriendlyName and m_arrVarDescription. 
+;You can make m_arrVarFriendlyName="" and m_arrVarDescription="" if you don't need them but they must be there or you will screw auto-search algorithms
+;m_arrVarName=SomeName is 99% times as good as m_arrVarName="SomeName" so suit yourself. 
+;The above is more relevant to descriptions:
+;
+;m_arrVarDescription="Some description with inline \"quote\""
+;or
+;m_arrVarDescription=Some description with inline "qoute"
+;
+;Credits - a block of lines for certain mod should start with BEGIN_ModName and end with END_ModName, just like below:
+
+m_arrCreditsModMgr=BEGIN_UIModManager
+m_arrCreditsModMgr=<h1>UI MOD MANAGER</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=Szymon 'szmind' Zminda
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Design By</h3>
+m_arrCreditsModMgr='szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Programming</h3>
+m_arrCreditsModMgr='szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>UI Programming</h3>
+m_arrCreditsModMgr='szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Debugging and Quality Assurance</h3>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=Guess who?
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=Yeah, you guessed :)\n'szmind'
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Special thanks to:</h3>
+m_arrCreditsModMgr=Loriendal - for initial tests and bug reporting
+m_arrCreditsModMgr=kdm2k6 - for tests of gamepad support
+m_arrCreditsModMgr=Lafiir - for even more tests of gamepad support and bug reports
+m_arrCreditsModMgr=AzXeus - for priceless advice on avoiding runaway loops:)
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Contact</h3>
+m_arrCreditsModMgr=szmind@gmail.com\nDiscord: szmind#7068
+m_arrCreditsModMgr=END_UIModManager
+
+m_arrCreditsModMgr=BEGIN_XComSpawnMutator
+m_arrCreditsModMgr=<h1>Random Spawns</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComSpawnMutator
+
+m_arrCreditsModMgr=BEGIN_XComLZMutator
+m_arrCreditsModMgr=<h1>Landing Zones</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComLZMutator
+
+m_arrCreditsModMgr=BEGIN_XComBombMutator
+m_arrCreditsModMgr=<h1>Bomb Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComBombMutator
+
+m_arrCreditsModMgr=BEGIN_XComSpawnAlienMutator
+m_arrCreditsModMgr=<h1>Drop-In Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComSpawnAlienMutator
+
+m_arrCreditsModMgr=BEGIN_XComPodSpawnMutator
+m_arrCreditsModMgr=<h1>Pod Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComPodSpawnMutator
+
+m_arrCreditsModMgr=BEGIN_XComMeldSpawnMutator
+m_arrCreditsModMgr=<h1>MELD Locations</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=wghost81
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=(Senior Contributing Programmer in Long War Team)
+m_arrCreditsModMgr=END_XComMeldSpawnMutator
+
+m_arrCreditsModMgr=BEGIN_Sightlines
+m_arrCreditsModMgr=<h1>LINE OF SIGHT INDICATOR</h1>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h2>AUTHOR</h2>
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=tracktwo
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Design and Programming</h3>
+m_arrCreditsModMgr=tracktwo
+m_arrCreditsModMgr=""
+m_arrCreditsModMgr=<h3>Special thanks to:</h3>
+m_arrCreditsModMgr=szmind - for this cool credits' screen and in-game options menu :)
+m_arrCreditsModMgr=END_Sightlines
+
+m_arrVarName="UIModManager"
+m_arrVarFriendlyName="Mod Manager options"
+m_arrVarDescription="Change options of mod manager."
+
+m_arrVarName="UIModManager.m_bShowChangesWarning"
+m_arrVarFriendlyName="Saving options dialog"
+m_arrVarDescription="Each time you change mod settings during a running game you will be warned that some changes may require reloading/restarting. Turn this reminder on/off using this option."
+
+m_arrVarName="UIModManager.m_bShowExitWarning"
+m_arrVarFriendlyName="Ignore changes dialog"
+m_arrVarDescription="Each time you exit mods menu without saving options you will be warned about it. Turn this warning on/off using this option."
+
+m_arrVarName="UIModManager.m_bShowResetWarning"
+m_arrVarFriendlyName="Restore defaults dialog"
+m_arrVarDescription="Each time you try to reset mod settings to their default values you will be asked for confirmation. Turn this warning on/off using this option."
+
+m_arrVarName="UIModManager.m_bSortMods_ByAlphabet"
+m_arrVarFriendlyName="Sort mods by name"
+m_arrVarDescription="When this option is checked (default setting) the list of mods is sorted alphabetically (this applies to the list of packages as well). You can turn it off by unchecking this option and mods will be unsorted - in order of appearance in DefaultMutatorLoader.ini (or close to it)."
+
+m_arrVarName="UIModManager.m_bSortMods_SelectedFirst"
+m_arrVarFriendlyName="Selected mods on top"
+m_arrVarDescription="When this option is checked mods that are currently turned ON will appear on top of the list (sorted alphabetically or not - depending on \"Sort mods by name\" setting). This applies to the list of packages as well. The list is re-sorted each time you switch between tabs (not each time you toggle a mod)."
+
+m_arrVarName="UIModManager.m_bEnsurePerformance"
+m_arrVarFriendlyName="Ensure Performance"
+m_arrVarDescription="When this option is checked majority of dropdown lists in mod's configuration window will be replaced with a spinner (horizontal box with left/right arrows). In return you will not experience too long pauses when switching to/from a configuration window with numerous dropdown lists."
+
+m_arrVarName="XComLZMutator"
+m_arrVarFriendlyName="LW - Landing Zones"
+m_arrVarDescription="Enables randomized locations of landing zone for XCom squad. Makes the game less repetitive as XCom squad can be deployed in different spots on the same map."
+
+m_arrVarName="XComBombMutator"
+m_arrVarFriendlyName="LW - Bomb Locations"
+m_arrVarDescription="Smarter location of the bomb on bomb disposal missions. Control proximity of power nodes vs landing zone location and initial timer of the bomb."
+
+m_arrVarName="XComSpawnMutator"
+m_arrVarFriendlyName="LW - Random Spawns"
+m_arrVarDescription="<font color='#00FF00'>This is not a standalone mod.</font> However its options are shared by the following mods: LW - Bomb Locations, LW - Meld Locations, LW - Landing zones, LW - Drop-in Locations, LW - Pod Locations."
+
+m_arrVarName="XComMeldSpawnMutator"
+m_arrVarFriendlyName="LW - Meld Locations"
+m_arrVarDescription="Smarter location of meld containers - by default one easy and one hard container. Allows for control of proximity location as well as max number of containers."
+
+m_arrVarName="XComPodSpawnMutator"
+m_arrVarFriendlyName="LW - Pod Locations"
+m_arrVarDescription="Randomizes locations of alien pods (including commander's pod) while obeying restrictions on proximity to landing zone, covert operative and avoiding (or not) capture zones (on data recovery missions)."
+
+m_arrVarName="XComSpawnAlienMutator"
+m_arrVarFriendlyName="LW - Drop-in Locations"
+m_arrVarDescription="Makes alien reinforcements more challenging (by default). Allows for control of several factors determining spawning mechanics (e.g. disable auto-overwatch of drop-ins). The settings will not apply to New Foundland site-recon mission.\n<FONT COLOR='#00FF00' SIZE='16'>You can expand the list of exlusions in DefaultRandomSpawns.ini</FONT>"
+
+m_arrVarName="XComLZMutator.XComFCMutator"
+m_arrVarFriendlyName="Funding Council (LW)"
+m_arrVarDescription="I have no idea what it does :) If you do, contact me via nexusmods or on Discord (szmind#7068)."
+
+m_arrVarName="XComSpawnMutator.PLAYER_PROXIMITY"
+m_arrVarFriendlyName="Proximity to player"
+m_arrVarDescription="Minimum distance in meters (1 Tile = 1,6 m) between landing zone and the location of an object: meld container, alien pod, location of alien drop-in. Increase it to allow  locations further from player. Decrease to allow locations closer to player.\nDefault: 29 (18 tiles) which is standard visual range."
+
+m_arrVarName="XComSpawnMutator.OP_PROXIMITY"
+m_arrVarFriendlyName="Proximity to CovertOp"
+m_arrVarDescription="Minimum distance in meters (1 Tile = 1,6 m) between covert operative and the location of an object: meld container, alien pod, location of alien drop-in. Increase it to allow  locations further from player. Decrease to allow locations closer to player.\nDefault: 32 (20 tiles) which is 2 tiles beyond visual range."
+
+m_arrVarName="XComSpawnMutator.AVOID_CAPTURE_ZONES"
+m_arrVarFriendlyName="Avoid Capture Zones"
+m_arrVarDescription="Makes capture zones on data recovery missions a "forbidden location" for spawning meld containers, EXALT pods or EXALT drop-in reinforcements."
+
+m_arrVarName="XComBombMutator.INITIAL_TIMER_VALUE"
+m_arrVarFriendlyName="Initial bomb timer"
+m_arrVarDescription="At start of mission the timer of the bomb will be set to this number of turns.\nDefault: 4."
+
+m_arrVarName="XComBombMutator.PLAYER_PROXIMITY"
+m_arrVarFriendlyName="Proximity to player"
+m_arrVarDescription=This setting replaces the general setting in "LW - Random Spawns". Controls distance in meters (1 Tile = 1,6 m) of valid locations for power nodes and bomb. Increase it to make nodes appear further from player. Decrease to allow nodes closer to player.\nDefault: 8 (5 tiles).
+
+m_arrVarName="XComMeldSpawnMutator.NumContainers"
+m_arrVarFriendlyName="Number of containers"
+m_arrVarDescription=Increase/decrease max number of meld containers that will be created (on small maps there might be not enough suitable places to place the max number).\nDefault: 3.
+
+m_arrVarName="XComMeldSpawnMutator.EqSlope"
+m_arrVarFriendlyName=""
+m_arrVarDescription=This is a multiplier for the number of "blue moves" required to reach the container from the landing zone. A human-readable formula would be: "NumberOfTurns = TilesFromLandingZone x EqSlope + EqConst". Exact formula:\nDestroyedOnTurn = (DistToPlayer / (96 x 8)) x EqSlope + EqConst. You can read (96 x 8) as 8 tiles which is roughly "a standard blue move".\nDefault value: 1.55.\n\nEXAMPLE:\nEqSlope=1.50\nEqConst=1.0\nA container within 30 tiles would have a timer set to 30/8 x 1.50 + 1.0 = 6 turns.\nA container within 50 tiles would have the timer set to 50/8 x 1.5 + 1.0 = 10 turns.
+
+m_arrVarName="XComMeldSpawnMutator.EqConst"
+m_arrVarFriendlyName=""
+m_arrVarDescription=This is minimum threshold for the initial timer. It is further increased with distance between container and landing zone. A human-readable formula would be: "NumberOfTurns = TilesFromLandingZone x EqSlope + EqConst". Exact formula:\nDestroyedOnTurn = (DistToPlayer / (96 x 8)) x EqSlope + EqConst. You can read (96 x 8) as 8 tiles which is roughly "a standard blue move".\nDefault value: 1.0.\n\nEXAMPLE:\nEqSlope=1.50\nEqConst=1.0\nA container within 30 tiles would have a timer set to 30/8 x 1.50 + 1.0 = 6 turns.\nA container within 50 tiles would have the timer set to 50/8 x 1.50 + 1.0 = 10 turns.
+
+m_arrVarName="XComSpawnAlienMutator.MIN_DROP_DIST"
+m_arrVarFriendlyName="Min drop distance"
+m_arrVarDescription=A minimum valid distance (in meters, 1 tile = 1,6 m) between alien/EXALT reinforcements drop-in and XCOM unit.\nDefaults to 7 (4 tiles). Cannot be too close to Maximum drop distance. The mod ensures that Max > Min + 7.
+
+m_arrVarName="XComSpawnAlienMutator.MAX_DROP_DIST"
+m_arrVarFriendlyName="Max drop distance"
+m_arrVarDescription="A maximum valid distance (in meters, 1 tile = 1,6 m) between alien/EXALT reinforcements drop-in and XCOM unit.\nDefault: 32 (20 tiles)."
+
+m_arrVarName="XComSpawnAlienMutator.USE_OVERWATCH"
+m_arrVarFriendlyName="Overwatch on drop-in"
+m_arrVarDescription="Checking this option (default setting) forces drop-in enemies to go on overwatch."
+
+m_arrVarName="XComSpawnAlienMutator.DROP_TO_COVER"
+m_arrVarFriendlyName="Drop to cover"
+m_arrVarDescription="Checking this option (default setting) forces drop-in enemies to prioritize locations with cover - preferably elevated ones."
+
+m_arrVarName="XComSpawnAlienMutator.REVEAL_SPAWN"
+m_arrVarFriendlyName="Reveal all drop-ins"
+m_arrVarDescription="Checking this option (default setting) shows ALL drop-in events - even if XCOM team cannot see the enemy after drop-in. Uncheck this option for extra challenge: you will not see enemies dropping-in to locations not seen by XCOM."
+
+
+m_arrVarName="Sightlines"
+m_arrVarFriendlyName="Line of Sight Indicator"
+m_arrVarDescription="The LoS Indicator is a mod to bring the feature of XCOM2 back to XCOM EW/LW. With this mod enabled, while moving the cursor around to select a tile for movement enemies visible from the pointed location are indicated graphically on the screen.\n\nThe mod contains several configurable variables that may be of interest, see the options tab.\n<FONT COLOR='#00FF00'>New settings (including enable/disable mod) take effect immediately, NO NEED TO RELOAD.</FONT>"
+
+m_arrVarName="Sightlines.SightIndicator"
+m_arrVarFriendlyName="Indicator Style"
+m_arrVarDescription="Pick one of the following values:\n\nGreen Disc - A green disc surrounds visible units.\nOrange Disc - An orange disc surrounds visible units.\nGold Disc - A gold disc surrounds visible units.\nOverwatch Icon - LW only. The overwatch indicator on the unit flag is added to visible units. The indicator will be of XCOM cyan color, and will toggle between cyan and red on aliens on overwatch. See also OW Blinking Interval."
+
+m_arrVarName="Sightlines.SightIndicator.1"
+m_arrVarFriendlyName="Green Disc"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SightIndicator.2"
+m_arrVarFriendlyName="Orange Disc"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SightIndicator.3"
+m_arrVarFriendlyName="Gold Disc"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SightIndicator.0"
+m_arrVarFriendlyName="Overwatch Icon"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.OVERWATCH_TOGGLE_DELAY"
+m_arrVarFriendlyName="OW Blinking Interval"
+m_arrVarDescription="LW only. Amount of time (in seconds) to delay between the red and cyan states of the overwatch indicator when showing LoS to an alien which is currently on overwatch. This setting is only useful when Indicator Style is set to \"Overwatch Icon\"."
+
+m_arrVarName="Sightlines.OVERWATCH_TOGGLE_DELAY.0.50"
+m_arrVarFriendlyName="x0.50"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SIGHTLINE_TICK_DELAY"
+m_arrVarFriendlyName="Update delay"
+m_arrVarDescription="Amount of time (in seconds) for game engine to wait between refreshes of LoS information. The lower this value the faster the UI will update when hovering over new tiles. This value may have a large impact on game performance - set it to a value that feels right for your system.\nDefault: 1.0"
+
+m_arrVarName="Sightlines.SHOW_FRIENDLY_INDICATORS"
+m_arrVarFriendlyName="Show Indicator For:"
+m_arrVarDescription="If you choose \"All units\" indicators will also be shown on friendly units (e.g. XCom). This may be useful to assist in determining whether an ally will be in LoS to act as a target for certain abilities. Default setting is \"Enemies only\" as the additional indicators may be distracting to some."
+
+m_arrVarName="Sightlines.SHOW_FRIENDLY_INDICATORS.True"
+m_arrVarFriendlyName="All units"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.SHOW_FRIENDLY_INDICATORS.False"
+m_arrVarFriendlyName="Enemies only"
+m_arrVarDescription=""
+
+m_arrVarName="Sightlines.USE_TOGGLE_HOTKEY"
+m_arrVarFriendlyName="Use toggle hotkey"
+m_arrVarDescription="Controls whether LoS updates and indicators are always on (false, the default) or on only when a hotkey is pressed (true). If enabled, pressing the hotkey once will enable LoS updates, updated on the \"Update delay\" frequency as before. Pressing the hotkey again will turn off all indicators and disable LoS updates. This option can be used if you find the automatic updates slow the game down too much, or if the always-on indicators are distracting. <FONT COLOR='#5CD16C'>The hotkey must be specified in DefaultInput.ini in your config folder in the XComGame.XComTacticalInput section.</FONT> Searching the file for \"Ability Shortcuts\" should get you into the right place. The new hotkey can be added with a line such as:\n\n<FONT COLOR='#5CD16C'>.Bindings=(Name=\"V\", Command=\"marketing\", alt=TRUE)</FONT>\n\nThis assigns the hotkey Alt-V to the 'marketing' command, which was a debug mode I've commandeered for this mod. The key can be adjusted to any key you prefer, including gamepad buttons."
+
+m_arrVarName="LW Rebalance tuning.DW factor.0.50"
+m_arrVarFriendlyName="Dynamic War"
+m_arrVarDescription=""
+
+m_arrVarName="LW Rebalance tuning.DW factor.1.00"
+m_arrVarFriendlyName="Long War"
+m_arrVarDescription=""
+
+m_arrVarName="LW Rebalance tuning.DW factor.2.00"
+m_arrVarFriendlyName="Very Long War"
+m_arrVarDescription=""
+
+m_arrVarName="LW Rebalance tuning.DW factor.3.00"
+m_arrVarFriendlyName="Very very Long War"
+m_arrVarDescription=""
+
+m_arrVarName="CoverBonus.RocketScatter"
+m_arrVarFriendlyName="Rocket Scatter"
+m_arrVarDescription="Lower means more accurate rocket fire. Value is average meters of miss if shooting with 0 aim at a target 20 meters away.\n\n0.0 - No scatter.\n4.0 - Low scatter.\n7.8 - Normal scatter.\n9.0 - Large scatter."
+
+m_arrVarName="CoverBonus.RocketScatter.0.00"
+m_arrVarFriendlyName="No scatter"
+m_arrVarDescription=""
+
+m_arrVarName="CoverBonus.RocketScatter.4.00"
+m_arrVarFriendlyName="Low scatter"
+m_arrVarDescription=""
+
+m_arrVarName="CoverBonus.RocketScatter.7.80"
+m_arrVarFriendlyName="Normal scatter"
+m_arrVarDescription=""
+
+m_arrVarName="CoverBonus.RocketScatter.9.00"
+m_arrVarFriendlyName="Large scatter"
+m_arrVarDescription=""

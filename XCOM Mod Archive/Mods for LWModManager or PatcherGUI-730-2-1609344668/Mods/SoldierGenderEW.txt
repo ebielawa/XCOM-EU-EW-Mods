@@ -1,0 +1,49 @@
+MOD_NAME=Soldier Gender Probability
+AUTHOR=wghost81 aka Wasteland Ghost
+DESCRIPTION=Set soldier gender probability
+
+Version: 2.0
+
+Compatible with XCOM Enemy Within versions:
+ - all
+
+UPK_FILE=XComGame.upk
+OBJECT=XGCharacterGenerator.CreateTSoldier
+
+// Female probability: change 25 to whatever value you like between 0 and 100
+// Do not touch anything except number! Do not add spaces between number and other symbols!
+// You can enter only integer values between 0 and 100, no floating-point values are allowed!
+// Value 0 will result in all males, value 100 - in all females.
+ALIAS=FemaleProb:<%b25>
+
+// modded code
+REL_OFFSET=0x121
+[MODDED_CODE]
+//kSoldier.kAppearance.iGender = ( (eForceGender != 0) ? eForceGender : ( (Rand(100) < 25) ? 2 : 1 ) );
+0F 35 <XGTacticalGameCoreNativeBase.TAppearance.iGender> <XGTacticalGameCoreNativeBase.TAppearance> 00 00 35 <XGTacticalGameCoreNativeBase.TSoldier.kAppearance> <XGTacticalGameCoreNativeBase.TSoldier> 00 01 00 <.kSoldier>
+45
+9B
+    38 3A 00 <.eForceGender>
+    25
+16
+0B 00 // skip
+38 3A 00 <.eForceGender>
+10 00 // skip
+45
+96
+    A7 2C <%b100> 16
+    2C <!FemaleProb>
+16
+02 00 // skip
+2C 02
+01 00 // skip
+26
+// fill
+00 <.eForceGender>
+00 <.eForceGender>
+00 <.eForceGender>
+00 <.eForceGender>
+00 <.eForceGender>
+0B 0B 0B 0B 0B 0B
+
+{ end of mod file }

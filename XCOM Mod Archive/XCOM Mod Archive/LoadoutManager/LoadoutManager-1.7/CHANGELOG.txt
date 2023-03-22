@@ -1,0 +1,39 @@
+2018-02-06 - Version 1.6
+    - Disable save/restore menu items for SHIVs. They were already
+      excluded from squad loadouts with version 1.2, but could still
+      use the individual save/restore loadout buttons. Restoring on
+      a SHIV used the PFC banks and would corrupt the SHIV. Allowing
+      SHIVS to have dedicated loadout banks may be implemented later.
+
+2016-02-03 - Version 1.5
+    - Add localization support & Russian translations.
+
+2016-01-09 - Version 1.4
+    - Fix bug with restoring psi-limited items onto non-psi soldiers.
+      These items and armors will now not be added to non-psi troops.
+    - Fix bug with rocketeers being assigned rocket launchers as their
+      primary weapon after failing to restore another weapon due to
+      a lack of inventory.
+
+2015-12-30 - Version 1.3
+    - Fix bug with psi soldiers powers like Mindfray doing no damage.
+    - Fix bug with "MISSING ITEM" items appearing in the grey market.
+
+2015-12-27 - Version 1.2
+    - Fix bug when applying squad loadouts with SHIVs in the squad.
+
+2015-12-26 - Version 1.1
+    - Reduced the font size in the loadout descriptions displayed in
+      the soldier summary UI. This should prevent overflow of long
+      loadouts beyond the background panel.
+    - Adjusted the positioning of the description text to avoid the
+      menu buttons from overflowing into it for soldiers that have
+      more than 7 options (e.g. those that have both psi abilities and
+      gene mods, or are officers and have gene mods).
+    - Added controller support for the Squad Loadout buttons, mapped
+      to left and right triggers, respectively.
+
+2015-12-23 - Version 1.0
+    Initial release
+
+

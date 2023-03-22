@@ -1,0 +1,96 @@
+UPK_FILE = xcomstrategygame.upk
+OBJECT = UIMissionControl_UFOAlert.UpdateData : AUTO
+
+[REPLACEMENT_CODE]
+0F 00 <.kAlert> 19 1B <GetMgr> 4A 16 [@] <XGMissionControlUI.m_kCurrentAlert> 00 ( 01 <XGMissionControlUI.m_kCurrentAlert> )
+0F 00 <.colorState> 45 19 19 19 2E <Class.XComHeadquartersGame> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComHeadquartersGame.GetGameCore.ReturnValue> 00 ( 1B <GetGameCore> 16 ) [@] <XGStrategy.GetHQ.ReturnValue> 00 ( 1B <GetHQ> 16 ) [@] <XGHeadQuarters.IsHyperwaveActive.ReturnValue> 00 ( 1B <IsHyperwaveActive> 16 ) [@] ( 2C 0A ) [@] ( 2C 03 )
+1B <AS_SetTitle> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCAlert.txtTitle> <XGMissionControlUI.TMCAlert> 00 00 19 1B <GetMgr> 4A 16 [@] <XGMissionControlUI.m_kCurrentAlert> 00 ( 01 <XGMissionControlUI.m_kCurrentAlert> ) 16 00 <.colorState> 4A 16 ) 16
+1B <AS_SetContact> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 25 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 00 <.colorState> 4A 16 ) 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 25 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16
+1B <AS_SetLocation> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 26 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 00 <.colorState> 4A 16 ) 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 26 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16
+1B <AS_SetClass> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 02 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16 00 <.colorState> 4A 16 ) 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 02 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16
+
+
+07 [@label_0x0571] 9A 00 <.colorState> 2C 0A 16
+	1C <Core.Object.ParseStringIntoArray> 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 05 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 00 <.speciesList> 1F 2F 2F 00 27 16
+	[#label_0x0358]
+	07 [@label_0x044C] 96 00 <.I> 36 00 <.speciesList> 16
+                // if(I < 6) {
+		07 [@label_0x03EF] 96 00 <.I> 2C <%b 6> 16
+                        // formattedSpecies1 $= speciesList[++ I];
+			0E <Core.Object.ConcatEqual_StrStr.ReturnValue> 61 42 00 <.formattedSpecies1> 10 A5 00 <.I> 16 00 <.speciesList> 16
+                        // if((I < 6) && I < speciesList.Length) {
+			07 [@label_0x03EC] 82 96 00 <.I> 2C <%b 6> 16 18 [@] ( 96 00 <.I> 36 00 <.speciesList> 16 16 )
+                            // formattedSpecies1 $= "\\n";
+                            0E <Core.Object.ConcatEqual_StrStr.ReturnValue> 61 42 00 <.formattedSpecies1> 1F 0A 00 16
+			// }
+			[#label_0x03EC]
+			06 [@label_0x0449]
+		[#label_0x03EF]
+		0E <Core.Object.ConcatEqual_StrStr.ReturnValue> 61 42 00 <.formattedSpecies2> 10 A5 00 <.I> 16 00 <.speciesList> 16
+		07 [@label_0x0449] 96 00 <.I> 36 00 <.speciesList> 16
+			0E <Core.Object.ConcatEqual_StrStr.ReturnValue> 61 42 00 <.formattedSpecies2> 1F 0A 00 16
+		[#label_0x0449]
+		06 [@label_0x0358]
+	[#label_0x044C]
+        // AS_SetHyperwaveData(m_strHyperwavePanelTitle,
+	1B <AS_SetHyperwaveData> 01 <@m_strHyperwavePanelTitle>
+	// Caps(kAlert.arrLabeledText[3].strLabel),
+	EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 03 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16
+
+        // kAlert.arrLabeledText[3].StrValue,
+        35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 03 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert>
+        // Caps(kAlert.arrLabeledText[4].strLabel)
+	EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 04 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16
+            // Concat_StringString(kAlert.arrLabeledText[4].StrValue, Concat_StringString(" (", Concat_StringString(string(I), " distinct species) ")))
+            70
+                35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 04 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert>
+                70 1F <%t " ("> 70  38 53 00 <.I> 1F <%t " distinct species) "> 16 16
+            16
+            // Caps(kAlert.arrLabeledText[5].strLabel),
+            EB 35 <XComGame.XGTacticalScreenMgr.TLabeledText.strLabel> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 10 2C 05 35 <XGMissionControlUI.TMCAlert.arrLabeledText> <XGMissionControlUI.TMCAlert> 00 00 00 <.kAlert> 16
+            // formattedSpecies1,
+            00 <.formattedSpecies1>
+            // formattedSpecies2
+            00 <.formattedSpecies2>
+        // );
+        16
+
+[#label_0x0571]
+1B <UpdateButtonText> 16
+04 0B
+53
+
+UPK_FILE=uicollection_strategy_sf.upk
+OBJECT=gfxMissionControl.MissionControl:AUTO
+
+[BEFORE_HEX]
+7F 09 4F 00 00 00 C3 00 6F F6 1E 13 FD 83 9A 00
+ED 31 6B 00 90 01 FF D0 38 FF 00 00 00 00 00 00
+00 00 00 00 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 31 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 32 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 33 0D 00
+
+[AFTER_HEX]
+7F 09 4F 00 00 00 C3 00 6F F6 1E 13 FD 83 9A 00
+ED 31 6B 00 18 01 FF D0 38 FF 00 00 00 00 00 00
+00 00 00 00 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 31 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 32 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 33 0D 00
+
+[BEFORE_HEX]
+7F 09 4F 00 00 00 C4 00 6F F6 1E 13 FD 83 9A 00
+ED 31 6B 00 90 01 FF D0 38 FF 00 00 00 00 00 00
+00 00 00 00 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 31 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 32 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 33 0D 00
+
+[AFTER_HEX]
+7F 09 4F 00 00 00 C4 00 6F F6 1E 13 FD 83 9A 00
+ED 71 6B 00 18 01 FF D0 38 FF 00 00 00 00 00 00
+00 00 00 00 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 31 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 32 0D 41 6C 69 65 6E 20 73 70 65 63 69 65
+73 20 33 0D 00

@@ -1,0 +1,425 @@
+MOD_NAME=Hunker Down Fine Tune for Long War
+AUTHOR=wghost81 aka Wasteland Ghost
+DESCRIPTION=This mod brings several improvements to Hunker Down action:
+1. Hunker Down hotkey (K by default) now works similar to Overwatch hotkey, i.e. immediately performs a Hunker Down action without a need for confirmation.
+2. Hunker Down sound is no longer played twice, resulting in weird echo effect.
+3. Soldier speech for Hunker Down action is now enabled (note that new LW voice packages don't have HD samples).
+4. OW and HD speech is now played both when using hotkey and UI button.
+5. Soldier speech for mass overwatch hotkey is disabled.
+
+Compatible with XCOM Enemy Within versions:
+ - Long War for EW installed
+ 
+UPK_FILE=XComGame.upk
+
+OBJECT=XComTacticalInput.ActiveUnit_Moving.Key_K:AUTO
+[REPLACEMENT_CODE]
+//kActiveUnit = GetActiveUnit()
+0F 00 <.kActiveUnit> 1B <GetActiveUnit> 16
+//if((kActiveUnit.IsPanicked() || kActiveUnit.IsStrangled()) || kActiveUnit.IsStrangling())
+07 [@label1]
+84 84
+19 00 <.kActiveUnit> 0A 00 <XGUnitNativeBase.IsPanicked.ReturnValue> 00 1B <IsPanicked> 16
+18 20 00
+19 00 <.kActiveUnit> 0A 00 <XGUnit.IsStrangled.ReturnValue> 00 1B <IsStrangled> 16 16
+18 20 00
+19 00 <.kActiveUnit> 0A 00 <XGUnit.IsStrangling.ReturnValue> 00 1B <IsStrangling> 16 16
+//return false
+04 28
+[#label1]
+//if((Actionmask & 32) != 0)
+07 [@Return] 9B 9C 00 <.Actionmask> 2C 20 16 25 16
+//kUIAbilityContainer = XComPresentationLayer(XComTacticalController(Outer).m_Pres).GetTacticalHUD().m_kAbilityHUD
+0F 00 <.kUIAbilityContainer>
+19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComTacticalController>
+01 <Core.Object.Outer> 09 00 <XComPlayerController.m_Pres> 00 01 <XComPlayerController.m_Pres>
+0A 00 <XComPresentationLayer.GetTacticalHUD.ReturnValue> 00 1B <GetTacticalHUD> 16
+09 00 <UITacticalHUD.m_kAbilityHUD> 00 01 <UITacticalHUD.m_kAbilityHUD>
+//iUIAbilityIndex = kUIAbilityContainer.FindAbilityByType(27)
+0F 00 <.iUIAbilityIndex> 19 00 <.kUIAbilityContainer>
+0C 00 <UITacticalHUD_AbilityContainer.FindAbilityByType.ReturnValue> 00 1B <FindAbilityByType> 24 1B 16
+//if(iUIAbilityIndex > -1)
+07 [@Return] 97 00 <.iUIAbilityIndex> 1D FF FF FF FF 16
+//kActiveUnit.PerformAbility(27)
+19 00 <.kActiveUnit> 0C 00 <NullRef> 00 1B <PerformAbility> 24 1B 16
+//Outer.PlaySound(soundcue'MenuSelectCue', true)
+19 01 <Core.Object.Outer> 09 00 <NullRef> 00 1C <Engine.Actor.PlaySound> 20 <SoundUI.MenuSelectCue> 27 4A 4A 4A 4A 16
+//return true
+04 27
+[#Return]
+//return false
+04 28
+//EOS
+53
+
+OBJECT=UITacticalHUD_AbilityContainer.OnAccept
+[BEFORE_CODE]
+//PlaySound(soundcue'HunkerDownCue', true)
+1C <Engine.Actor.PlaySound> 20 <SoundUI.HunkerDownCue> 27 4A 4A 4A 4A 16
+[AFTER_CODE]
+00 <.kUnit> 00 <.kUnit> 0B 0B 0B 0B 0B 0B
+
+OBJECT=XGUnit.PerformAbility
+[BEFORE_CODE]
+//UnitSpeak(3)
+1B <UnitSpeak> 24 03 4A 16
+[AFTER_CODE]
+0B 0B 0B 0B 0B 0B 0B 0B 0B 0B 0B 0B 0B
+
+OBJECT = XGAbilityTree.ApplyEffectsToTarget : AUTO
+[REPLACEMENT_CODE]
+0F 00 <.iAbilityEffect> 25 
+[#label_0x000B]
+07 [@label_0x3150] 96 00 <.iAbilityEffect> 2C 34 16 
+	07 [@label_0x0054] 81 1B <AbilityHasEffect> 19 00 <.kAbility> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 00 <.iAbilityEffect> 16 16 
+		06 [@label_0x3142] 
+	[#label_0x0054]
+	05 <.iAbilityEffect> 00 00 <.iAbilityEffect> 
+	0A [@label_0x006E] 25 
+		06 [@label_0x3142] 
+	[#label_0x006E]
+	0A [@label_0x046B] 26 
+		07 [@label_0x009B] 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 0B 16 
+			06 [@label_0x0468] 
+		[#label_0x009B]
+		07 [@label_0x00E0] 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 25 16 
+			1B <ProcessPsiBombEffects> 00 <.kAbility> 00 <.kTarget> 16 
+			06 [@label_0x0468] 
+		[#label_0x00E0]
+		07 [@label_0x0468] 82 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 35 16 18 [@] ( 77 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 00 <.kTarget> 16 16 ) 
+			0F 00 <.kDamageType> 20 <Class.XComDamageType_Bullet> 
+			07 [@label_0x0213] 77 19 00 <.kAbility> [@] <XGAbility_Targeted.m_kWeapon> 00 ( 01 <XGAbility_Targeted.m_kWeapon> ) 2A 16 
+				07 [@label_0x01C1] 9A 38 3A 19 19 00 <.kAbility> [@] <XGAbility_Targeted.m_kWeapon> 00 ( 01 <XGAbility_Targeted.m_kWeapon> ) [@] <XGItem.ItemType.ReturnValue> 00 ( 1B <ItemType> 16 ) 38 3A 24 11 16 
+					0F 00 <.kDamageType> 20 <Class.XComDamageType_Plasma> 
+					06 [@label_0x0213] 
+				[#label_0x01C1]
+				07 [@label_0x0213] 9A 38 3A 19 19 00 <.kAbility> [@] <XGAbility_Targeted.m_kWeapon> 00 ( 01 <XGAbility_Targeted.m_kWeapon> ) [@] <XGItem.ItemType.ReturnValue> 00 ( 1B <ItemType> 16 ) 38 3A 24 0B 16 
+					0F 00 <.kDamageType> 20 <Class.XComDamageType_Laser> 
+			[#label_0x0213]
+			0F 00 <.kPawn> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetPawn.ReturnValue> 00 ( 1B <GetPawn> 16 ) 
+			19 00 <.kPawn> [@] <NullRef> 00 ( 1B <TakeDirectDamage> 12 20 <Class.XComDamageType> [@] <XComDamageType.CreateEvent.ReturnValue> 00 ( 1B <CreateEvent> 19 00 <.kAbility> [@] <XGAbility_Targeted.GetActualDamage.ReturnValue> 00 ( 1B <GetActualDamage> 16 ) 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 19 00 <.kPawn> [@] <XComUnitPawn.GetHeadLocation.ReturnValue> 00 ( 1B <GetHeadLocation> 16 ) D4 38 39 19 00 <.kTarget> [@] <Engine.Actor.Rotation> 00 ( 01 <Engine.Actor.Rotation> ) 38 3F 1D <%i -10> 16 00 <.kDamageType> 4A 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 16 ) 16 ) 
+			0F 00 <.kBroadcastWorldMessage> 12 20 <Class.UIWorldMessageMgr> [@] <UIWorldMessageMgr.DamageDisplay.ReturnValue> 00 ( 1B <DamageDisplay> 19 00 <.kTarget> [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> ) A8 38 53 19 00 <.kAbility> [@] <XGAbility_Targeted.m_iActualDamage> 00 ( 01 <XGAbility_Targeted.m_iActualDamage> ) 19 00 <.kTarget> [@] <XGUnit.m_sDamageImage> 00 ( 01 <XGUnit.m_sDamageImage> ) 16 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 20 <Class.XComUIBroadcastWorldMessage_DamageDisplay> 16 ) 
+			07 [@label_0x0468] 77 00 <.kBroadcastWorldMessage> 2A 16 
+				19 2E <Class.XComUIBroadcastWorldMessage_DamageDisplay> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_DisplayDamage> 24 01 19 00 <.kTarget> [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> ) 19 00 <.kAbility> [@] <XGAbility_Targeted.m_iActualDamage> 00 ( 01 <XGAbility_Targeted.m_iActualDamage> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+		[#label_0x0468]
+		06 [@label_0x3142] 
+	[#label_0x046B]
+	0A [@label_0x08A6] 2C 02 
+		19 00 <.kTarget> [@] <NullRef> 00 ( 1B <AddStatModifiers> 19 00 <.kAbility> [@] <XGAbility.aTargetStats> 00 ( 01 <XGAbility.aTargetStats> ) 00 <.kAbility> 16 ) 
+		07 [@label_0x0835] 7B 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 1F <%t ""> 16 
+			0F 00 <.strMsg> 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 
+			07 [@label_0x055E] 9B 7E 00 <.strMsg> 1F <%t "<HP/>"> 4A 4A 4A 16 1D <%i -1> 16 
+				1B <ReplaceText> 00 <.strMsg> 1F <%t "<HP/>"> 38 53 1A 25 19 00 <.kAbility> [@] <XGAbility.aTargetStats> 00 ( 01 <XGAbility.aTargetStats> ) 16 
+			[#label_0x055E]
+			07 [@label_0x06A8] 82 9A 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 00 16 18 [@] ( 84 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnitNativeBase.IsVisible.ReturnValue> 00 ( 1B <IsVisible> 16 ) 18 [@] ( 19 00 <.kTarget> [@] <XGUnitNativeBase.IsVisible.ReturnValue> 00 ( 1B <IsVisible> 16 ) 16 ) 16 ) 
+				19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 00 <.strMsg> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 4A 4A 4A 4A 4A 16 ) 
+				06 [@label_0x0835] 
+			[#label_0x06A8]
+			0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 00 <.strMsg> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 16 ) 
+			07 [@label_0x0835] 77 00 <.kBroadcastWorldMessage> 2A 16 
+				19 2E <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_AbilityTargetMessage> 00 <.kAbility> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+		[#label_0x0835]
+		07 [@label_0x08A3] 82 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 0D 16 18 [@] ( 81 19 00 <.kTarget> [@] <XGUnit.IsAlien_CheckByCharType.ReturnValue> 00 ( 1B <IsAlien_CheckByCharType> 16 ) 16 16 ) 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 2A 4A 16 ) 
+		[#label_0x08A3]
+		06 [@label_0x3142] 
+	[#label_0x08A6]
+	0A [@label_0x0B16] 2C 03 
+		07 [@label_0x0933] 19 00 <.kTarget> [@] <Core.Object.IsInState.ReturnValue> 00 ( 61 19 21 <Panicked> 4A 16 ) 
+			0F 19 00 <.kTarget> [@] <XGUnitNativeBase.m_iPanicCounter> 00 ( 01 <XGUnitNativeBase.m_iPanicCounter> ) 25 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <SetMoves> 25 16 ) 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 71 21 <Inactive> 4A 4A 4A 16 ) 
+		[#label_0x0933]
+		07 [@label_0x0966] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <UpdateUnitBuffs> 16 ) 
+		[#label_0x0966]
+		07 [@label_0x0B13] 77 00 <.kTarget> 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 16 
+			0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetUnexpandedLocalizedMessageString.ReturnValue> 00 ( 1B <GetUnexpandedLocalizedMessageString> 24 12 16 ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 03 4A 4A 01 <Engine.Actor.m_eTeamVisibilityFlags> 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 16 ) 
+			07 [@label_0x0B13] 77 00 <.kBroadcastWorldMessage> 2A 16 
+				19 2E <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_UnexpandedLocalizedString> 24 12 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 03 01 <Engine.Actor.m_eTeamVisibilityFlags> 16 ) 
+		[#label_0x0B13]
+		06 [@label_0x3142] 
+	[#label_0x0B16]
+	0A [@label_0x0B8E] 2C 05 
+		07 [@label_0x0B8B] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			19 00 <.kTarget> [@] <XGUnitNativeBase.AddSuppressor.ReturnValue> 00 ( 1B <AddSuppressor> 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 16 ) 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <UpdateUnitBuffs> 16 ) 
+		[#label_0x0B8B]
+		06 [@label_0x3142] 
+	[#label_0x0B8E]
+	0A [@label_0x0F22] 2C 0D 
+		07 [@label_0x0E9D] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			07 [@label_0x0D6E] 7B 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 1F <%t ""> 16 
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 16 ) 
+				07 [@label_0x0D6E] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_AbilityTargetMessage> 00 <.kAbility> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+			[#label_0x0D6E]
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <BecomePossessed> 00 <.kAbility> 4A 16 ) 
+			07 [@label_0x0E9D] 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnitNativeBase.IsAI.ReturnValue> 00 ( 1B <IsAI> 16 ) 
+				0F 00 <.kPod> 19 19 19 2E <Class.XGAIPlayer> 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnit.m_kPlayer> 00 ( 01 <XGUnit.m_kPlayer> ) [@] <XGAIPlayer.m_kOvermindHandler> 00 ( 01 <XGAIPlayer.m_kOvermindHandler> ) [@] <XGAIPlayerOvermindHandler.m_kOvermind> 00 ( 01 <XGAIPlayerOvermindHandler.m_kOvermind> ) [@] <XGOvermind.GetPod.ReturnValue> 00 ( 1B <GetPod> 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 16 ) 
+				55 19 00 <.kPod> [@] <XGPod.m_arrMembers> 00 ( 01 <XGPod.m_arrMembers> ) [@] ( 00 <.kTarget> 16 ) 
+		[#label_0x0E9D]
+		07 [@label_0x0F1F] 82 9A 19 00 <.kAbility> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 27 16 18 [@] ( 81 19 00 <.kTarget> [@] <XGUnit.IsAlien_CheckByCharType.ReturnValue> 00 ( 1B <IsAlien_CheckByCharType> 16 ) 16 16 ) 
+			19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <NullRef> 00 ( 1B <UnitSpeak> 24 49 4A 16 ) 
+		[#label_0x0F1F]
+		06 [@label_0x3142] 
+	[#label_0x0F22]
+	0A [@label_0x1469] 2C 0C 
+		14 2D 00 <.bPanicked> 19 00 <.kTarget> [@] <XGUnit.PerformPanicTest.ReturnValue> 00 ( 1B <PerformPanicTest> 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnitNativeBase.GetWill.ReturnValue> 00 ( 1B <GetWill> 16 ) 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 27 4A 16 ) 
+		07 [@label_0x11F9] 2D 00 <.bPanicked> 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <AddAbilityAffecting> 00 <.kAbility> 16 ) 
+			19 2E <Class.XGCharacter_Soldier> 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <NullRef> 00 ( 1B <AddPsiXP> 2C 00 16 ) 
+			07 [@label_0x11F6] 7B 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 1F <%t ""> 16 
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 16 ) 
+				07 [@label_0x11F6] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_AbilityTargetMessage> 00 <.kAbility> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+			[#label_0x11F6]
+			06 [@label_0x1466] 
+		[#label_0x11F9]
+		0F 00 <.kAbilityTag> 2E <Class.XGAbilityTag> 19 19 2E <Class.XComEngine> 12 20 <Engine.Engine> [@] <Engine.Engine.GetEngine.ReturnValue> 00 ( 1C <Engine.Engine.GetEngine> 16 ) [@] <XComEngine.LocalizeContext> 00 ( 01 <XComEngine.LocalizeContext> ) [@] <XGLocalizeContext.FindTag.ReturnValue> 00 ( 1B <FindTag> 1F <%t "XGAbility"> 16 ) 
+		0F 19 00 <.kAbilityTag> [@] <XGAbilityTag.Ability> 00 ( 01 <XGAbilityTag.Ability> ) 00 <.kAbility> 
+		0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 12 20 <Class.XComLocalizer> [@] <XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 1A 2C 05 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.m_aExpandedLocalizedStrings> 00 ( 01 <XGTacticalGameCore.m_aExpandedLocalizedStrings> ) 4A 16 ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 04 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_ErrAbilityFail> 16 ) 
+		07 [@label_0x1466] 77 00 <.kBroadcastWorldMessage> 2A 16 
+			19 2E <Class.XComUIBroadcastWorldMessage_ErrAbilityFail> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_ErrAbilityFail> 00 <.kAbility> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 04 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+			0B 
+			0B 
+		[#label_0x1466]
+		06 [@label_0x3142] 
+	[#label_0x1469]
+	0A [@label_0x1629] 2C 16 
+		14 19 00 <.kTarget> [@] <XGUnitNativeBase.m_bRunAndGunActivated> 00 ( 2D 01 <XGUnitNativeBase.m_bRunAndGunActivated> ) 27 
+		19 00 <.kTarget> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 39 4A 16 ) 
+		07 [@label_0x155E] 84 19 00 <.kTarget> [@] <XGUnitNativeBase.IsMine.ReturnValue> 00 ( 1B <IsMine> 16 ) 18 [@] ( 19 00 <.kTarget> [@] <Engine.Actor.IsVisibleToTeam.ReturnValue> 00 ( 1B <IsVisibleToTeam> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.Actor.m_eTeam> 00 ( 01 <Engine.Actor.m_eTeam> ) 16 ) 16 ) 
+			1C <Engine.Actor.PlaySound> 2E <Engine.SoundCue> 1C <Core.Object.DynamicLoadObject> 1F <%t "SoundUI.ActivateAbilityCue"> 20 <Engine.SoundCue> 4A 16 27 4A 4A 4A 4A 16 
+		[#label_0x155E]
+		14 19 00 <.kTarget> [@] <XGUnitNativeBase.m_bBuildAbilityDataDirty> 00 ( 2D 01 <XGUnitNativeBase.m_bBuildAbilityDataDirty> ) 27 
+		19 00 <.kTarget> [@] <NullRef> 00 ( 1B <BuildAbilities> 27 16 ) 
+		19 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.m_kTacticalHUD> 00 ( 01 <XComPresentationLayer.m_kTacticalHUD> ) [@] <UITacticalHUD.m_kAbilityHUD> 00 ( 01 <UITacticalHUD.m_kAbilityHUD> ) [@] <NullRef> 00 ( 1B <SetAbilityByIndex> 25 16 ) 
+		06 [@label_0x3142] 
+	[#label_0x1629]
+	0A [@label_0x1690] 2C 07 
+		19 00 <.kTarget> [@] <NullRef> 00 ( 1B <UnitSpeak> 24 02 4A 16 ) 
+		19 00 <.kTarget> [@] <NullRef> 00 ( 1B <Reload> 19 00 <.kAbility> [@] <XGAbility_Targeted.m_kWeapon> 00 ( 01 <XGAbility_Targeted.m_kWeapon> ) 16 ) 
+		06 [@label_0x3142] 
+	[#label_0x1690]
+	0A [@label_0x18A6] 2C 0E 
+		07 [@label_0x18A3] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			19 2E <Class.XComTacticalController> 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <NullRef> 00 ( 1B <PerformBerserk> 00 <.kTarget> 4A 16 ) 
+			07 [@label_0x18A3] 7B 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 1F <%t ""> 16 
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 16 ) 
+				07 [@label_0x18A3] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_AbilityTargetMessage> 00 <.kAbility> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+		[#label_0x18A3]
+		06 [@label_0x3142] 
+	[#label_0x18A6]
+	0A [@label_0x1A1A] 2C 09 
+		07 [@label_0x1A17] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			07 [@label_0x19F8] 19 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 38 16 ) 
+				19 00 <.kTarget> [@] <NullRef> 00 ( 1B <Stabilize> 16 ) 
+				19 00 <.kTarget> [@] <NullRef> 00 ( 1B <SetUnitHP> 38 44 AE AB 38 3F 19 00 <.kTarget> [@] <XGUnitNativeBase.GetUnitMaxHP.ReturnValue> 00 ( 1B <GetUnitMaxHP> 16 ) 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 1E <%f 0.33> ) 16 38 3F 26 16 16 ) 
+				19 00 <.kTarget> [@] <NullRef> 00 ( 1B <GiveOneMoveAndOneAction> 16 ) 
+			[#label_0x19F8]
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <AddRecoverFromCriticallyWoundedAction> 16 ) 
+		[#label_0x1A17]
+		06 [@label_0x3142] 
+	[#label_0x1A1A]
+	0A [@label_0x1AEB] 2C 0A 
+		19 00 <.kTarget> [@] <NullRef> 00 ( 1B <AddApplyAbilityEffectHiddenAction> 16 ) 
+		07 [@label_0x1AE8] 84 19 00 <.kTarget> [@] <XGUnitNativeBase.IsMine.ReturnValue> 00 ( 1B <IsMine> 16 ) 18 [@] ( 19 00 <.kTarget> [@] <Engine.Actor.IsVisibleToTeam.ReturnValue> 00 ( 1B <IsVisibleToTeam> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.Actor.m_eTeam> 00 ( 01 <Engine.Actor.m_eTeam> ) 16 ) 16 ) 
+			1C <Engine.Actor.PlaySound> 2E <Engine.SoundCue> 1C <Core.Object.DynamicLoadObject> 1F <%t "SoundUI.GhostArmorOnCue"> 20 <Engine.SoundCue> 4A 16 27 4A 4A 4A 4A 16 
+		[#label_0x1AE8]
+		06 [@label_0x3142] 
+	[#label_0x1AEB]
+	0A [@label_0x1B26] 2C 08 
+		07 [@label_0x1B23] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <Stabilize> 16 ) 
+		[#label_0x1B23]
+		06 [@label_0x3142] 
+	[#label_0x1B26]
+	0A [@label_0x1B7F] 2C 04 
+		07 [@label_0x1B7C] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <Flush> 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 16 ) 
+		[#label_0x1B7C]
+		06 [@label_0x3142] 
+	[#label_0x1B7F]
+	0A [@label_0x1BDA] 2C 0F 
+		07 [@label_0x1BD7] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <SetMoves> 26 16 ) 
+			19 00 <.kTarget> [@] <NullRef> 00 ( 1B <ResetUseAbilities> 16 ) 
+		[#label_0x1BD7]
+		06 [@label_0x3142] 
+	[#label_0x1BDA]
+	0A [@label_0x1C18] 2C 10 
+		05 <XGAbility.iType> 00 19 00 <.kAbility> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 
+		0A [@label_0x1C0F] 2C 11 
+			06 [@label_0x1C15] 
+		[#label_0x1C0F]
+		0A FF FF 
+		06 [@label_0x1C15] 
+		[#label_0x1C15]
+		06 [@label_0x3142] 
+	[#label_0x1C18]
+	0A [@label_0x27EC] 2C 06 
+		07 [@label_0x27E9] 82 7B 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 1F <%t ""> 16 18 [@] ( 84 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnitNativeBase.IsVisible.ReturnValue> 00 ( 1B <IsVisible> 16 ) 18 [@] ( 9B 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 00 16 16 ) 16 ) 
+			07 [@label_0x1EC4] 19 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 36 16 ) 
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 70 70 70 1F <%t "<img src='"> 1F <%t "Icon_OVERWATCH_HTML"> 16 1F <%t "' align='baseline' vspace='-3'>"> 16 01 <@AbilitySentinelFlyover> 16 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_SentinelFlyover> 16 ) 
+				07 [@label_0x1EC1] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_SentinelFlyover> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_SentinelFlyover> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+				[#label_0x1EC1]
+				06 [@label_0x27E9] 
+			[#label_0x1EC4]
+			07 [@label_0x2145] 19 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 0A 16 ) 
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 70 70 70 1F <%t "<img src='"> 1F <%t "Icon_OVERWATCH_HTML"> 16 1F <%t "' align='baseline' vspace='-3'>"> 16 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetUnexpandedLocalizedMessageString.ReturnValue> 00 ( 1B <GetUnexpandedLocalizedMessageString> 24 09 16 ) 16 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 16 ) 
+				07 [@label_0x2142] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_UnexpandedLocalizedString> 24 09 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+				[#label_0x2142]
+				06 [@label_0x27E9] 
+			[#label_0x2145]
+			07 [@label_0x23C6] 19 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 84 16 ) 
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 70 70 70 1F <%t "<img src='"> 1F <%t "Icon_OVERWATCH_HTML"> 16 1F <%t "' align='baseline' vspace='-3'>"> 16 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetUnexpandedLocalizedMessageString.ReturnValue> 00 ( 1B <GetUnexpandedLocalizedMessageString> 24 22 16 ) 16 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 16 ) 
+				07 [@label_0x23C3] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_UnexpandedLocalizedString> 24 22 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+				[#label_0x23C3]
+				06 [@label_0x27E9] 
+			[#label_0x23C6]
+			07 [@label_0x2647] 19 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnit.GetCharacter.ReturnValue> 00 ( 1B <GetCharacter> 16 ) [@] <XGCharacter.HasUpgrade.ReturnValue> 00 ( 1B <HasUpgrade> 2C 85 16 ) 
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 70 70 70 1F <%t "<img src='"> 1F <%t "Icon_OVERWATCH_HTML"> 16 1F <%t "' align='baseline' vspace='-3'>"> 16 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetUnexpandedLocalizedMessageString.ReturnValue> 00 ( 1B <GetUnexpandedLocalizedMessageString> 24 23 16 ) 16 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 16 ) 
+				07 [@label_0x2644] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_UnexpandedLocalizedString> 24 23 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+				[#label_0x2644]
+				06 [@label_0x27E9] 
+			[#label_0x2647]
+			0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 00 <.kAbility> [@] <XGAbility.strTargetMessage> 00 ( 01 <XGAbility.strTargetMessage> ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 16 ) 
+			07 [@label_0x27E9] 77 00 <.kBroadcastWorldMessage> 2A 16 
+				19 2E <Class.XComUIBroadcastWorldMessage_AbilityTargetMessage> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_AbilityTargetMessage> 00 <.kAbility> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 38 3D 19 00 <.kAbility> [@] <XGAbility.iTargetMsgColor> 00 ( 01 <XGAbility.iTargetMsgColor> ) 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+		[#label_0x27E9]
+		06 [@label_0x3142] 
+	[#label_0x27EC]
+	0A [@label_0x284F] 2C 11 
+		07 [@label_0x284C] 77 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 2A 16 
+			19 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) [@] <NullRef> 00 ( 1B <Reanimate> 4A 16 ) 
+		[#label_0x284C]
+		06 [@label_0x3142] 
+	[#label_0x284F]
+	0A [@label_0x28B2] 2C 12 
+		07 [@label_0x28AF] 77 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 2A 16 
+			19 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) [@] <NullRef> 00 ( 1B <Reanimate> 27 16 ) 
+		[#label_0x28AF]
+		06 [@label_0x3142] 
+	[#label_0x28B2]
+	0A [@label_0x290D] 2C 13 
+		19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <NullRef> 00 ( 1B <PsiDrain> 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 16 ) 
+		06 [@label_0x3142] 
+	[#label_0x290D]
+	0A [@label_0x296F] 2C 14 
+		07 [@label_0x296C] 77 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) 2A 16 
+			19 19 00 <.kAbility> [@] <XGAbility_Targeted.GetPrimaryTarget.ReturnValue> 00 ( 1B <GetPrimaryTarget> 16 ) [@] <NullRef> 00 ( 1B <Heal> 16 ) 
+		[#label_0x296C]
+		06 [@label_0x3142] 
+	[#label_0x296F]
+	0A [@label_0x2B90] 2C 15 
+		07 [@label_0x2B8D] 9A 38 3A 01 <Engine.Actor.Role> 38 3A 24 03 16 
+			07 [@label_0x2B8D] 82 77 00 <.kTarget> 2A 16 18 [@] ( 84 9A 19 00 <.kAbility> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 22 16 18 [@] ( 9A 19 00 <.kAbility> [@] <XGAbility.iType> 00 ( 01 <XGAbility.iType> ) 2C 26 16 16 ) 16 ) 
+				07 [@label_0x2A6D] 9A 19 00 <.kTarget> [@] <XGUnitNativeBase.GetCharType.ReturnValue> 00 ( 1B <GetCharType> 16 ) 2C 15 16 
+					14 19 00 <.kTarget> [@] <XGUnit.m_bHadShieldThisTurn> 00 ( 2D 01 <XGUnit.m_bHadShieldThisTurn> ) 27 
+					19 00 <.kTarget> [@] <NullRef> 00 ( 1B <SetShieldHP> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetMaxShieldHP.ReturnValue> 00 ( 1B <GetMaxShieldHP> 16 ) 16 ) 
+					06 [@label_0x2B8D] 
+				[#label_0x2A6D]
+				0F 19 00 <.kTarget> [@] <XGUnit.m_iWillCheatBonus> 00 ( 01 <XGUnit.m_iWillCheatBonus> ) 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnitNativeBase.GetWill.ReturnValue> 00 ( 1B <GetWill> 16 ) 
+				19 00 <.kTarget> [@] <NullRef> 00 ( 1B <ApplyInventoryStatModifiers> 16 ) 
+				07 [@label_0x2B8D] 28 
+					0B 
+					0B 
+					0B 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					00 <XComTacticalCheatManager.AIDebugWaveSystem.iSet> 
+					19 00 <.kTarget> [@] <XGUnit.HealBy.ReturnValue> 00 ( 1B <HealBy> 92 26 91 19 00 <.kTarget> [@] <XGUnit.m_iWillCheatBonus> 00 ( 01 <XGUnit.m_iWillCheatBonus> ) 2C 19 16 16 16 ) 
+		[#label_0x2B8D]
+		06 [@label_0x3142] 
+	[#label_0x2B90]
+	0A [@label_0x307C] 2C 30 
+		07 [@label_0x3079] 77 00 <.kTarget> 2A 16 
+			07 [@label_0x3079] 19 00 <.kTarget> [@] <XGUnit.CurePoison.ReturnValue> 00 ( 1B <CurePoison> 16 ) 
+				07 [@label_0x2D3D] 9A 38 3A 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.NetMode> 00 ( 01 <Engine.WorldInfo.NetMode> ) 38 3A 24 00 16 
+					07 [@label_0x2D3A] 19 00 <.kTarget> [@] <XGUnitNativeBase.IsVisible.ReturnValue> 00 ( 1B <IsVisible> 16 ) 
+						19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetUnexpandedLocalizedMessageString.ReturnValue> 00 ( 1B <GetUnexpandedLocalizedMessageString> 24 08 16 ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 03 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 16 ) 
+					[#label_0x2D3A]
+					06 [@label_0x2EE8] 
+				[#label_0x2D3D]
+				0F 00 <.kBroadcastWorldMessage> 19 19 2E <Class.XComPresentationLayer> 19 2E <Class.XComPlayerController> 19 01 <Engine.Actor.WorldInfo> [@] <Engine.Actor.GetALocalPlayerController.ReturnValue> 00 ( 1C <Engine.Actor.GetALocalPlayerController> 16 ) [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 19 19 2E <Class.XComGameReplicationInfo> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComGameReplicationInfo.m_kGameCore> 00 ( 01 <XComGameReplicationInfo.m_kGameCore> ) [@] <XGTacticalGameCore.GetUnexpandedLocalizedMessageString.ReturnValue> 00 ( 1B <GetUnexpandedLocalizedMessageString> 24 08 16 ) 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 03 4A 4A 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 4A 4A 4A 20 <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 16 ) 
+				07 [@label_0x2EE8] 77 00 <.kBroadcastWorldMessage> 2A 16 
+					19 2E <Class.XComUIBroadcastWorldMessage_UnexpandedLocalizedString> 00 <.kBroadcastWorldMessage> [@] <NullRef> 00 ( 1B <Init_UnexpandedLocalizedString> 24 08 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 24 03 19 00 <.kTarget> [@] <Engine.Actor.m_eTeamVisibilityFlags> 00 ( 01 <Engine.Actor.m_eTeamVisibilityFlags> ) 16 ) 
+				[#label_0x2EE8]
+				07 [@label_0x3079] 84 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.IsConsoleBuild.ReturnValue> 00 ( 1C <Engine.WorldInfo.IsConsoleBuild> 24 02 16 ) 18 [@] ( 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.IsConsoleBuild.ReturnValue> 00 ( 1C <Engine.WorldInfo.IsConsoleBuild> 24 01 16 ) 16 ) 
+					A5 19 2E <Class.XGBattle_SP> 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle_SP.m_iCurePoison> 00 ( 01 <XGBattle_SP.m_iCurePoison> ) 16 
+					07 [@label_0x3079] 9A 19 2E <Class.XGBattle_SP> 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle_SP.m_iCurePoison> 00 ( 01 <XGBattle_SP.m_iCurePoison> ) 2C 05 16 
+						19 2E <Class.XComOnlineEventMgr> 19 2E <Engine.GameEngine> 12 20 <Engine.Engine> [@] <Engine.Engine.GetEngine.ReturnValue> 00 ( 1C <Engine.Engine.GetEngine> 16 ) [@] <Engine.GameEngine.OnlineEventManager> 00 ( 01 <Engine.GameEngine.OnlineEventManager> ) [@] <NullRef> 00 ( 1B <UnlockAchievement> 24 1B 16 ) 
+		[#label_0x3079]
+		06 [@label_0x3142] 
+	[#label_0x307C]
+	0A [@label_0x313C] 2C 32 
+		14 19 00 <.kTarget> [@] <XGUnitNativeBase.m_bJetbootModuleActive> 00 ( 2D 01 <XGUnitNativeBase.m_bJetbootModuleActive> ) 27 
+		19 19 00 <.kTarget> [@] <XGUnit.GetPathingPawn.ReturnValue> 00 ( 1B <GetPathingPawn> 16 ) [@] <XComPathingPawn.ComputePath2.ReturnValue> 00 ( 1B <ComputePath2> 19 00 <.kTarget> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 27 27 16 ) 
+		14 19 00 <.kTarget> [@] <XGUnitNativeBase.m_bBuildAbilityDataDirty> 00 ( 2D 01 <XGUnitNativeBase.m_bBuildAbilityDataDirty> ) 27 
+		19 00 <.kTarget> [@] <NullRef> 00 ( 1B <BuildAbilities> 27 16 ) 
+		06 [@label_0x3142] 
+	[#label_0x313C]
+	0A FF FF 
+	06 [@label_0x3142] 
+	[#label_0x3142]
+	A5 00 <.iAbilityEffect> 16 
+	06 [@label_0x000B] 
+[#label_0x3150]
+07 [@label_0x3268] 84 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 1B 16 18 [@] ( 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 46 16 16 ) 
+	19 00 <.kTarget> [@] <NullRef> 00 ( 1B <HunkerDown> 16 ) 
+	07 [@label_0x3265] 84 19 00 <.kTarget> [@] <XGUnitNativeBase.IsMine.ReturnValue> 00 ( 1B <IsMine> 16 ) 18 [@] ( 19 00 <.kTarget> [@] <Engine.Actor.IsVisibleToTeam.ReturnValue> 00 ( 1B <IsVisibleToTeam> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.Actor.m_eTeam> 00 ( 01 <Engine.Actor.m_eTeam> ) 16 ) 16 ) 
+		/// new code
+		//if (kTarget.GetCharacter().m_kChar.iType == 2)
+		07 [@label_CharSoldierHD]
+		9A 35 <XGTacticalGameCoreNativeBase.TCharacter.iType> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 19 00 <.kTarget> 0A 00 <XGUnit.GetCharacter.ReturnValue> 00 1B <GetCharacter> 16 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar> 2C 02 16
+			//kTarget.UnitSpeak(1)
+			19 00 <.kTarget> 0D 00 <NullRef> 00 1B <UnitSpeak> 24 01 4A 16
+		[#label_CharSoldierHD]
+		/// new code end
+		1C <Engine.Actor.PlaySound> 2E <Engine.SoundCue> 1C <Core.Object.DynamicLoadObject> 1F <%t "SoundUI.HunkerDownCue"> 20 <Engine.SoundCue> 4A 16 27 4A 4A 4A 4A 16 
+	[#label_0x3265]
+	06 [@label_0x348F] 
+[#label_0x3268]
+07 [@label_0x348F] 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 16 16 
+	19 00 <.kTarget> [@] <NullRef> 00 ( 1B <Overwatch> 16 ) 
+	07 [@label_0x348F] 84 19 00 <.kTarget> [@] <XGUnitNativeBase.IsMine.ReturnValue> 00 ( 1B <IsMine> 16 ) 18 [@] ( 19 00 <.kTarget> [@] <Engine.Actor.IsVisibleToTeam.ReturnValue> 00 ( 1B <IsVisibleToTeam> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.Actor.m_eTeam> 00 ( 01 <Engine.Actor.m_eTeam> ) 16 ) 16 ) 
+		07 [@label_0x344D] 82 77 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) 2A 16 18 [@] ( 97 19 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComTacticalCheatManager.iTestHideableActors> 00 ( 01 <XComTacticalCheatManager.iTestHideableActors> ) 26 16 16 ) 
+			07 [@label_0x344A] 97 19 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComTacticalCheatManager.iTestHideableActors> 00 ( 01 <XComTacticalCheatManager.iTestHideableActors> ) 2C 02 16 
+				1C <Engine.Actor.PlaySound> 2E <Engine.SoundCue> 1C <Core.Object.DynamicLoadObject> 1F <%t "SoundUI.OverwatchCue"> 20 <Engine.SoundCue> 4A 16 27 4A 4A 4A 4A 16 
+				A6 19 2E <Class.XComTacticalCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComTacticalCheatManager.iTestHideableActors> 00 ( 01 <XComTacticalCheatManager.iTestHideableActors> ) 16 
+			[#label_0x344A]
+			06 [@label_0x348F] 
+		[#label_0x344D]
+		/// new code
+		//if (kTarget.GetCharacter().m_kChar.iType == 2)
+		07 [@label_CharSoldierOW]
+		9A 35 <XGTacticalGameCoreNativeBase.TCharacter.iType> <XGTacticalGameCoreNativeBase.TCharacter> 00 00 19 19 00 <.kTarget> 0A 00 <XGUnit.GetCharacter.ReturnValue> 00 1B <GetCharacter> 16 09 00 <XGCharacter.m_kChar> 00 01 <XGCharacter.m_kChar> 2C 02 16
+			//kTarget.UnitSpeak(3)
+			19 00 <.kTarget> 0D 00 <NullRef> 00 1B <UnitSpeak> 24 03 4A 16
+		[#label_CharSoldierOW]
+		/// new code end
+		1C <Engine.Actor.PlaySound> 2E <Engine.SoundCue> 1C <Core.Object.DynamicLoadObject> 1F <%t "SoundUI.OverwatchCue"> 20 <Engine.SoundCue> 4A 16 27 4A 4A 4A 4A 16 
+[#label_0x348F]
+07 [@label_0x3571] 19 19 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) [@] <XGUnitNativeBase.GetPawn.ReturnValue> 00 ( 1B <GetPawn> 16 ) [@] <XComUnitPawn.CanApplyTracerBeams.ReturnValue> 00 ( 1B <CanApplyTracerBeams> 00 <.kAbility> 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 00 <.kTarget> 16 ) 
+	19 19 00 <.kTarget> [@] <XGUnitNativeBase.GetPawn.ReturnValue> 00 ( 1B <GetPawn> 16 ) [@] <NullRef> 00 ( 1B <ApplyTracerBeams> 19 00 <.kAbility> [@] <XGAbility.m_kUnit> 00 ( 01 <XGAbility.m_kUnit> ) 00 <.kTarget> 00 <.kAbility> 16 ) 
+[#label_0x3571]
+07 [@label_0x363E] 9A 19 00 <.kAbility> [@] <XGAbility.GetType.ReturnValue> 00 ( 1B <GetType> 16 ) 2C 14 16 
+	07 [@label_0x363E] 84 19 00 <.kTarget> [@] <XGUnitNativeBase.IsMine.ReturnValue> 00 ( 1B <IsMine> 16 ) 18 [@] ( 19 00 <.kTarget> [@] <Engine.Actor.IsVisibleToTeam.ReturnValue> 00 ( 1B <IsVisibleToTeam> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.Actor.m_eTeam> 00 ( 01 <Engine.Actor.m_eTeam> ) 16 ) 16 ) 
+		1C <Engine.Actor.PlaySound> 2E <Engine.SoundCue> 1C <Core.Object.DynamicLoadObject> 1F <%t "SoundUI.OverwatchCue"> 20 <Engine.SoundCue> 4A 16 27 4A 4A 4A 4A 16 
+[#label_0x363E]
+04 0B 
+53 

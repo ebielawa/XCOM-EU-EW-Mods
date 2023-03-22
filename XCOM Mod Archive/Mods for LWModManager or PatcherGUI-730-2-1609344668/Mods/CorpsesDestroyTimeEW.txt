@@ -1,0 +1,23 @@
+MOD_NAME=Corpses Destroy Time
+AUTHOR=wghost81 aka Wasteland Ghost
+DESCRIPTION=Set corpses destroy time
+
+Version: 1.0
+
+Compatible with XCOM Enemy Within versions:
+ - Initial release (Changelist: 394142)
+ - Patch 1 (Changelist: 398180)
+ - Patch 2 (Changelist: 401776)
+
+
+UPK_FILE=XComGame.upk
+
+OBJECT=Default__XComUnitPawn
+REL_OFFSET=0x6AD
+FLOAT=7200.0            { Default value is 5.0 }
+
+OBJECT=XComUnitPawn.PostBeginPlay
+REL_OFFSET=0x32B
+FLOAT=7200.0            { Default value is 5.0 }
+
+{ end of mod file }

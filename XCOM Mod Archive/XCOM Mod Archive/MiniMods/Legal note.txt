@@ -1,0 +1,9 @@
+****************
+LEGAL NOTE
+****************
+SHORT VERSION OF THE NOTE: NO COMERCIAL USE :)
+
+Full version of the note:
+Code for this mod has been compiled with Unreal Development Kit v. 2011-09 by EpicGames.
+By downloading, using and/or distributing  this mod you agree to do it in compliance with EULA available here:
+https://www.unrealengine.com/en-US/previous-versions/udk-licensing-resources#eula 

@@ -1,0 +1,59 @@
+MOD_NAME=Default Camera Yaw Angle
+AUTHOR=wghost81 aka Wasteland Ghost
+DESCRIPTION=Set default camera yaw angle
+
+Version: 2.0
+
+Compatible with XCOM Enemy Unknown versions:
+ - all
+
+Compatible with XCOM Enemy Within versions:
+ - all
+
+
+UPK_FILE=XComGame.upk
+
+// Change 45.0 and -45.0 to whatever number you want. Don't change anything, except numbers!
+// Don't add spaces between number and other symbols!
+// Use small values like 10.0 and -10.0 for smooth rotation with "QE Free Rotation" mod.
+ALIAS=YawAngle:<%f10.0>
+ALIAS=YawAngleNeg:<%f-10.0>
+
+
+// Actual patching begin, don't change anything here!
+
+ALIAS=YawCamera:19 2E <Class.XComTacticalController> 01 <Core.Object.Outer> 0F 00 <NullRef> 00 1B <YawCamera> 1E
+ALIAS=YawIcons:19 2E <Class.XComTacticalController> 01 <UI_FxsPanel.controllerRef> 0F 00 <NullRef> 00 1B <YawCamera> 1E
+
+// Yaw angle: keyboard shortcuts, while moving
+OBJECT=XComTacticalInput.ActiveUnit_Moving.DPad_Right
+FIND_CODE=<!YawCamera>:END
+MODDED_CODE=<!YawAngleNeg>
+OBJECT=XComTacticalInput.ActiveUnit_Moving.DPad_Left
+FIND_CODE=<!YawCamera>:END
+MODDED_CODE=<!YawAngle>
+
+// Yaw angle: keyboard shortcuts, while firing
+OBJECT=XComTacticalInput.ActiveUnit_Firing.DPad_Right
+FIND_CODE=<!YawCamera>:END
+MODDED_CODE=<!YawAngleNeg>
+OBJECT=XComTacticalInput.ActiveUnit_Firing.DPad_Left
+FIND_CODE=<!YawCamera>:END
+MODDED_CODE=<!YawAngle>
+
+// Yaw angle: multiplayer shortcuts?
+OBJECT=XComTacticalInput.Multiplayer_Inactive.DPad_Right
+FIND_CODE=<!YawCamera>:END
+MODDED_CODE=<!YawAngleNeg>
+OBJECT=XComTacticalInput.Multiplayer_Inactive.DPad_Left
+FIND_CODE=<!YawCamera>:END
+MODDED_CODE=<!YawAngle>
+
+// Yaw angle: menu icons
+OBJECT=UITacticalHUD_MouseControls.OnAccept
+FIND_CODE=01 <@m_optRotateCameraLeft> <!YawIcons>:END
+MODDED_CODE=<!YawAngle>
+FIND_CODE=01 <@m_optRotateCameraRight> <!YawIcons>:END
+MODDED_CODE=<!YawAngleNeg>
+
+{ end of mod file }

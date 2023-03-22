@@ -1,0 +1,207 @@
+MOD_NAME=Stop Losing Time
+AUTHOR=swfdelicious
+DESCRIPTION=Fixes a number of situations where items and Foundry projects in queue won't be credited for time spent on them.
+
+/**************************************************************************************************************
+ * Warning! This mod completely overwrites XGFacility_Engineering.UpdateItemProject and XGFacility_Engineering.UpdateFoundryProjects, 
+ * and is incompatible with any mods that attempt to modify the same function(s).
+ * 
+ * This mod fixes several bugs when building items or working on Foundry projects.
+ *
+ * 1. (Items) When an item is done building, if the Geoscape is busy (i.e. any interceptors or the Skyranger are in flight), any items
+ *            which are in queue after the now-finished item will not receive any build progress until the Geoscape is no longer busy and
+ *            the item build alert is shown to the player.
+ * 2. (Items) When an item is done building and the item build alert is shown to the player, the very next item in queue will not receive
+ *            any build progress for the current build tick. Ex: the build queue contains 4 items, and items 1 and 3 finish building on the
+ *            same Geoscape tick. Then, items 2 and 4 do not make any build progress at all during that tick.
+ * 3. (Foundry) The same as bug #1, but for Foundry projects.
+ * 4. (Foundry) Similar to bug #2, except that *all* Foundry projects after the completed one do not gain progress during that tick.
+ *
+ * NOTE: A similar bug does exist in the logic for constructing facilities. I did not fix that, because I don't know if the game will break
+ * if you complete two facilities on the same tick and trigger their respective cutscenes at the same time, and the impact of this bug on
+ * facilities tends to be much less given how few of them you build in a campaign compared to items.
+ *
+ * WARNING: I have not yet tested edge cases such as two items finishing on the same tick and both triggering a cutscene (e.g. Firestorm).
+ * It's probably fine, since that can happen anyway if they're in the queue in the right order.
+ **************************************************************************************************************/
+
+UPK_FILE = XComStrategyGame.upk
+OBJECT = XGFacility_Engineering.UpdateItemProject : AUTO
+
+[REPLACEMENT_CODE]
+
+//  function UpdateItemProject()
+//  {
+//      local int iItemsProduced, iEngHours, iUnitHours, iProject;
+//  
+//      if (m_arrItemProjects.Length == 0)
+//      {
+//          return;
+//      }
+//  
+//      for (iProject = 0; iProject < m_arrItemProjects.Length; iProject++)
+//      {
+//          if (m_arrItemProjects[iProject].iEngineers == 0)
+//          {
+//              continue;
+//          }
+//  
+//          iEngHours = GetWorkPerHour(m_arrItemProjects[iProject].iEngineers, m_arrItemProjects[iProject].Brush);
+//  
+//          if (m_arrItemProjects[iProject].iHoursLeft <= iEngHours)
+//          {
+//              if (GEOSCAPE().IsBusy())
+//              {
+//                  continue;
+//              }
+//  
+//              iEngHours -= m_arrItemProjects[iProject].iHoursLeft;
+//              iUnitHours = Item(m_arrItemProjects[iProject].eItem).iHours;
+//              iItemsProduced = m_arrItemProjects[iProject].iQuantityLeft;
+//              iItemsProduced += (iEngHours / iUnitHours);
+//              m_arrItemProjects[iProject].iHoursLeft = iUnitHours - (iEngHours % iUnitHours);
+//  
+//              if (iItemsProduced > m_arrItemProjects[iProject].iQuantityLeft)
+//              {
+//                  iItemsProduced = m_arrItemProjects[iProject].iQuantityLeft;
+//              }
+//  
+//              m_arrItemProjects[iProject].iQuantityLeft -= iItemsProduced;
+//              OnItemCompleted(iProject, iItemsProduced);
+//  
+//              if (m_arrItemProjects[iProject].iQuantityLeft == 0)
+//              {
+//                  OnItemProjectCompleted(iProject);
+//                  RemoveItemProject(iProject);
+//                  iProject--;
+//              }
+//              else
+//              {
+//                  m_arrItemProjects[iProject].iMaxEngineers -= (iItemsProduced * Item(m_arrItemProjects[iProject].eItem).iMaxEngineers);
+//              }
+//          }
+//          else
+//          {
+//              m_arrItemProjects[iProject].iHoursLeft -= iEngHours;
+//          }
+//      }
+//  
+//      SpillAvailableEngineers();
+//  }
+
+07 [@label_0x0012] 9A 36 01 <@m_arrItemProjects> 25 16 
+	04 0B 
+[#label_0x0012]
+0F 00 <.iProject> 25 
+[#label_0x001D]
+07 [@label_0x0403] 96 00 <.iProject> 36 01 <@m_arrItemProjects> 16 
+	07 [@label_0x0064] 9A 35 <XGStrategyActorNativeBase.TItemProject.iEngineers> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 25 16 
+		06 [@label_0x03F5] 
+	[#label_0x0064]
+	0F 00 <.iEngHours> 1B <GetWorkPerHour> 35 <XGStrategyActorNativeBase.TItemProject.iEngineers> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 2D 35 <XGStrategyActorNativeBase.TItemProject.Brush> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 16 
+	07 [@label_0x03C4] 98 35 <XGStrategyActorNativeBase.TItemProject.iHoursLeft> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 00 <.iEngHours> 16 
+		07 [@label_0x011F] 19 1B <GEOSCAPE> 16 [@] <XGGeoscape.IsBusy.ReturnValue> 00 ( 1B <IsBusy> 16 ) 
+			06 [@label_0x03F5] 
+		[#label_0x011F]
+		A2 00 <.iEngHours> 35 <XGStrategyActorNativeBase.TItemProject.iHoursLeft> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 16 
+		0F 00 <.iUnitHours> 35 <XGStrategyActorNativeBase.TItem.iHours> <XGStrategyActorNativeBase.TItem> 01 00 1B <Item> 38 3A 35 <XGStrategyActorNativeBase.TItemProject.eItem> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 4A 16 
+		0F 00 <.iItemsProduced> 35 <XGStrategyActorNativeBase.TItemProject.iQuantityLeft> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 
+		A1 00 <.iItemsProduced> 91 00 <.iEngHours> 00 <.iUnitHours> 16 16 
+		0F 35 <XGStrategyActorNativeBase.TItemProject.iHoursLeft> <XGStrategyActorNativeBase.TItemProject> 00 01 10 00 <.iProject> 01 <@m_arrItemProjects> 93 00 <.iUnitHours> FD 00 <.iEngHours> 00 <.iUnitHours> 16 16 
+		07 [@label_0x0299] 97 00 <.iItemsProduced> 35 <XGStrategyActorNativeBase.TItemProject.iQuantityLeft> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 16 
+			0F 00 <.iItemsProduced> 35 <XGStrategyActorNativeBase.TItemProject.iQuantityLeft> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 
+		[#label_0x0299]
+		A2 35 <XGStrategyActorNativeBase.TItemProject.iQuantityLeft> <XGStrategyActorNativeBase.TItemProject> 00 01 10 00 <.iProject> 01 <@m_arrItemProjects> 00 <.iItemsProduced> 16 
+		1B <OnItemCompleted> 00 <.iProject> 00 <.iItemsProduced> 4A 16 
+		07 [@label_0x0348] 9A 35 <XGStrategyActorNativeBase.TItemProject.iQuantityLeft> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 25 16 
+			1B <OnItemProjectCompleted> 00 <.iProject> 4A 16 
+			1B <RemoveItemProject> 00 <.iProject> 16 
+			A6 00 <.iProject> 16 
+			06 [@label_0x03C1] 
+		[#label_0x0348]
+		A2 35 <XGStrategyActorNativeBase.TItemProject.iMaxEngineers> <XGStrategyActorNativeBase.TItemProject> 00 01 10 00 <.iProject> 01 <@m_arrItemProjects> 90 00 <.iItemsProduced> 35 <XGStrategyActorNativeBase.TItem.iMaxEngineers> <XGStrategyActorNativeBase.TItem> 01 00 1B <Item> 38 3A 35 <XGStrategyActorNativeBase.TItemProject.eItem> <XGStrategyActorNativeBase.TItemProject> 00 00 10 00 <.iProject> 01 <@m_arrItemProjects> 4A 16 16 16 
+		[#label_0x03C1]
+		06 [@label_0x03F5] 
+	[#label_0x03C4]
+	A2 35 <XGStrategyActorNativeBase.TItemProject.iHoursLeft> <XGStrategyActorNativeBase.TItemProject> 00 01 10 00 <.iProject> 01 <@m_arrItemProjects> 00 <.iEngHours> 16 
+	[#label_0x03F5]
+	A5 00 <.iProject> 16 
+	06 [@label_0x001D] 
+[#label_0x0403]
+1B <SpillAvailableEngineers> 16 
+04 0B 
+53 
+
+
+
+
+OBJECT = XGFacility_Engineering.UpdateFoundryProjects : AUTO
+[REPLACEMENT_CODE]
+
+//  function UpdateFoundryProjects()
+//  {
+//      local int iProject, iWorkDone;
+//  
+//      for (iProject = 0; iProject < m_arrFoundryProjects.Length; iProject++)
+//      {
+//          iWorkDone = GetWorkPerHour(m_arrFoundryProjects[iProject].iEngineers, m_arrFoundryProjects[iProject].Brush);
+//  
+//          if (m_arrFoundryProjects[iProject].iHoursLeft <= iWorkDone)
+//          {
+//              if (GEOSCAPE().IsBusy())
+//              {
+//                  continue;
+//              }
+//  
+//              m_arrFoundryProjects[iProject].iHoursLeft = 0;
+//              OnFoundryProjectCompleted(iProject);
+//              ITEMTREE().UpdateShips();
+//  
+//              if (m_arrFoundryProjects[iProject].eTech == 27) // Wingtip Sparrowhawks
+//              {
+//                  for (iWorkDone = 0; iWorkDone < HANGAR().m_arrInts.Length; iWorkDone++)
+//                  {
+//                      HANGAR().m_arrInts[iWorkDone].EquipWeapon(255);
+//                  }
+//              }
+//  
+//              RemoveFoundryProject(iProject);
+//              iProject--;
+//          }
+//          else
+//          {
+//              m_arrFoundryProjects[iProject].iHoursLeft -= iWorkDone;
+//          }
+//      }
+//  }
+
+0F 00 <.iProject> 25 
+[#label_0x000B]
+07 [@label_0x024E] 96 00 <.iProject> 36 01 <@m_arrFoundryProjects> 16 
+	0F 00 <.iWorkDone> 1B <GetWorkPerHour> 35 <XGStrategyActorNativeBase.TFoundryProject.iEngineers> <XGStrategyActorNativeBase.TFoundryProject> 00 00 10 00 <.iProject> 01 <@m_arrFoundryProjects> 2D 35 <XGStrategyActorNativeBase.TFoundryProject.Brush> <XGStrategyActorNativeBase.TFoundryProject> 00 00 10 00 <.iProject> 01 <@m_arrFoundryProjects> 16 
+	07 [@label_0x020F] 98 35 <XGStrategyActorNativeBase.TFoundryProject.iHoursLeft> <XGStrategyActorNativeBase.TFoundryProject> 00 00 10 00 <.iProject> 01 <@m_arrFoundryProjects> 00 <.iWorkDone> 16 
+		07 [@label_0x00DE] 19 1B <GEOSCAPE> 16 [@] <XGGeoscape.IsBusy.ReturnValue> 00 ( 1B <IsBusy> 16 ) 
+			06 [@label_0x0240] 
+		[#label_0x00DE]
+		0F 35 <XGStrategyActorNativeBase.TFoundryProject.iHoursLeft> <XGStrategyActorNativeBase.TFoundryProject> 00 01 10 00 <.iProject> 01 <@m_arrFoundryProjects> 25 
+		1B <OnFoundryProjectCompleted> 00 <.iProject> 16 
+		19 1B <ITEMTREE> 16 [@] <NullRef> 00 ( 1B <UpdateShips> 16 ) 
+		07 [@label_0x01EE] 9A 35 <XGStrategyActorNativeBase.TFoundryProject.eTech> <XGStrategyActorNativeBase.TFoundryProject> 00 00 10 00 <.iProject> 01 <@m_arrFoundryProjects> 2C 1B 16 
+			0F 00 <.iWorkDone> 25 
+			[#label_0x0171]
+			07 [@label_0x01EE] 96 00 <.iWorkDone> 36 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.m_arrInts> 00 ( 01 <XGFacility_Hangar.m_arrInts> ) 16 
+				19 10 00 <.iWorkDone> 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.m_arrInts> 00 ( 01 <XGFacility_Hangar.m_arrInts> ) [@] <NullRef> 00 ( 1B <EquipWeapon> 24 FF 16 ) 
+				A5 00 <.iWorkDone> 16 
+				06 [@label_0x0171] 
+		[#label_0x01EE]
+		1B <RemoveFoundryProject> 00 <.iProject> 16 
+		A6 00 <.iProject> 16 
+		06 [@label_0x0240] 
+	[#label_0x020F]
+	A2 35 <XGStrategyActorNativeBase.TFoundryProject.iHoursLeft> <XGStrategyActorNativeBase.TFoundryProject> 00 01 10 00 <.iProject> 01 <@m_arrFoundryProjects> 00 <.iWorkDone> 16 
+	[#label_0x0240]
+	A5 00 <.iProject> 16 
+	06 [@label_0x000B] 
+[#label_0x024E]
+04 0B 
+53 

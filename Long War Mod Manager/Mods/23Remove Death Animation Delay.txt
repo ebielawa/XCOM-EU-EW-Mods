@@ -1,0 +1,17 @@
+MOD_NAME=Remove Death Animation Delay
+AUTHOR=Peasly Wellbott
+DESCRIPTION=Prevents units from flinching before they die.
+
+Version: 1.0
+
+Compatible with XCOM Enemy Within versions:
+ - all
+
+UPK_FILE=XComGame.upk
+
+OBJECT=XGAction_Death.Executing
+REL_OFFSET=0xCC5
+BYTE=0x96 
+
+
+

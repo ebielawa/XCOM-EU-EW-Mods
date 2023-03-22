@@ -1,0 +1,157 @@
+Avant d'installer le mod :
+
+1. Assurez-vous d'avoir une copie Steam légale de XCOM EW. Le mod ne marche pas avec les copies pirates.
+
+2. Si vous avez déjà installé d'autres mods sur EX, ou si vous avez vous-même modifié certains fichiers, réinstallez le jeu d'origine en vérifiant les fichiers sur Steam avant d'installer "Longue Guerre". En cas de problèmes lors de l'installation, faites-le également.
+
+3. Désactivez votre logiciel anti-virus. Nous avons eu des signalements selon lesquels le logiciel Comodo Security bloque l'installation. Par contre, nous avons eu un autre retour comme quoi le désactiver bloque aussi l'installation. Donc, quoi qu'il arrive, si vous utilisez ce programme, attendez-vous à tâtonner pour arriver à installer le mod. C'est toutefois possible.
+
+4. Assurez-vous d'avoir installé les dernières versions de .NET Framework et de Java.
+
+5. Basculez votre version d'XCOM sur Steam dans une des langues gérées par le mod. A partir de la Beta 13 ce sont l'Anglais, l'Espagnol et le Français.
+
+6.Lance le programme d'installation. Il n'est pas nécessaire de le faire en mode administrateur, mais ça ne peut pas faire de mal.
+
+**** Voici les opérations effectuée par l'installateur :
+
+1. Il vous demande le chemin de votre répertoire XEW. Sur la plupart des systèmes, c'est C:\Program Files (x86)\Steam\SteamApps\common\XCom-Enemy-Unknown\XEW. A partir d'ici, j'utilisera "{app}" comme abréviation de la valeur que vous aurez entrée. Une erreur classique est d'oublier le XEW à la fin, ce qui vous enverra dans l'arborescence d'Enemy Unknown, qui a les mêmes noms de fichiers et la même structure.
+
+Une mauvaise saisie à cette étape va compromettre votre installation. Quand vous sélectionnez le chemin d'installation du mod, vous devez recevoir l'avertissement que ce répertoire existe déjà. Si ce n'est pas le cas, vous risquez d'avoir fait une erreur. (Note : cet avertissement n'est pas systématique si vous êtes administrateur, par contre).
+
+NOTE (Nouveauté depuis Beta 15) Nous avons eu des retours selon lesquels l'installation du mod sur un disque dur secondaire peut nécessiter un chemin différent qui ne se terminera pas fircément par "XEW" à la fin. Des utilisateurs ont réussi après différents essais à obtenir ce message d'avertissement, et une installation correcte à partir de là.
+
+2. Une fois le chemin sélectionné, l'installateur fait une copie de sauvegarde de tous les fichiers qu'il va modifier, remplacer ou supprimer en prévision de sa désinstallation. S'il vous signale qu'il va "effacer" un fichier, cela signifie qu'il va le déplacer vers le dossier de suavegarde, qui est {app}\Long War Files.
+
+3. Ensuite il effectue les opérations suivantes :
+
+Ce fichier est patché :
+{app}\Binaries\Win32\XComEW.exe
+
+Ces fichiers sont supprimés :
+{app}\XComGame\CookedPCConsole\XComGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\Engine.upk.uncompressed_size (3.0 Beta 14 et suivantes)
+NOTE: Si ces fichiers ne sont pas supprimés, vous aurez un CTD quand vous essaierez de lancer XCOM "Longue Guerre".
+
+Ces fichiers sont remplacés :
+Fichiers de Configuration :
+{app}\XComGame\Config\DefaultEngine.ini
+{app}\XComGame\Config\DefaultGameCore.ini
+{app}\XComGame\Config\DefaultMaps.ini
+{app}\XComGame\Config\DefaultInput.ini
+{app}\XComGame\Config\DefaultContent.ini
+{app}\XComGame\Config\DefaultGameData.ini
+{app}\XComGame\Config\DefaultGame.ini (3.0 Beta 10 et suivantes)
+{app}\XComGame\Config\DefaultLoadouts.ini (3.0 Beta 12 et suivantes)
+{app}\XComGame\Config\DefaultNameList.ini (3.0 Beta 14 et suivantes)
+
+Fichiers de Localisation / Anglais :
+{app}\XComGame\Localization\INT\XComGame.int
+{app}\XComGame\Localization\INT\XComStrategyGame.int
+{app}\XComGame\Localization\INT\Subtitles.int
+{app}\XComGame\Localization\INT\XComUIShell.int
+
+Fichiers de Localisation / Espagnol
+{app}\XComGame\Localization\ESN\XComGame.esn
+{app}\XComGame\Localization\ESN\XComStrategyGame.esn
+{app}\XComGame\Localization\ESN\Subtitles.esn
+{app}\XComGame\Localization\ESN\ComUIShell.esn
+
+Fichiers de Localisation / Français
+{app}\XComGame\Localization\FRA\XComGame.fra
+{app}\XComGame\Localization\FRA\XComStrategyGame.fra
+{app}\XComGame\Localization\FRA\Subtitles.fra
+{app}\XComGame\Localization\FRA\ComUIShell.fra
+
+Fichiers Unreal package :
+{app}\XComGame\CookedPCConsole\XComGame.upk
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk
+{app}\XComGame\CookedPCConsole\UICollection_Strategy_SF.upk
+{app}\XComGame\CookedPCConsole\UICollection_Tactical_SF.upk (3.0 BETA 10 et suivantes)
+{app}\XComGame\CookedPCConsole\UICollection_Common_SF.upk (3.0 Beta 14 et suivantes)
+{app}\XComGame\CookedPCConsole\Engine.upk (3.0 Beta 14 et suivantes)
+{app}\XComGame\CookedPCConsole\gfxInterception_SF.upk (3.0 Beta 14d et suivantes)
+
+Ce fichier est ajouté :
+{app}\XComGame\CookedPCConsole\LongWar.upk (3.0 Beta 10 et suivantes)
+{app}\XComGame\CookedPCConsole\XComMutator.u (3.0 Beta 14 et suivantes)
+{app}\XComGame\CookedPCConsole\XComLZMutator.u (3.0 Beta 14 et suivantes)
+{app}\XComGame\Config\DefaultLZMutator.ini (3.0 Beta 14 et suivantes)
+{app}\XComGame\Config\DefaultRandomSpawns.ini (3.0 Beta 14 et suivantes)
+
+plus un paquets de fichiers de voix à l'emplacement {app}\XComGame\CookedPCConsole\Voices directory (à partir de Beta 15).
+
+Un désinstalleur et plusieurs fichiers nécessaires au patch sont aussi ajoutés dans {app}\Long War Files, et des fichiers LisezMoi, fichiers descriptifs d'aptitudes et de technologies sont ajoutés dans le répertoire {app}.
+
+**** Différentes étapes à suivre en cas de problèmes
+
+Quand vous lancez le mod, vous allez avoir un retour au bureau (CTD) à votre premier essai. C'est normal -- Steam s'adapte à vos nouvelles tailles de fichiers. Le mod doit démarrer normalement dès le deuxième essai.
+
+Si vous voyez des tectures basse résolution sur les CEM ou d'autres éléments du jeu, augmentez vos réglages d'options graphiques.
+
+Voici quelques étapes de résolution de problèmes si vous avez des CTD, des bugs graphiques, des fonctions du jeu comme ALT-F10 qui ne marchent pas, ou si vous démarrez la première mission d'une campagne avec seulement quatre soldats :
+
+Première chose à essayer:
+1. Aller dans C:\Users\VOTRE NOM UTILISATEUR WINDOWS\Documents\My Games\XCOM - Enemy Within\XComGame\Config
+2. Supprimer tous les fichiers du répertoire.
+3. Démarrer le jeu et vérifier si ça marche. Vous pouvez avoir un CTD au premier redémarrage; essayez encore.
+
+Deuxième chose à essayer :
+1. Assurez-vous que ces fichiers NE SONT PAS présents. Ils causent des CTD au lancement. Si vous les trouvez, supprimez-les et redémarrez le jeu.
+{app}\XComGame\CookedPCConsole\XComGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\Engine.upk.uncompressed_size
+
+Troisième chose à essayer :
+1. Jouez à XCOM en mode Hors ligne sur Steam. On nous a signalé que cela solutionne des problèmes de ralentissements en cours de jeu, mais ca ne réglera probablement pas d'atres types de problèmes.
+
+Quatrième chose à essayer :
+1. Aller dans C:\Users\VOTRE NOM UTILISATEUR WINDOWS\Documents\My Games\XCOM - Enemy Within\XComGame\SaveData
+2. Supprimez ou renommez le fichier profile.bin et démarrez le jeu. Vous risquez de devoir reparamétrer vos options graphiques et autres après cela.
+3. Démarrez le jeu et vérifiez si ça marche.
+
+Cinquième chose à essayer :
+1.Installez "Longue Guerre" à nouveau, par dessus votre copie actuelle. Cela risque de rendre impossible la désinstallation en automatique, il vous faudra revenir au jeu d'origine en vérifiant les fichiers via Steam.
+
+Sixième chose à essayer :
+Revenez au jeu d'origine en vérifiant les fichiers via Steam, et recommencez la procédure d'installation.
+
+Septième chose à essayer :
+Nous allons tenter de déterminer où le programme d'installation s'est planté.
+
+1. Vérifiez que les fichiers upk soient vraiment installés. Ils doivent avoir de récentes dates de création et/ou modification (comme tous les fichiers listés ci dessus). Les fichiers upk doivent être plus gros que ceux d'origine, également (vu que nous distribuons des fichiers non compressés) :
+
+{app}\XComGame\CookedPCConsole\XComGame.upk doit faire approximativement 12,176 kb
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk doit faire approximativement 4,870 kb
+{app}\XComGame\CookedPCConsole\UICollection_Strategy_SF.upk doit faire approximativement 19,094 kb
+{app}\XComGame\CookedPCConsole\UICollection_Tactical_SF.upk (uniquement pour les versions 3.0 BETA 10 et suivantes) doit faire approximativement 6,539 kb
+{app}\XComGame\CookedPCConsole\UICollection_Common_SF.upk (uniquement pour les versions 3.0 Beta 14 et suivantes) doit faire approximativement 6,446 kb
+{app}\XComGame\CookedPCConsole\Engine.upk (uniquement pour les versions 3.0 Beta 14 et suivantes) doit faire approximativement 4,618 kb
+{app}\XComGame\CookedPCConsole\gfxInterception_SF.upk (3.0 Beta 14d et suivantes) doit faire approximativement 4,916 kb
+
+S'ils sont *nettement* plus petits (la moitié ou 1/3 de la taille), le mod ne s'est pas installé correctement. Si leur taille diffère légèrement, alors ce n'est pas là qu'est le problème.
+
+3. Vérifiez que les fichiers de configuration (.ini) se sont bien installés. Ils doivent tous avoir des dates de création et/ou modification récentes.
+
+4. Si vous visualisez le texte d'origine, mais voyez apparaître les autres modifications effectuées par le mod, vérifiez vos fichiers de localisation dans le répertoire indiqué ci dessus. Ils contrôlent les textes affichés par le jeu. Vérifiez que vous ayez des dates de création / modification récentes.
+
+5. Si vous avez un problème avec l'un de ces fichiers, et qu'une vérification/réinstallation n'apporte rien, alertez johnnylump en MP sur le Nexus, et il essaiera de vous fournir les versions mises à jour.
+
+6.Vérifiez la date de modification du fichier {app}\Binaries\Win32\XComEW.exe ... Elle doit être celle du jour où vous avez installé le mod. Si ce n'est pas le cas, le programme de patch n'a pas fonctionné. Je ne peut pas vous aider en envoyant le fichier -- La distribution d'un exe me fait franchir la ligne rouge de la piraterie --  mais vous pouvez reproduire les changements en hexa nécessaires vous-même avec un éditeur du type HxD ou Notepad++. Ouvrez l'exe dans l'éditeur (soyez très attentif à ne rien changer par inadvertance), et effectuez trois recherche-et-remplace en Hexa (pas en ANSI) :
+
+Trouvez ceci
+25 00 64 00 00 00 00 00 49 00 6e 00 69 00 56 00 65 00 72 00 73 00 69 00 6f 00 6e 00 00 00 00 00 2e 00 2e 00 5c 00 2e 00 2e 00 5c 00 58 00 43 00
+et remplacez par :
+25 00 64 00 00 00 00 00 49 00 6e 00 69 00 56 00 65 00 72 00 73 00 69 00 6f 00 6e 00 00 00 00 00 2e 00 2e 00 5c 00 2e 00 2e 00 5c 00 57 00 43 00
+
+Ensuite, trouvez ceci :
+5c 00 58 00 43 00 6f 00 6d 00 47 00 61 00 6d 00 65 00 5c 00 43 00 6f 00 6e 00 66 00 69 00 67 00 5c 00 44 00 65 00 66 00 61 00 75 00 6c 00 74 00 4c 00 6f 00 61 00 64 00 6f 00 75 00 74 00 73 00 2e 00 69 00 6e 00 69 00 00 00 25 00 64 00
+et remplacez par :
+5c 00 57 00 43 00 6f 00 6d 00 47 00 61 00 6d 00 65 00 5c 00 43 00 6f 00 6e 00 66 00 69 00 67 00 5c 00 44 00 65 00 66 00 61 00 75 00 6c 00 74 00 4c 00 6f 00 61 00 64 00 6f 00 75 00 74 00 73 00 2e 00 69 00 6e 00 69 00 00 00 25 00 64 00
+
+Enfin, trouvez ceci :
+70 00 72 00 6F 00 64 00 2E 00 78 00 63 00 6F 00 6D 00 2D 00 65 00 77 00 2E 00 66 00 69 00 72 00 61 00 78 00 69 00 73 00 2E 00 63 00 6F 00 6D 00
+et remplacez par :
+70 00 72 00 6F 00 64 00 2E 00 78 00 63 00 6F 00 6D 00 2D 00 65 00 78 00 2E 00 66 00 69 00 72 00 61 00 78 00 69 00 73 00 2E 00 63 00 6F 00 6D 00
+
+7. Faites-nous savoir si l'une de ces étapes vous a dépanné, cela nous aidera à diriger d'autres joueurs plus rapidement vers une solution.

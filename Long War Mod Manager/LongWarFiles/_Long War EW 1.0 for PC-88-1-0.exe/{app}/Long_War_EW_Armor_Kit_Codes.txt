@@ -1,0 +1,251 @@
+Long War EW Soldier armor and headgear options:
+
+Colors (thanks to eld10 for this list!)
+0    tan top with black bottom (vanilla x-com default)
+1    brown top with grey dark bottom
+2    cyan light with brown
+3    green dark with yellow dark
+4    orange with grey dark
+5    white with black
+6    red with black
+7    yellow with black
+8    cyan with brown
+9    green dark with off-white
+10    black with white
+11    blue dark with white
+12    purple-blue with grey dark
+13    purple with white
+14    pink light with white
+15    black with yellow
+16    yellow bright with black
+17    blue dark with off-white
+18    red bright with yellow bright
+19    blue bright with yellow
+20    pink dark with green
+21    blue with orange
+22    blue dark with orange
+23    yellow dark with grey
+24    purple dark with yellow
+25    pink bright with blue bright
+26    orange bright with purple
+27    green light with orange dark
+28    cyan light with off-white
+29    yellow light with white
+30    brown light with off-white
+31    green bright with green bright
+32    black with black
+
+Image of all armor colors here: http://i.imgur.com/JcqJXqB.jpg
+
+Headgear (thanks to Insufferable Smartypants for this list!)
+First number is what you should put in ini file
+200 - Motorcycle helmet, closed 		(Deco 18)
+201 - Red-eye helmet 			(Deco 38)
+202 - Stormtrooper helmet	 	(Deco 28)
+302 - Sleek SciFi Helmet	 	(Deco 32)
+303 - Beret and sunglasses	 	(Deco 19)
+304 - Skull-Face Helmet	 	(Deco 36)
+305 - Ball cap & headset	 	(Deco 21)
+308 - Beret	 			(Deco 22)
+310 - Beanie w/goggles & headset	 	(Deco 23)
+313 - Hybrid SciFi Helmet	 	(Deco 35)
+315 - Bugface SciFi Helmet	 	(Deco 34)
+320 - Gold Plate Face Helmet	 	(Deco 30)
+322 - Gold Eyes SciFi Helmet	 	(Deco 31)
+401 - Gold Plate w/Breather Helmet	(Deco 29)
+402 - Blocky, faceless SciFi Helmet 	(Deco 33)
+403 - Modern Kevlar Helmet, open-faced	(Deco 20)
+404 - Sleek Round SciFi Helmet	 	(Deco 37)
+405 - Robocop	 		(Deco 39)
+425 - Ball Cap	 		(Deco 24)
+426 - Ball cap, Backwards 		(Deco 25)
+427 - Ball cap, Backwards w/Headset	(Deco 26)
+428 - Beanie	 		(Deco 27)
+430 - Gold Eye Plate w/Breather	 	(Deco 40)
+460 - Fedora			(Deco 41)
+
+Images of hats here: http://wiki.tesnexus.com/index.php/Initial_soldier_appearance_-_XCOM:EU_2012
+
+Armor deco:
+Possible armor settings run from 1 to 177 (with many holes that don't work), but for rookies you'll want to use kevlar decos only (note the final appearance will depend on whether you are using a light or heavy armor variant), which are 67 through 79. Note: 67 seems buggy, use -1 for that look. The decos assigned to these numbers *may* vary based on the DLCs you have, so you may need some trial and error to get the setting you want.
+
+PERKS:
+
+Perklist for item modding and alien upgrades (cross reference with DGC.ini notes for translation of unintuitive perk IDs to ingame names)
+
+0	ePerk_None
+1	ePerk_OTS_XP
+2	ePerk_PrecisionShot
+3	ePerk_SquadSight
+4	ePerk_GeneMod_SecondHeart
+5	ePerk_LowProfile
+6	ePerk_RunAndGun
+7	ePerk_AutopsyRequired
+8	ePerk_BattleScanner
+9	ePerk_DisablingShot
+10	ePerk_Opportunist
+11	ePerk_Executioner
+12	ePerk_OTS_Leader
+13	ePerk_DoubleTap
+14	ePerk_InTheZone
+15	ePerk_DamnGoodGround
+16	ePerk_SnapShot
+17	ePerk_WillToSurvive
+18	ePerk_FireRocket
+19	ePerk_TracerBeams
+20	ePerk_GeneMod_Adrenal
+21	ePerk_FocusedSuppression
+22	ePerk_ShredderRocket
+23	ePerk_RapidReaction
+24	ePerk_Grenadier
+25	ePerk_DangerZone
+26	ePerk_BulletSwarm
+27	ePerk_ExtraConditioning
+28	ePerk_GeneMod_BrainDamping
+29	ePerk_GeneMod_BrainFeedback
+30	ePerk_GeneMod_Pupils
+31	ePerk_Sprinter
+32	ePerk_Aggression
+33	ePerk_TacticalSense
+34	ePerk_CloseAndPersonal
+35	ePerk_LightningReflexes
+36	ePerk_RapidFire
+37	ePerk_Flush
+38	ePerk_GeneMod_DepthPerception
+39	ePerk_BringEmOn
+40	ePerk_CloseCombatSpecialist
+41	ePerk_KillerInstinct
+42	ePerk_GeneMod_BioelectricSkin
+43	ePerk_Resilience
+44	ePerk_SmokeBomb
+45	ePerk_GeneMod_BoneMarrow
+46	ePerk_StunImmune
+47	ePerk_CoveringFire
+48	ePerk_FieldMedic
+49	ePerk_RifleSuppression_DEPRECATED
+50	ePerk_GeneMod_MuscleFiber
+51	ePerk_CombatDrugs
+52	ePerk_DenseSmoke
+53	ePerk_DeepPockets
+54	ePerk_Sentinel
+55	ePerk_Savior
+56	ePerk_Revive
+57	ePerk_HeightAdvantage
+58	ePerk_Disabled_DEPRECATED
+59	ePerk_ImmuneToDisable_DEPRECATED
+60	ePerk_SuppressedActive
+61	ePerk_CriticallyWounded
+62	ePerk_Flying
+63	ePerk_Stealth
+64	ePerk_Poisoned
+65	ePerk_CombatStimActive
+66	ePerk_Implanted
+67	ePerk_Panicked
+68	ePerk_MindFray
+69	ePerk_PsiPanic
+70	ePerk_PsiInspiration
+71	ePerk_MindControl
+72	ePerk_TelekineticField
+73	ePerk_Rift
+74	ePerk_MindMerge
+75	ePerk_MindMerger
+76	ePerk_Hardened
+77	ePerk_GreaterMindMerge
+78	ePerk_GreaterMindMerger
+79	ePerk_Evade
+80	ePerk_Launch
+81	ePerk_Bombard
+82	ePerk_Leap
+83	ePerk_Plague
+84	ePerk_Poison
+85	ePerk_BloodCall
+86	ePerk_Intimidate
+87	ePerk_FallenComrades
+88	ePerk_Bloodlust
+89	ePerk_BullRush
+90	ePerk_HEATAmmo
+91	ePerk_SmokeAndMirrors
+92	ePerk_Rocketeer
+93	ePerk_Mayhem
+94	ePerk_Gunslinger
+95	ePerk_GeneMod_MimeticSkin
+96	ePerk_ClusterBomb
+97	ePerk_PsiLance
+98	ePerk_DeathBlossom
+99	ePerk_Overload
+100	ePerk_PsiControl
+101	ePerk_PsiDrain
+102	ePerk_Repair
+103	ePerk_CannonFire
+104	ePerk_Implant
+105	ePerk_ChryssalidSpawn
+106	ePerk_BattleFatigue
+107	ePerk_OnlyForGermanModeStrings_ItemRangeBonus
+108	ePerk_OnlyForGermanModeStrings_ItemRangePenalty
+109	ePerk_Foundry_Scope
+110	ePerk_Foundry_PistolI
+111	ePerk_Foundry_PistolII
+112	ePerk_Foundry_PistolIII
+113	ePerk_Foundry_AmmoConservation
+114	ePerk_Foundry_AdvancedFlight
+115	ePerk_Foundry_ArcThrowerII
+116	ePerk_Foundry_MedikitII
+117	ePerk_Foundry_CaptureDrone
+118	ePerk_Foundry_SHIVHeal
+119	ePerk_Foundry_SHIVSuppression
+120	ePerk_Foundry_EleriumFuel
+121	ePerk_Foundry_MECCloseCombat
+122	ePerk_Foundry_AdvancedServomotors
+123	ePerk_Foundry_ShapedArmor
+124	ePerk_Foundry_SentinelDrone
+125	ePerk_Foundry_AlienGrenades
+126	ePerk_PlasmaBarrage
+127	ePerk_SeekerStealth
+128	ePerk_StealthGrenade
+129	ePerk_ReaperRounds
+130	ePerk_Disoriented
+131	ePerk_Barrage
+132	ePerk_AutoThreatAssessment
+133	ePerk_AdvancedFireControl
+134	ePerk_DamageControl
+135	ePerk_XenobiologyOverlays
+136	ePerk_OneForAll
+137	ePerk_JetbootModule
+138	ePerk_ExpandedStorage
+139	ePerk_RepairServos
+140	ePerk_Overdrive
+141	ePerk_PlatformStability
+142	ePerk_AbsorptionFields
+143	ePerk_ShockAbsorbentArmor
+144	ePerk_ReactiveTargetingSensors
+145	ePerk_BodyShield
+146	ePerk_DistortionField
+147	ePerk_GeneMod_AdrenalineSurge
+148	ePerk_GeneMod_IronSkin
+149	ePerk_GeneMod_RegenPheromones
+150	ePerk_CovertPockets
+151	ePerk_CovertHacker
+152	ePerk_Medal_UrbanA
+153	ePerk_Medal_UrbanB
+154	ePerk_Medal_DefenderA
+155	ePerk_Medal_DefenderB
+156	ePerk_Medal_InternationalA
+157	ePerk_Medal_InternationalB
+158	ePerk_Medal_CouncilA
+159	ePerk_Medal_CouncilB
+160	ePerk_Medal_TerraA
+161	ePerk_Medal_TerraB
+162	ePerk_Dazed
+163	ePerk_OnlyForGermanModeStrings_AimingAnglesBonus
+164	ePerk_CatchingBreath
+165	ePerk_Foundry_TacticalRigging
+166	ePerk_SeekerStrangle
+167	ePerk_ReinforcedArmor
+168	ePerk_MindMerge_Mechtoid
+169	ePerk_Electropulse
+170	ePerk_OTS_Leader_Bonus
+171	ePerk_OTS_Leader_TheLeader
+172	ePerk_MAX
+
+
+

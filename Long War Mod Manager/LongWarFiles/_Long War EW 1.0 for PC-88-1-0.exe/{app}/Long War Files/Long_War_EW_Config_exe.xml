@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PatcherConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- The backup Directory, this is a relative path from XCOM Root, that is expanded -->
+  <BackupDirectory>XEW\Backup</BackupDirectory>
+  <!-- The folder to temporarily put decompressed UPK files Directory -->
+  <DecompressedUPKOutputDirectory>XEW\UpkUnpacked</DecompressedUPKOutputDirectory>
+  <!-- These are the Patching target files, each patch target specifies a single file-->
+  <PatchTargets>
+    <PatchTarget>
+      <!-- The file we want to patch-->
+      <TargetPath>XEW\Binaries\Win32\XComEW.exe</TargetPath>
+      <!-- true or false, true if the file is a UPK file, this tells it to decompress the UPK folder -->
+      <IsUPKFile>false</IsUPKFile>
+      <Patches>
+        <PatchEntry>
+          <!-- descriptive name for the patch -->
+          <Description>Read DefaultGameCore.ini from Config Folder</Description>
+          <!-- The pattern value we are trying to match, this must be unique -->
+          <FindValue>25 00 64 00 00 00 00 00 49 00 6e 00 69 00 56 00 65 00 72 00 73 00 69 00 6f 00 6e 00 00 00 00 00 2e 00 2e 00 5c 00 2e 00 2e 00 5c 00 58 00 43 00</FindValue>
+          <!-- The replacement value we are using, this must be unique -->
+          <ReplaceValue>25 00 64 00 00 00 00 00 49 00 6e 00 69 00 56 00 65 00 72 00 73 00 69 00 6f 00 6e 00 00 00 00 00 2e 00 2e 00 5c 00 2e 00 2e 00 5c 00 57 00 43 00</ReplaceValue>
+        </PatchEntry>
+        <PatchEntry>
+          <!-- descriptive name for the patch -->
+          <Description>Read DefaultLoadouts.ini from Config Folder</Description>
+          <!-- The pattern value we are trying to match, this must be unique -->
+          <FindValue>5c 00 58 00 43 00 6f 00 6d 00 47 00 61 00 6d 00 65 00 5c 00 43 00 6f 00 6e 00 66 00 69 00 67 00 5c 00 44 00 65 00 66 00 61 00 75 00 6c 00 74 00 4c 00 6f 00 61 00 64 00 6f 00 75 00 74 00 73 00 2e 00 69 00 6e 00 69 00 00 00 25 00 64 00</FindValue>
+          <!-- The replacement value we are using, this must be unique -->
+          <ReplaceValue>5c 00 57 00 43 00 6f 00 6d 00 47 00 61 00 6d 00 65 00 5c 00 43 00 6f 00 6e 00 66 00 69 00 67 00 5c 00 44 00 65 00 66 00 61 00 75 00 6c 00 74 00 4c 00 6f 00 61 00 64 00 6f 00 75 00 74 00 73 00 2e 00 69 00 6e 00 69 00 00 00 25 00 64 00</ReplaceValue>
+        </PatchEntry> 
+         <PatchEntry>
+          <!-- descriptive name for the patch -->
+          <Description>Prevent Phone Home</Description>
+          <!-- The pattern value we are trying to match, this must be unique -->
+          <FindValue>70 00 72 00 6F 00 64 00 2E 00 78 00 63 00 6F 00 6D 00 2D 00 65 00 77 00 2E 00 66 00 69 00 72 00 61 00 78 00 69 00 73 00 2E 00 63 00 6F 00 6D 00</FindValue>
+          <!-- The replacement value we are using, this must be unique -->
+          <ReplaceValue>70 00 72 00 6F 00 64 00 2E 00 78 00 63 00 6F 00 6D 00 2D 00 65 00 78 00 2E 00 66 00 69 00 72 00 61 00 78 00 69 00 73 00 2E 00 63 00 6F 00 6D 00</ReplaceValue>
+        </PatchEntry>
+      </Patches>
+    </PatchTarget>
+  </PatchTargets>
+</PatcherConfiguration>

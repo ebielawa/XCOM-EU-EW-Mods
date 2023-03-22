@@ -1,0 +1,331 @@
+MOD_NAME = MELD-COUNTDOWN FOR LONGWAR
+AUTHOR = Lafiir
+DESCRIPTION = Show an Expiration-Countdown above located Meld-Canisters. Restore assorted MeldUI features. Fix several bugs with Radar.
+
+UPK_FILE = XComGame.upk
+ALIAS=bTurnLimit:<%b 99>    //Limit Countdown to the last <%b ?> remaining turns. (Default:2 to conincide with audio cue)
+ALIAS=bGlobalStatus:<%b 1>  //Show global Meld-status in the top-right corner (1:True / 0:False).
+
+/*** Load MeldUI ***/
+OBJECT = UISpecialMissionHUD.Init : AUTO
+[REPLACEMENT_CODE]
+1C <UI_FxsScreen.BaseInit> 00 <._controllerRef> 00 <._manager> 4A 16
+0F 01 <@m_kArrows> 1C <Engine.Actor.Spawn> 20 <Class.UISpecialMissionHUD_Arrows> 17 4A 4A 4A 4A 4A 4A 16
+19 01 <@m_kArrows> [@] <NullRef> 00 ( 1B <Init> 01 <UI_FxsPanel.controllerRef> 01 <UI_FxsPanel.manager> 17 16 )
+2F 61 30 20 <Class.XComMeldContainerActor> 00 <.kMeldActor> 4A 16 [@label_0x00E6]
+    0F 01 <@m_kMeldStats> 1C <Engine.Actor.Spawn> 20 <Class.UISpecialMissionHUD_MeldStats> 17 4A 4A 4A 4A 4A 4A 16
+    19 01 <@m_kMeldStats> [@] <NullRef> 00 ( 1B <Init> 00 <._controllerRef> 00 <._manager> 17 16 )
+    06 [@label_0x00E6]
+    31
+[#label_0x00E6]
+30
+2F 61 30 20 <Class.XComCapturePointVolume> 00 <.kCaptureActor> 4A 16 [@label_0x01F5]
+    07 [@label_0x019B] 77 01 <@m_kMeldStats> 2A 16
+        19 19 01 <UI_FxsPanel.controllerRef> [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <NullRef> 00 ( 1B <PopupDebugDialog> 1F <%t "ERROR:"> 1F <%t "Found CONTROL POINT and MELD CANNISTERS in same level. This is a UI violation!"> 16 )
+    [#label_0x019B]
+    0F 01 <@m_kCapturePointStats> 1C <Engine.Actor.Spawn> 20 <Class.UISpecialMissionHUD_CapturePointStats> 17 4A 4A 4A 4A 4A 4A 16
+    19 01 <@m_kCapturePointStats> [@] <NullRef> 00 ( 1B <Init> 00 <._controllerRef> 00 <._manager> 17 16 )
+    06 [@label_0x01F5]
+    31
+[#label_0x01F5]
+30
+07 [@label_0x02C0] 72 01 <@m_kMeldStats> 2A 16
+    07 [@label_0x026A] 72 01 <@m_kCapturePointStats> 2A 16
+        0F 01 <@m_kGenericTurnCounter> 1C <Engine.Actor.Spawn> 20 <Class.UISpecialMissionHUD_TurnCounter> 17 4A 4A 4A 4A 4A 4A 16
+        19 01 <@m_kGenericTurnCounter> [@] <NullRef> 00 ( 1B <Init> 01 <UI_FxsPanel.controllerRef> 01 <UI_FxsPanel.manager> 17 16 )
+    [#label_0x026A]
+    0F 01 <@m_kBombMessage> 1C <Engine.Actor.Spawn> 20 <Class.UISpecialMissionHUD_BombMessage> 17 4A 4A 4A 4A 4A 4A 16
+    19 01 <@m_kBombMessage> [@] <NullRef> 00 ( 1B <Init> 01 <UI_FxsPanel.controllerRef> 01 <UI_FxsPanel.manager> 17 16 )
+[#label_0x02C0]
+04 0B
+53
+
+/*** MeldUI.Init; with global meld-status ***/
+OBJECT = UISpecialMissionHUD_MeldStats.Init : AUTO
+[REPLACEMENT_CODE]
+1B <PanelInit> 00 <._controllerRef> 00 <._manager> 00 <._screen> 4A 16
+0F 00 <.iNumMeldCanisters> 25
+2F 61 30 20 <Class.XComMeldContainerActor> 00 <.kMeldActor> 4A 16 [@label_0x00D0]
+    0F 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 01 00 <.kMeldData> 00 <.kMeldActor>
+    A5 00 <.iNumMeldCanisters> 16
+    07 [@stc] 82 9A 2C <!bGlobalStatus> 26 16 18 [@] ( 9A 00 <.iNumMeldCanisters> 26 16 16 )
+    	0F 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 01 00 <.kMeldData> 1C <Engine.Actor.Spawn> 20 <Class.UISpecialMissionHUD_TurnCounter> 00 <._screen> 4A 4A 4A 4A 4A 4A 16
+    	19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <Init> 00 <._controllerRef> 00 <._manager> 00 <._screen> 16 )
+        19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <SetUIState> 25 4A 16 )
+        19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <ExpireCounter> 4A 16 ) 
+    [#stc]
+    14 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bVisible> <@TUIMeldCanisterData> 00 01 00 <.kMeldData> 28
+    14 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bArrowVisible> <@TUIMeldCanisterData> 00 01 00 <.kMeldData> 28
+    55 01 <@m_arrMeldData> [@] ( 00 <.kMeldData> 16 ) 
+    31
+[#label_0x00D0]
+30
+07 [@label_0x0130] 19 01 <UI_FxsPanel.controllerRef> [@] <XComPlayerControllerNativeBase.IsMouseActive.ReturnValue> 00 ( 1B <IsMouseActive> 16 )
+    0F 01 <@m_strInteractMessage> A8 12 20 <Class.UI_FxsGamepadIcons> [@] <UI_FxsGamepadIcons.InsertPCIcons.ReturnValue> 00 ( 1B <InsertPCIcons> 1F <%t "%LMB"> 16 ) 01 <@m_strCollectMeldMessage> 16
+    06 [@label_0x0168]
+[#label_0x0130]
+    0F 01 <@m_strInteractMessage> A8 12 20 <Class.UI_FxsGamepadIcons> [@] <UI_FxsGamepadIcons.InsertGamepadIconsMessenger.ReturnValue> 00 ( 1B <InsertGamepadIconsMessenger> 1F <%t "%A"> 16 ) 01 <@m_strCollectMeldMessage> 16
+[#label_0x0168]
+0F 01 <@m_kPres> 2E <Class.XComPresentationLayer> 19 00 <._screen> [@] <Engine.Actor.Owner> 00 ( 01 <Engine.Actor.Owner> )
+19 01 <@m_kPres> [@] <NullRef> 00 ( 1B <SubscribeToUIUpdate> 43 <UpdatePanel> <NullRef> 16 )
+04 0B
+53
+
+/*** Show Arrows, InteractMsg, GlobalStatus ***/
+OBJECT = UISpecialMissionHUD_MeldStats.UpdatePanel : AUTO
+[REPLACEMENT_CODE]
+0F 00 <.kActiveUnit> 19 2E <Class.XComTacticalController> 01 <UI_FxsPanel.controllerRef> [@] <XComTacticalController.GetActiveUnit.ReturnValue> 00 ( 1B <GetActiveUnit> 16 )
+07 [@label_0x00B4] 77 00 <.kActiveUnit> 2A 16
+    0F 00 <.kPathAction> 2E <Class.XGAction_Path> 19 00 <.kActiveUnit> [@] <XGUnit.GetAction.ReturnValue> 00 ( 1B <GetAction> 16 )
+    07 [@label_0x00B4] 84 72 00 <.kPathAction> 2A 16 18 [@] ( 81 19 00 <.kPathAction> [@] <XGAction_Path.IsEmpty.ReturnValue> 00 ( 1B <IsEmpty> 16 ) 16 16 )
+        14 2D 00 <.bHasPathAction> 27
+[#label_0x00B4]
+14 2D 00 <.bShowQuestionmark> 28
+14 2D 00 <.bVisibleToSquad> 28
+0F 00 <.I> 25
+[#label_0x00BF]
+07 [@label_0x0684] 96 00 <.I> 36 01 <@m_arrMeldData> 16
+    0F 00 <.kMeldData> 10 00 <.I> 01 <@m_arrMeldData>
+    07 [@label_0x02C2] 84 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <XComMeldContainerActor.IsCollected.ReturnValue> 00 ( 1B <IsCollected> 16 ) 18 [@] ( 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <XComMeldContainerActor.IsDestroyed.ReturnValue> 00 ( 1B <IsDestroyed> 16 ) 16 )
+        07 [@label_0x0211] 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bVisible> <@TUIMeldCanisterData> 00 00 00 <.kMeldData>
+            19 19 01 <@m_kPres> [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <NullRef> 00 ( 1B <RemoveMessage> 38 57 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <Core.Object.Name> 00 ( 01 <Core.Object.Name> ) 16 )
+            14 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bVisible> <@TUIMeldCanisterData> 00 01 10 00 <.I> 01 <@m_arrMeldData> 28
+        [#label_0x0211]
+        07 [@label_0x02BF] 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bArrowVisible> <@TUIMeldCanisterData> 00 00 00 <.kMeldData>
+            19 19 19 01 <@m_kPres> [@] <XComPresentationLayer.m_kSpecialMissionHUD> 00 ( 01 <XComPresentationLayer.m_kSpecialMissionHUD> ) [@] <UISpecialMissionHUD.m_kArrows> 00 ( 01 <UISpecialMissionHUD.m_kArrows> ) [@] <NullRef> 00 ( 1B <RemoveArrowPointingAtActor> 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> 16 )
+            14 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bArrowVisible> <@TUIMeldCanisterData> 00 01 10 00 <.I> 01 <@m_arrMeldData> 28
+        [#label_0x02BF]
+        07 [@isNotCollected] 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <XComMeldContainerActor.IsCollected.ReturnValue> 00 ( 1B <IsCollected> 16 )
+            14 2D 00 <.bVisibleToSquad> 27
+        [#isNotCollected]
+        06 [@label_0x0676]
+    [#label_0x02C2]
+        14 2D 00 <.bShowQuestionmark> 27
+        07 [@label_0x0676] 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <XComMeldContainerActor.m_bHasBeenSeen> 00 ( 2D 01 <XComMeldContainerActor.m_bHasBeenSeen> )
+            07 [@isNotInLimit] 98 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <XComMeldContainerActor.m_iTurnsUntilDestroyed> 00 ( 01 <XComMeldContainerActor.m_iTurnsUntilDestroyed> ) 2C <!bTurnLimit> 16
+                19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <GetBoundingCylinder> 35 <Core.Object.Vector.X> <Core.Object.Vector> 00 01 00 <.vArrowOffset> 35 <Core.Object.Vector.Z> <Core.Object.Vector> 00 01 00 <.vArrowOffset> 16 )
+                0F 35 <Core.Object.Vector.X> <Core.Object.Vector> 00 01 00 <.vArrowOffset> 1E <%f 0>
+                B6 35 <Core.Object.Vector.Z> <Core.Object.Vector> 00 01 00 <.vArrowOffset> 1E <%f 1.25> 16
+                19 19 19 01 <@m_kPres> [@] <XComPresentationLayer.m_kSpecialMissionHUD> 00 ( 01 <XComPresentationLayer.m_kSpecialMissionHUD> ) [@] <UISpecialMissionHUD.m_kArrows> 00 ( 01 <UISpecialMissionHUD.m_kArrows> ) [@] <NullRef> 00 ( 1B <AddArrowPointingAtActor> 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> 00 <.vArrowOffset> 24 0C 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <XComMeldContainerActor.m_iTurnsUntilDestroyed> 00 ( 01 <XComMeldContainerActor.m_iTurnsUntilDestroyed> ) 16 )
+                14 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bArrowVisible> <@TUIMeldCanisterData> 00 01 10 00 <.I> 01 <@m_arrMeldData> 27
+            [#isNotInLimit]
+            07 [@label_0x05C5] 82 81 2D 00 <.bHasPathAction> 16 18 [@] ( 1B <IsMeldContainerInteractableByUnit> 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> 00 <.kActiveUnit> 16 16 )
+                0F 00 <.vAdjustedLocation> 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> )
+                B8 35 <Core.Object.Vector.Z> <Core.Object.Vector> 00 01 00 <.vAdjustedLocation> 38 3F 01 <@m_iVertAdjustment> 16
+                19 19 01 <@m_kPres> [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <UIWorldMessageMgr.Message.ReturnValue> 00 ( 1B <Message> 01 <@m_strInteractMessage> 00 <.vAdjustedLocation> 24 00 26 38 57 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <Core.Object.Name> 00 ( 01 <Core.Object.Name> ) 4A 4A 4A 4A 4A 16 )
+                14 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bVisible> <@TUIMeldCanisterData> 00 01 10 00 <.I> 01 <@m_arrMeldData> 27
+                06 [@label_0x0676]
+            [#label_0x05C5]
+            07 [@label_0x0676] 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bVisible> <@TUIMeldCanisterData> 00 00 00 <.kMeldData>
+                19 19 01 <@m_kPres> [@] <XComPresentationLayer.GetWorldMessenger.ReturnValue> 00 ( 1B <GetWorldMessenger> 16 ) [@] <NullRef> 00 ( 1B <RemoveMessage> 38 57 19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCanister> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <Core.Object.Name> 00 ( 01 <Core.Object.Name> ) 16 )
+                14 2D 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.bVisible> <@TUIMeldCanisterData> 00 01 10 00 <.I> 01 <@m_arrMeldData> 28
+    [#label_0x0676]
+    A3 00 <.I> 16
+    06 [@label_0x00BF]
+[#label_0x0684]
+07 [@isNotLost] 82 9A 2C <!bGlobalStatus> 26 16 18 [@] ( 97 36 01 <@m_arrMeldData> 25 16 16 )
+0F 00 <.kMeldData> 10 25 01 <@m_arrMeldData>
+07 [@isNotAvailable] 2D 00 <.bShowQuestionmark>
+	19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <SetLabel> A8 01 <@m_strMeldLabel> 12 20 <Class.UIUtilities> [@] <UIUtilities.HTMLGetMeldImage.ReturnValue> 00 ( 1B <HTMLGetMeldImage> 2C 0C 16 ) 16 4A 16 )
+    19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <SetSubLabel> 01 <@m_strAvailableLabel> 27 16 )
+	06 [@isNotLost]
+[#isNotAvailable]
+07 [@isNotRecovered] 2D 00 <.bVisibleToSquad>
+	19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <SetLabel> A8 01 <@m_strMeldLabel> 12 20 <Class.UIUtilities> [@] <UIUtilities.HTMLGetMeldImage.ReturnValue> 00 ( 1B <HTMLGetMeldImage> 2C 02 16 ) 16 4A 16 )
+	19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <SetSubLabel> 01 <@m_strRecoveredLabel> 27 16 )
+	06 [@isNotLost]
+[#isNotRecovered]
+	19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <SetLabel> A8 01 <@m_strMeldLabel> 12 20 <Class.UIUtilities> [@] <UIUtilities.HTMLGetMeldImage.ReturnValue> 00 ( 1B <HTMLGetMeldImage> 2C 03 16 ) 16 4A 16 )
+	19 35 <UISpecialMissionHUD_MeldStats.TUIMeldCanisterData.kMeldCounter> <@TUIMeldCanisterData> 00 00 00 <.kMeldData> [@] <NullRef> 00 ( 1B <SetSubLabel> 01 <@m_strLostLabel> 27 16 )
+[#isNotLost]
+04 0B
+53
+
+/*** Check for Meld ***/
+OBJECT = XComPresentationLayer.NeedsSpecialMissionUI : AUTO
+[REPLACEMENT_CODE]
+07 [@label_0x008F] 9A 19 19 2E <Class.XGBattle_SP> 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle_SP.GetDesc.ReturnValue> 00 ( 1B <GetDesc> 16 ) [@] <XGBattleDesc.m_iMissionType> 00 ( 01 <XGBattleDesc.m_iMissionType> ) 2C 0B 16
+    04 27
+[#label_0x008F]
+2F 61 30 20 <Class.XComMeldContainerActor> 00 <.kMeldActor> 4A 16 [@label_0x00AC]
+    30
+    04 27
+    31
+[#label_0x00AC]
+30
+2F 61 30 20 <Class.XComCapturePointVolume> 00 <.kCaptureActor> 4A 16 [@label_0x00CA]
+    30
+    04 27
+    31
+[#label_0x00CA]
+30
+04 28
+04 3A <.ReturnValue>
+53
+
+/*** Prevent Log-spam ***/
+OBJECT = XComInteractiveLevelActor._Pristine.CanInteract : AUTO
+[REPLACEMENT_CODE]
+07 [@label_0x0011] 72 00 <.InUnit> 2A 16
+    04 27
+[#label_0x0011]
+07 [@label_0x0038] 9A 19 00 <.InUnit> [@] <XGUnit.GetMoves.ReturnValue> 00 ( 1B <GetMoves> 16 ) 25 16
+    04 28
+[#label_0x0038]
+07 [@label_0x0080] 84 19 00 <.InUnit> [@] <XGUnitNativeBase.IsPanicking.ReturnValue> 00 ( 1B <IsPanicking> 16 ) 18 [@] ( 19 00 <.InUnit> [@] <XGUnitNativeBase.IsPanicked.ReturnValue> 00 ( 1B <IsPanicked> 16 ) 16 )
+    04 28
+[#label_0x0080]
+07 [@label_0x00BA] 82 9B 38 3A 01 <XComInteractiveLevelActor.IconSocket> 38 3A 24 02 16 18 [@] ( 19 00 <.InUnit> [@] <XGUnitNativeBase.IsATank.ReturnValue> 00 ( 1B <IsATank> 16 ) 16 )
+    04 28
+[#label_0x00BA]
+07 [@label_0x00ED] 82 19 00 <.InUnit> [@] <XGUnitNativeBase.IsAugmented.ReturnValue> 00 ( 1B <IsAugmented> 16 ) 18 [@] ( 1B <IsDoor> 16 16 )
+    04 28
+[#label_0x00ED]
+04 27
+04 3A <.ReturnValue>
+53
+
+/*** Only show Radar for Scanner ***/
+OBJECT = UITacticalHUD_Radar.Show : AUTO
+[REPLACEMENT_CODE]
+07 [@label_0x0082] 19 19 19 2E <Class.XComTacticalGRI> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.GRI> 00 ( 01 <Engine.WorldInfo.GRI> ) [@] <XComTacticalGRI.m_kBattle> 00 ( 01 <XComTacticalGRI.m_kBattle> ) [@] <XGBattle.m_kDesc> 00 ( 01 <XGBattle.m_kDesc> ) [@] <XGBattleDesc.m_bIsTutorial> 00 ( 2D 01 <XGBattleDesc.m_bIsTutorial> )
+    04 0B
+[#label_0x0082]
+0F 01 <@m_kActiveUnit> 19 2E <Class.XComTacticalController> 01 <UI_FxsPanel.controllerRef> [@] <XComTacticalController.GetActiveUnit.ReturnValue> 00 ( 1B <GetActiveUnit> 16 )
+07 [@label_0x00CF] 72 01 <@m_kActiveUnit> 2A 16
+    1B <Hide> 16
+    04 0B
+[#label_0x00CF]
+07 [@label_0x010B] 9C 19 01 <@m_kActiveUnit> [@] <XGUnit.m_iZombieMoraleLoss> 00 ( 01 <XGUnit.m_iZombieMoraleLoss> ) 1D <%i -2147483648> 16
+    1C <UI_FxsPanel.Show> 16
+    1B <ActivateRadarTracking> 16
+[#label_0x010B]
+04 0B
+53
+
+OBJECT = UITacticalHUD_Radar.UpdateActiveUnit : AUTO
+[REPLACEMENT_CODE]
+07 [@label_0x001E] 81 1B <IsInited> 16 16
+    E7 1F <%t "not init"> 2A 16
+    04 0B
+[#label_0x001E]
+0F 01 <@m_kActiveUnit> 19 2E <Class.XComTacticalController> 01 <UI_FxsPanel.controllerRef> [@] <XComTacticalController.GetActiveUnit.ReturnValue> 00 ( 1B <GetActiveUnit> 16 )
+07 [@label_0x0079] 72 01 <@m_kActiveUnit> 2A 16
+    E7 1F <%t "nounit"> 2A 16
+    1B <Hide> 16
+    04 0B
+    06 [@label_0x00D6]
+[#label_0x0079]
+07 [@label_0x00B7] 9C 19 01 <@m_kActiveUnit> [@] <XGUnit.m_iZombieMoraleLoss> 00 ( 01 <XGUnit.m_iZombieMoraleLoss> ) 1D <%i -2147483648> 16
+    E7 1F <%t "abil"> 2A 16
+    1B <Show> 16
+    06 [@label_0x00D6]
+[#label_0x00B7]
+E7 1F <%t "hide"> 2A 16
+1B <Show> 16
+1B <Hide> 16
+04 0B
+[#label_0x00D6]
+40 01 <@m_arrBlips> 25 36 01 <@m_arrBlips> 16
+1B <UpdateBlips> 16
+19 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.MyWatchVariableMgr> 00 ( 01 <Engine.WorldInfo.MyWatchVariableMgr> ) [@] <Engine.WatchVariableMgr.RegisterWatchVariable.ReturnValue> 00 ( 1B <RegisterWatchVariable> 01 <@m_kActiveUnit> 21 <m_bInCover> 17 43 <UpdateBlips> <NullRef> 4A 16 )
+19 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.MyWatchVariableMgr> 00 ( 01 <Engine.WorldInfo.MyWatchVariableMgr> ) [@] <Engine.WatchVariableMgr.RegisterWatchVariable.ReturnValue> 00 ( 1B <RegisterWatchVariable> 01 <@m_kActiveUnit> 21 <Location> 17 43 <UpdateBlips> <NullRef> 4A 16 )
+07 [@label_0x01F4] 9B 01 <@m_hEnemyArrWatchHandle> 25 16
+    19 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.MyWatchVariableMgr> 00 ( 01 <Engine.WorldInfo.MyWatchVariableMgr> ) [@] <NullRef> 00 ( 1B <UnRegisterWatchVariable> 01 <@m_hEnemyArrWatchHandle> 16 )
+[#label_0x01F4]
+0F 01 <@m_hEnemyArrWatchHandle> 19 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.MyWatchVariableMgr> 00 ( 01 <Engine.WorldInfo.MyWatchVariableMgr> ) [@] <Engine.WatchVariableMgr.RegisterWatchVariable.ReturnValue> 00 ( 1B <RegisterWatchVariable> 01 <@m_kActiveUnit> 21 <m_arrVisibleEnemies> 17 43 <UpdateBlips> <NullRef> 4A 16 )
+04 0B
+53
+
+/*** Display Bombnode- and MeldCanister-Blips properly ***/
+OBJECT = UITacticalHUD_Radar.UpdateBlips : AUTO
+[REPLACEMENT_CODE]
+0F 00 <.ActiveUnit> 2E <Class.XGUnit> 01 <@m_kActiveUnit>
+07 [@label_0x0073] 84 84 72 00 <.ActiveUnit> 2A 16 18 [@] ( 81 9C 19 01 <@m_kActiveUnit> [@] <XGUnit.m_iZombieMoraleLoss> 00 ( 01 <XGUnit.m_iZombieMoraleLoss> ) 1D <%i -2147483648> 16 16 16 ) 18 [@] ( 72 2E <Class.XComTacticalController> 01 <UI_FxsPanel.controllerRef> 2A 16 16 )
+    04 0B
+[#label_0x0073]
+0F 01 <@m_iCurrUnitsSightRadius> 90 12 20 <Class.XGTacticalGameCore> [@] <XGTacticalGameCoreNativeBase.BASE_REMOVAL_DAYS> 00 ( 02 <XGTacticalGameCoreNativeBase.BASE_REMOVAL_DAYS> ) 1D <%i 64> 16
+0F 00 <.I> 25
+[#label_0x00AD]
+07 [@label_0x00FC] 96 00 <.I> 36 01 <@m_arrBlips> 16
+    0F 35 <UITacticalHUD_Radar.TUIRadarBlip.Type> <@TUIRadarBlip> 00 01 10 00 <.I> 01 <@m_arrBlips> 24 00
+    A3 00 <.I> 16
+    06 [@label_0x00AD]
+[#label_0x00FC]
+0F 00 <.I> 25
+[#label_0x0107]
+07 [@label_0x028C] 96 00 <.I> 19 19 00 <.ActiveUnit> [@] <XGUnit.GetSquad.ReturnValue> 00 ( 1B <GetSquad> 16 ) [@] <XGSquadNativeBase.GetNumMembers.ReturnValue> 00 ( 1B <GetNumMembers> 16 ) 16
+    0F 00 <.tmpUnit> 19 19 00 <.ActiveUnit> [@] <XGUnit.GetSquad.ReturnValue> 00 ( 1B <GetSquad> 16 ) [@] <XGSquadNativeBase.GetMemberAt.ReturnValue> 00 ( 1B <GetMemberAt> 00 <.I> 16 )
+    07 [@label_0x01A4] 72 00 <.tmpUnit> 2A 16
+            06 [@label_0x027E]
+    [#label_0x01A4]
+    07 [@label_0x027E] 77 00 <.tmpUnit> 00 <.ActiveUnit> 16
+            07 [@label_0x01F5] 19 00 <.tmpUnit> [@] <XGUnitNativeBase.IsDead.ReturnValue> 00 ( 1B <IsDead> 16 )
+                    1B <UpdateBlipByType> 00 <.tmpUnit> 24 03 16
+                    06 [@label_0x027E]
+            [#label_0x01F5]
+            07 [@label_0x022F] 19 00 <.tmpUnit> [@] <XGUnit.IsHurt.ReturnValue> 00 ( 1B <IsHurt> 16 )
+                    1B <UpdateBlipByType> 00 <.tmpUnit> 24 02 16
+                    06 [@label_0x027E]
+            [#label_0x022F]
+            07 [@label_0x0269] 19 00 <.tmpUnit> [@] <XGUnitNativeBase.IsBattleScanner.ReturnValue> 00 ( 1B <IsBattleScanner> 16 )
+                    1B <UpdateBlipByType> 00 <.tmpUnit> 24 08 16
+                    06 [@label_0x027E]
+            [#label_0x0269]
+            1B <UpdateBlipByType> 00 <.tmpUnit> 24 01 16
+    [#label_0x027E]
+    A3 00 <.I> 16
+    06 [@label_0x0107]
+[#label_0x028C]
+07 [@label_0x0428] 82 77 19 2E <Class.XComPresentationLayer> 19 01 <UI_FxsPanel.controllerRef> [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.m_kSpecialMissionHUD> 00 ( 01 <XComPresentationLayer.m_kSpecialMissionHUD> ) 2A 16 18 [@] ( 77 19 19 2E <Class.XComPresentationLayer> 19 01 <UI_FxsPanel.controllerRef> [@] <XComPlayerController.m_Pres> 00 ( 01 <XComPlayerController.m_Pres> ) [@] <XComPresentationLayer.m_kSpecialMissionHUD> 00 ( 01 <XComPresentationLayer.m_kSpecialMissionHUD> ) [@] <UISpecialMissionHUD.m_kBombMessage> 00 ( 01 <UISpecialMissionHUD.m_kBombMessage> ) 2A 16 16 )
+    2F 61 30 20 <Class.XComInteractiveLevelActor> 00 <.ILA> 4A 16 [@label_0x0427]
+            07 [@label_0x0426] 9A 38 3A 19 00 <.ILA> [@] <XComInteractiveLevelActor.IconSocket> 00 ( 01 <XComInteractiveLevelActor.IconSocket> ) 38 3A 24 02 16
+                07 [@label_0x0426] B2 1C <Core.Object.VSizeSq2D> D8 19 00 <.ILA> [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> ) 19 00 <.ActiveUnit> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 16 16 38 3F 90 01 <@m_iCurrUnitsSightRadius> 01 <@m_iCurrUnitsSightRadius> 16 16
+                    07 [@label_0x0411] 19 00 <.ILA> [@] <XComInteractiveLevelActor.CanInteract.ReturnValue> 00 ( 1B <CanInteract> 2A 21 <None> 16 )
+                            1B <UpdateBlipByType> 00 <.ILA> 24 07 16
+                            06 [@label_0x0426]
+                    [#label_0x0411]
+                    1B <UpdateBlipByType> 00 <.ILA> 24 08 16
+            [#label_0x0426]
+            31
+    [#label_0x0427]
+    30
+[#label_0x0428]
+2F 61 30 20 <Class.XGUnit> 00 <.tmpUnit> 4A 16 [@label_0x0586]
+    07 [@label_0x0585] B2 1C <Core.Object.VSizeSq2D> D8 19 00 <.tmpUnit> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 19 00 <.ActiveUnit> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 16 16 38 3F 90 01 <@m_iCurrUnitsSightRadius> 01 <@m_iCurrUnitsSightRadius> 16 16
+            07 [@label_0x054E] 82 19 00 <.tmpUnit> [@] <XGUnit.IsAlien_CheckByCharType.ReturnValue> 00 ( 1B <IsAlien_CheckByCharType> 16 ) 18 [@] ( 19 00 <.tmpUnit> [@] <XGUnitNativeBase.IsAliveAndWell.ReturnValue> 00 ( 1B <IsAliveAndWell> 4A 16 ) 16 )
+                    07 [@label_0x054E] 81 19 00 <.tmpUnit> [@] <XGUnitNativeBase.IsBattleScanner.ReturnValue> 00 ( 1B <IsBattleScanner> 16 ) 16
+                            07 [@label_0x054E] 9A 38 3A 19 00 <.tmpUnit> [@] <XGUnit.GetTeam.ReturnValue> 00 ( 1B <GetTeam> 16 ) 2C 10 16
+                                    1B <UpdateBlipByType> 00 <.tmpUnit> 24 04 16
+            [#label_0x054E]
+            07 [@label_0x0585] 19 00 <.tmpUnit> [@] <XGUnit.IsCivilian.ReturnValue> 00 ( 1B <IsCivilian> 16 )
+                    1B <UpdateBlipByType> 00 <.tmpUnit> 24 05 16
+    [#label_0x0585]
+    31
+[#label_0x0586]
+30
+2F 61 30 20 <Class.XComMeldContainerActor> 00 <.Index> 4A 16 [@label_0x063E]
+    07 [@label_0x063D] 82 81 19 00 <.Index> [@] <XComMeldContainerActor.IsCollected.ReturnValue> 00 ( 1B <IsCollected> 16 ) 16 18 [@] ( 81 19 00 <.Index> [@] <XComMeldContainerActor.IsDestroyed.ReturnValue> 00 ( 1B <IsDestroyed> 16 ) 16 16 )
+        07 [@label_0x063D] B2 1C <Core.Object.VSizeSq2D> D8 19 00 <.Index> [@] <Engine.Actor.Location> 00 ( 01 <Engine.Actor.Location> ) 19 00 <.ActiveUnit> [@] <XGUnitNativeBase.GetLocation.ReturnValue> 00 ( 1B <GetLocation> 16 ) 16 16 38 3F 90 01 <@m_iCurrUnitsSightRadius> 01 <@m_iCurrUnitsSightRadius> 16 16
+            1B <UpdateBlipByType> 00 <.Index> 24 06 16
+    [#label_0x063D]
+    31
+[#label_0x063E]
+30
+0F 00 <.Data> 1F <%t "">
+0F 00 <.I> 25
+[#label_0x0656]
+07 [@label_0x0773] 96 00 <.I> 36 01 <@m_arrBlips> 16
+    0E <Core.Object.ConcatEqual_StrStr.ReturnValue> 61 42 00 <.Data> 70 70 70 70 38 53 38 3A 35 <UITacticalHUD_Radar.TUIRadarBlip.Type> <@TUIRadarBlip> 00 00 10 00 <.I> 01 <@m_arrBlips> 1F <%t ","> 16 38 55 35 <Core.Object.Vector2D.X> <Core.Object.Vector2D> 00 00 35 <UITacticalHUD_Radar.TUIRadarBlip.Loc> <@TUIRadarBlip> 00 00 10 00 <.I> 01 <@m_arrBlips> 16 1F <%t ","> 16 38 55 35 <Core.Object.Vector2D.Y> <Core.Object.Vector2D> 00 00 35 <UITacticalHUD_Radar.TUIRadarBlip.Loc> <@TUIRadarBlip> 00 00 10 00 <.I> 01 <@m_arrBlips> 16 16
+    07 [@label_0x0765] 96 00 <.I> 93 36 01 <@m_arrBlips> 26 16 16
+            0E <Core.Object.ConcatEqual_StrStr.ReturnValue> 61 42 00 <.Data> 1F 2F 2F 00 16
+    [#label_0x0765]
+    A3 00 <.I> 16
+    06 [@label_0x0656]
+[#label_0x0773]
+07 [@label_0x079F] 9A 36 01 <@m_arrBlips> 25 16
+    0E <Core.Object.ConcatEqual_StrStr.ReturnValue> 61 42 00 <.Data> 1F <%t "0,0,0"> 16
+[#label_0x079F]
+1B <AS_UpdateBlips> 00 <.Data> 16
+04 0B
+53

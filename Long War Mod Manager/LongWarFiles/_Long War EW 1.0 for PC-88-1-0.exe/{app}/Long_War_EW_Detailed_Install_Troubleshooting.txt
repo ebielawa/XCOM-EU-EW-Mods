@@ -1,0 +1,151 @@
+Before an install:
+
+1. Make sure you have a legit Steam copy of XCOM EW. It won't work on pirated copies.
+
+2. If you have ever played with any other mods on your EW install, or have changed some files yourself, verify back to a vanilla installation of EW before installing Long War. If you have any trouble with installation, do this as well.
+
+3. Disable any antivirus software. We have specific reports that Comodo security software prevents a proper install. However, we have another report that turning it off prevents a proper install. So, either way, if you run this, be prepared for some trial-and-error while getting this running. It does work, though. If you are using Avast, you need to permanently add the XCOM folder to Avast's Active Protection exceptions list.
+
+4. Make sure you have the latest .NET framework installed.
+
+5. Switch XCOM to one of the mod's supported languages in Steam. As of 1.0 this is English, Spanish, French, Italian and Polish.
+
+6. Run the installer. You shouldn't need to run it in administrator mode, but it couldn't hurt.
+
+**** Here's what the installer does:
+
+1. Asks you where the XEW directory is. On most installs, it's C:\Program Files (x86)\Steam\SteamApps\common\XCom-Enemy-Unknown\XEW. Going forward, I will use "{app}" as shorthand for what you entered. A common mistake when file hunting is to leave out the XEW from the path, and you'll go into EU files, which otherwise have the same names and directory structure. 
+
+An incorrect entry here will mess up your install. When you select your path to install the mod, you should receive a warning that the directory already exists. If you didn't, have you may have messed up. (Note this warning may not happen on admin mode, however).
+
+NOTE (New as of Beta 15) We have some reports that installing the mod on a secondary hard drive may require a different path that doesn't necessarily include the "XEW" at the end. Users have had some success trying various formulations until they get the warning, and installing at that point.
+
+2. Once you select the path, it makes backups of all files it is going to patch, overwrite or delete for the uinstaller. If I say "deletes" a file, it's not really deleted, but moved to to the backup folder, which is {app}\Long War Files.
+
+3. Then it does the following file operations:
+
+This file is patched:
+{app}\Binaries\Win32\XComEW.exe
+
+These files are deleted after being backed up:
+{app}\XComGame\CookedPCConsole\XComGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\Engine.upk.uncompressed_size (3.0 Beta 14 or later)
+NOTE: If these files are not deleted, you will get CTDs when trying to run XCOM Long War.
+
+These files are overwritten after being backed up:
+Config files:
+{app}\XComGame\Config\DefaultEngine.ini
+{app}\XComGame\Config\DefaultGameCore.ini
+{app}\XComGame\Config\DefaultMaps.ini
+{app}\XComGame\Config\DefaultInput.ini
+{app}\XComGame\Config\DefaultContent.ini
+{app}\XComGame\Config\DefaultGameData.ini
+{app}\XComGame\Config\DefaultGame.ini (3.0 Beta 10 or later)
+{app}\XComGame\Config\DefaultLoadouts.ini (3.0 Beta 12 or later)
+{app}\XComGame\Config\DefaultNameList.ini (3.0 Beta 14 or later)
+
+Localization files / English:
+{app}\XComGame\Localization\INT\XComGame.int
+{app}\XComGame\Localization\INT\XComStrategyGame.int
+{app}\XComGame\Localization\INT\Subtitles.int
+{app}\XComGame\Localization\INT\XComUIShell.int
+
+Localization files for Spanish, French, Italian and Polish
+
+Unreal package files:
+{app}\XComGame\CookedPCConsole\XComGame.upk
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk
+{app}\XComGame\CookedPCConsole\UICollection_Strategy_SF.upk
+{app}\XComGame\CookedPCConsole\UICollection_Tactical_SF.upk (3.0 Beta 10 and later)
+{app}\XComGame\CookedPCConsole\UICollection_Common_SF.upk (3.0 Beta 14 and later)
+{app}\XComGame\CookedPCConsole\Engine.upk (3.0 Beta 14 and later)
+{app}\XComGame\CookedPCConsole\gfxInterception_SF.upk (3.0 Beta 14d and later)
+
+These new files are added:
+{app}\XComGame\CookedPCConsole\LongWar.upk (3.0 Beta 10 and later)
+{app}\XComGame\CookedPCConsole\XComMutator.u (3.0 Beta 14 and later)
+{app}\XComGame\CookedPCConsole\XComLZMutator.u (3.0 Beta 14 and later)
+{app}\XComGame\Config\DefaultLZMutator.ini (3.0 Beta 14 and later)
+{app}\XComGame\Config\DefaultRandomSpawns.ini (3.0 Beta 14 and later)
+
+Plus a bunch of voiceover files to to the {app}\XComGame\CookedPCConsole\Voices directory (as of Beta 15).
+
+An uninstaller and several files that help with patching the exe are also added to {app}\Long War Files, and some readmes, perk and tech tree files are added to the {app} directory. 
+
+**** Various troubleshooting steps
+
+When you start the mod, you should get a CTD on the first try. This is normal -- it is Steam adjusting to your new file sizes. It should start properly on the second try.
+
+If you see low-res textures on MECs or other game elements, turn up your graphics settings.
+
+Here are some troubleshooting steps if you are getting CTDs, graphical glitches, game functions like ALT-F10 not working, rocket launchers with insanely high scatter, or start with only four soldiers in the first mission of a campaign:
+
+First thing to try:
+1. Go to C:\Users\YOUR WINDOWS USERNAME\Documents\My Games\XCOM - Enemy Within\XComGame\Config
+2. Delete all files in that directory. If you don't have this directory, you have an unusual install and may need to reinstall XCOM from scratch.
+3. Start the game and see if it works. You may get a CTD on first restart; start it again.
+
+Second thing to try:
+1. Make sure these files are NOT present. They will cause CTDs on launch. If they are, delete them and start the game.
+{app}\XComGame\CookedPCConsole\XComGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk.uncompressed_size
+{app}\XComGame\CookedPCConsole\Engine.upk.uncompressed_size
+
+Third thing to try:
+1. In Steam, turn off cloud synchronization of your saves. 
+2. Also, if you have dozens of save files, deleting most of them has been reported to help speed up the game.
+3. For "LOADING USER SETTINGS" and related bugs:
+	a. Hex edit on XComEW.exe offset 016caf3c, changing it from 78 to 77. This may fix the problem, but it may also cause your game files to be overwritten with default vanilla files, wrecking Long War, and you'll have to switch it back.
+	b. If that doesn't help, play XCOM Long War in offline mode in Steam. This has been reported to work if you are getting periodic slowdowns during play, and sometimes addresses lockups during game load, including the "Loading User Settings" freeze.
+
+Fourth thing to try:
+1. Go to C:\Users\YOUR WINDOWS USERNAME\Documents\My Games\XCOM - Enemy Within\XComGame\SaveData
+2. Delete or rename the file profile.bin and start the game. You may have to re-set your graphics and other settings ingame after this.
+3. Start the game and see if it works.
+
+Fifth thing to try:
+1. Install Long War EW again, over the current copy. This may make the included uninstaller not work, so you'll have to verify back to vanilla via Steam to uninstall.
+
+Sixth thing to try:
+1. Verify your install back to vanilla via Steam, and start over.
+
+Seventh thing to try:
+We'll try to run down where the installer got borked.
+
+1. Check to make sure the upk files were in fact installed. They should have recent created and/or modified dates (as should all files listed above). The upk files should be much larger than vanilla, as well (as we distribute uncompressed files):
+
+{app}\XComGame\CookedPCConsole\XComGame.upk should be roughly 12,176 kb
+{app}\XComGame\CookedPCConsole\XComStrategyGame.upk should be roughly 4,870 kb
+{app}\XComGame\CookedPCConsole\UICollection_Strategy_SF.upk should be roughly 19,094 kb
+{app}\XComGame\CookedPCConsole\UICollection_Tactical_SF.upk (only 3.0 Beta 10 and later) should be roughly 6,539 kb
+{app}\XComGame\CookedPCConsole\UICollection_Common_SF.upk (only 3.0 Beta 14 and later) should be roughly 6,446 kb
+{app}\XComGame\CookedPCConsole\Engine.upk (only 3.0 Beta 14 and later) should be roughly 4,618 kb
+{app}\XComGame\CookedPCConsole\gfxInterception_SF.upk (3.0 Beta 14d and later) should be roughly 4,916 kb
+
+If they are *massively* smaller (like 1/2 to 1/3 the size), the mod didn't install correctly. If they are only a little different, then this isn't the problem.
+
+3. Check to make sure the config files (inis) were in fact installed. They should all have recent created and/or modified dates.
+
+4. If you are getting vanilla text, but seeing other expected Long War changes, check your localization files in the directory listed above. These control ingame text. Look for recent created and/or modified dates.
+
+5. If you found problems with any of these files and a verify-reinstall didn't help, alert johnnylump via PM on the Nexus, and he'll try to get you corrected versions.
+
+6. Check the date modified date on {app}\Binaries\Win32\XComEW.exe ... it should be the date you installed the mod. If not, the patcher didn't work. I can't help you there by sending you a good file -- distributing an exe crosses the line into piracy -- but you can duplicate the necessary hex changes yourself with a hex editor like HxD or Notepad++. Open the exe in an editor (and be very careful not to change anything else, and perform three HEX (not ANSI string) search-and-replaces:
+
+Find this:
+25 00 64 00 00 00 00 00 49 00 6e 00 69 00 56 00 65 00 72 00 73 00 69 00 6f 00 6e 00 00 00 00 00 2e 00 2e 00 5c 00 2e 00 2e 00 5c 00 58 00 43 00
+and replace with this:
+25 00 64 00 00 00 00 00 49 00 6e 00 69 00 56 00 65 00 72 00 73 00 69 00 6f 00 6e 00 00 00 00 00 2e 00 2e 00 5c 00 2e 00 2e 00 5c 00 57 00 43 00
+
+Then, find this:
+5c 00 58 00 43 00 6f 00 6d 00 47 00 61 00 6d 00 65 00 5c 00 43 00 6f 00 6e 00 66 00 69 00 67 00 5c 00 44 00 65 00 66 00 61 00 75 00 6c 00 74 00 4c 00 6f 00 61 00 64 00 6f 00 75 00 74 00 73 00 2e 00 69 00 6e 00 69 00 00 00 25 00 64 00
+and replace with this:
+5c 00 57 00 43 00 6f 00 6d 00 47 00 61 00 6d 00 65 00 5c 00 43 00 6f 00 6e 00 66 00 69 00 67 00 5c 00 44 00 65 00 66 00 61 00 75 00 6c 00 74 00 4c 00 6f 00 61 00 64 00 6f 00 75 00 74 00 73 00 2e 00 69 00 6e 00 69 00 00 00 25 00 64 00
+
+Finally, find this:
+70 00 72 00 6F 00 64 00 2E 00 78 00 63 00 6F 00 6D 00 2D 00 65 00 77 00 2E 00 66 00 69 00 72 00 61 00 78 00 69 00 73 00 2E 00 63 00 6F 00 6D 00
+and replace with this:
+70 00 72 00 6F 00 64 00 2E 00 78 00 63 00 6F 00 6D 00 2D 00 65 00 78 00 2E 00 66 00 69 00 72 00 61 00 78 00 69 00 73 00 2E 00 63 00 6F 00 6D 00
+
+7. Let us know if any of these steps work; it will help us direct other players to the solution faster.

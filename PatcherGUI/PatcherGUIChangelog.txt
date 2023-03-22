@@ -1,0 +1,47 @@
+PatcherGUI  by Wasteland Ghost aka wghost81 (wghost81@gmail.com).
+Version 7.3, 04/10/15
+
+Changelist:
+04/10/15 - v.7.3: made the program UAC aware;
+                  fixed bug with missing exe extension in config files under Windows for some cases;
+                  fixed bug with incorrect current backup path in PatcherGUI log window;
+                  fixed bug with DecompressLZO messing up file header for some of the files;
+                  added infinite loop detection to PatchUPK.
+03/27/15 - v.7.1: PatchUPK updated to v.7.1: fixed bug with parsing the last line of the modfile.
+03/23/15 - v.7.0: QOL changes (better install log layout, different backup folder tree for different install dirs);
+                  Decompress program changed to DecompressLZO (for cross-platform compatibility reasons);
+                  PatchUPK updated to v.7.0.
+10/03/14 - v.6.1: fixed a bug with path separators and spaces,
+                  PatchUPK updated to v.6.1.
+10/01/14 - v.6.0: added patch executable and batch install/uninstall functionality,
+                  PatchUPK updated to v.6.0.
+09/13/14 - v.5.2.4: PatchUPK updated to v.5.5.
+09/09/14 - v.5.2.3: PatchUPK updated to v.5.4 (see PatchUPK_Readme.txt).
+09/06/14 - v.5.2.2: PatchUPK updated to v.5.3 (see PatchUPK_Readme.txt).
+09/05/14 - v.5.2.1: PatchUPK updated to v.5.2 (see PatchUPK_Readme.txt).
+09/02/14 - v.5.2: Disable phoning home option added.
+08/31/14 - v.5.1: Cosmetic interface changes: help, status bar, separate log window.
+                  An ability to disable specific package hash check added.
+08/30/14 - v.5.0: PatchUPK updated to v.5.0 (see PatchUPK_Readme.txt).
+                  XSHAPE button (and program) removed.
+                  An option to remove hash checks added (see PatcherGUIReadme.txt).
+                  An option to enable direct ini editing added (see PatcherGUIReadme.txt).
+04/24/14 - v.4.0: PatchUPK updated to v.4.0 (see PatchUPK_Readme.txt).
+04/08/14 - v.3.2: PatchUPK updated to v.3.2 (see PatchUPK_Readme.txt).
+                  Added text fields and buttons tool-tips on mouse-over.
+                  Added XSHAPE button to recalculate hashes for XCOM:EU.
+04/01/14 - v.3.1: PatchUPK updated to v.3.1 (see PatchUPK_Readme.txt).
+                  Renamed "Install" button to "Apply" button.
+                  Added new log feature (see description below).
+03/18/14 - v.3.0: PatchUPK updated to v.3.0 (see PatchUPK_Readme.txt)
+02/19/14 - v.2.3: PatchUPK updated to v.2.4 (see PatchUPK_Readme.txt)
+02/06/14 - v.2.2: PatchUPK updated to v.2.3: fixed search-replace patching and object shrinking
+01/16/14 - v.2.1: PatchUPK updated to v.2.1.1: fixed return value for execution failed
+01/14/14 - v.2.1: PatchUPK updated to v.2.1
+01/12/14 - v.2.0: PatchUPK updated to v.2.0, compressed files detection improved. For PatchUPK changes see sample
+                  mod file and PatchUPK_Readme.txt
+12/21/13 - v.1.3: changed EXPAND_FUNCTION size check so it won't generate error when new size is equal to old size.
+12/19/13 - v.1.2: fixed problem with icon file path and spaces in full paths
+12/12/13 - v.1.1: some interface tweaks, new PatchUPK functionality (BYTE, FLOAT, INTEGER, multiple uninstall scripts)
+12/11/13 - v.1.0: with new PatchUPK functionality (uninstall script generation)
+12/11/13 - v.0.9: Initial Release

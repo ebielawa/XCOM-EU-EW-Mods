@@ -1,0 +1,35 @@
+MOD_NAME=QE Free Rotation
+AUTHOR=wghost81 aka Wasteland Ghost, original implementation by bokauk
+DESCRIPTION=Enables camera free rotation while holding Q or E key
+
+Use "Default Camera Yaw Angle" mod to set smaller yaw angle (about 10 degrees is enough).
+
+Version: 1.0
+
+Compatible with XCOM Enemy Within versions:
+ - all
+
+
+UPK_FILE=XComGame.upk
+
+OBJECT=XComTacticalInput.ActiveUnit_Moving.DPad_Right
+REL_OFFSET=0x168
+BYTE=0x26
+
+OBJECT=XComTacticalInput.ActiveUnit_Moving.DPad_Left
+REL_OFFSET=0x168
+BYTE=0x26
+
+OBJECT=XComTacticalInput.ActiveUnit_Firing.DPad_Right
+REL_OFFSET=0x3D
+BYTE=0x26
+
+OBJECT=XComTacticalInput.ActiveUnit_Firing.DPad_Left
+REL_OFFSET=0x3D
+BYTE=0x26
+
+OBJECT=XGAction_Fire.UpdateAimingView
+REL_OFFSET=0x3C8
+BYTE=0x84
+
+{ end of mod file }

@@ -37,7 +37,7 @@ Several changes have been made to multiple config files. The most notable is `de
 
 ### `defaltgamecore.ini`
 **Tactial**
-- Cyberdisks have +2 DR
+- Cyberdisks have +1 DR
 - Mechtoids have +2 DR
 - Sectopods have +3 DR
 - XCOM default squad size increased by 2 (for a starting squad size of 8)

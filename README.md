@@ -81,6 +81,7 @@ Several changes have been made to multiple config files. The most notable is `de
   - To compensate for this, UFO Power Sources and UFO Flight Computers have a 30% and 35% chance to survive from crashes (up 10% each)
   - The EMP Cannon increases this chance by 25%.
 - Fission Generators provide 12 power and cost $180
+- Alien Research slightly sped up on Brutal (115%, up from 110%)
 
 **Miscellaneous**
 - Soldier country probabilities have been more realistically weighted (see [here](https://www.reddit.com/r/Xcom/comments/2y1spu/lw_beta_15realistic_soldier_country_probabilities/) for more info)

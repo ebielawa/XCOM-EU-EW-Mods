@@ -1,0 +1,17 @@
+UPK_FILE=XcomStrategyGame.upk
+
+OBJECT=XGStrategySoldier.IsASpecialSoldier
+
+[BEFORE_HEX]
+
+//if(m_kSoldier.strNickName == "Chilong")
+    //return true;
+
+07 80 01 7A 35 F0 F8 FF FF A5 F9 FF FF 00 01 01 60 53 00 00 1F 43 68 69 6C 6F 6E 67 00 16 04 27
+
+[AFTER_HEX]
+
+//if(m_kSoldier.strNickName == "Chilong")
+    //return false;
+
+07 80 01 7A 35 F0 F8 FF FF A5 F9 FF FF 00 01 01 60 53 00 00 1F 43 68 69 6C 6F 6E 67 00 16 04 28

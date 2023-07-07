@@ -1,0 +1,18 @@
+UPK_FILE=XcomStrategyGame.upk
+
+OBJECT=XGCustomizeUI.UpdateMainMenu
+
+[BEFORE_HEX]
+
+//Last value in the hex is the integer for the minimum rank to activate customizable nicknames.  
+//Normally 03 for CPL
+//kOption.iState = ((m_kSoldier.GetRank() >= 3) ? 0 : 1);
+
+45 99 19 01 39 2C 00 00 0A 00 74 53 00 00 00 1B 16 13 00 00 00 00 00 00 16 2C 03
+
+[AFTER_HEX]
+
+//01 is SPEC
+//kOption.iState = ((m_kSoldier.GetRank() >= 1) ? 0 : 1);
+
+45 99 19 01 39 2C 00 00 0A 00 74 53 00 00 00 1B 16 13 00 00 00 00 00 00 16 2C 01

@@ -1,0 +1,20 @@
+MOD_NAME=C:\Users\ewbie\Documents\XCOM-EU-EW-Mods\PatcherGUI\Mods\Customize_Unique_1.txt uninstall script
+AUTHOR=PatchUPK
+DESCRIPTION=This is automatically generated uninstall script. Do not change anything!
+
+UPK_FILE=xcomstrategygame.upk
+
+OBJECT=XGStrategySoldier.IsASpecialSoldier
+
+REL_OFFSET=272
+
+[MODDED_HEX]
+07 80 01 7A 35 F0 F8 FF FF A5 F9 FF FF 00 01 01 
+60 53 00 00 1F 54 68 65 20 47 65 6E 65 72 61 6C 
+00 16 04 27 
+
+
+
+
+
+{ backup script end }

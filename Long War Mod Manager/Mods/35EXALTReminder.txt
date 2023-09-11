@@ -1,0 +1,844 @@
+/*
+EXALT Reminder Mod for Long War - eclipse666
+
+I often have trouble remembering when to scan for EXALT so I made this mod.  
+It will create "Scan for EXALT" reminders in the event list after each covert extraction and unsuccessful intel scan.
+By default you will be reminded to scan 9 days after each covert extraction, and 7 days after an unsuccessful intel scan.
+You can change these settings below. If you want to change the text that's displayed search for "Scan for EXALT" below and
+change each occurrence.
+
+Install with PatcherGUI 7.1 or better
+
+1.0a Initial release
+1.0b Updated to take Dynamic war settings into account. Reminder days are adjusted if DW < 1
+
+*/
+
+UPK_FILE = XComStrategyGame.upk
+OBJECT = XGHeadQuarters.OrderStaff : AUTO
+
+/************** CHANGE REMINDER SETTINGS HERE *******************/
+// Create a reminder this many days after a covert extraction (default 9):
+ALIAS=DaysAfterCovertOp:<%b 9>
+
+// Create a reminder this many days after a failed intel scan (default 7):
+ALIAS=DaysAfterFailedScan:<%b 7>
+/****************************************************************/
+
+[REPLACEMENT_CODE]
+
+07 [@notexaltreminder]
+  98 // <=  
+    00 <.iQuantity>
+	2c 00
+  16
+
+0F 35 <XGStrategyActorNativeBase.TStaffOrder.iStaffType> <XGStrategyActorNativeBase.TStaffOrder> 00 01 00 <.kOrder> 00 <.iType> 
+0F 35 <XGStrategyActorNativeBase.TStaffOrder.iNumStaff> <XGStrategyActorNativeBase.TStaffOrder> 00 01 00 <.kOrder> 2c 00 
+0F 35 <XGStrategyActorNativeBase.TStaffOrder.iHours> <XGStrategyActorNativeBase.TStaffOrder> 00 01 00 <.kOrder> 
+  90 // *
+	2c <%b 24> // 24 hrs
+	
+	  45 // ?
+		9a // == 
+		  00 <.iQuantity>
+		  2c 00
+		16
+		[@]
+		(
+		  // after covert op
+		  2c <!DaysAfterCovertOp>
+		)
+		[@]
+		(
+		  // after failed scan
+		  2c <!DaysAfterFailedScan>
+		)
+  16
+
+// dynamic war scaling...  
+    07 [@notdw] 1B <IsOptionEnabled> 24 09 16 
+		07 [@notdw] B0 12 20 <XComGame.XGTacticalGameCore> [@] <XComGame.XGTacticalGameCoreNativeBase.SW_MARATHON> 00 ( 02 <XComGame.XGTacticalGameCoreNativeBase.SW_MARATHON> ) 38 3F 26 16 
+			A0 
+			  35 <XGStrategyActorNativeBase.TStaffOrder.iHours> <XGStrategyActorNativeBase.TStaffOrder> 00 01 00 <.kOrder> 
+			  12 20 <XComGame.XGTacticalGameCore> [@] <XComGame.XGTacticalGameCoreNativeBase.SW_MARATHON> 00 ( 02 <XComGame.XGTacticalGameCoreNativeBase.SW_MARATHON> ) 
+			16 
+
+[#notdw]
+  
+06 [@carryon]
+
+[#notexaltreminder]
+
+/*(0x0000/0x0000)*/ 07 [@label_0x0081] 82 81 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.IsConsoleBuild.ReturnValue> 00 ( 1C <Engine.WorldInfo.IsConsoleBuild> 24 01 16 ) 16 18 [@] ( 81 19 01 <Engine.Actor.WorldInfo> [@] <Engine.WorldInfo.IsConsoleBuild.ReturnValue> 00 ( 1C <Engine.WorldInfo.IsConsoleBuild> 24 02 16 ) 16 16 ) 
+/*(0x004E/0x0036)*/ 	19 1B <GetRecapSaveData> 16 [@] <NullRef> 00 ( 1B <RecordEvent> 1B <RecordHiredAdditionalSoldiers> 00 <.iQuantity> 16 16 ) 
+/*(0x0081/0x0061)*/ [#label_0x0081]
+/*(0x0081/0x0061)*/ 1B <AddResource> 24 00 90 8F 35 <XGStrategyActorNativeBase.TItem.iCash> <XGStrategyActorNativeBase.TItem> 01 00 1B <STAFF> 00 <.iType> 16 16 00 <.iQuantity> 16 4A 16 
+/*(0x00C1/0x0091)*/ 07 [@label_0x00E5] 9A 00 <.iType> 26 16 
+/*(0x00D0/0x009C)*/ 	1B <STAT_AddStat> 24 0D 00 <.iQuantity> 16 
+/*(0x00E5/0x00AD)*/ [#label_0x00E5]
+/*(0x00E5/0x00AD)*/ 0F 00 <.I> 25 
+/*(0x00F0/0x00B4)*/ [#label_0x00F0]
+/*(0x00F0/0x00B4)*/ 07 [@label_0x01D0] 96 00 <.I> 36 01 <@m_arrHiringOrders> 16 
+/*(0x0108/0x00C4)*/ 	07 [@label_0x01C2] 82 9A 35 <XGStrategyActorNativeBase.TStaffOrder.iStaffType> <XGStrategyActorNativeBase.TStaffOrder> 00 00 10 00 <.I> 01 <@m_arrHiringOrders> 00 <.iType> 16 18 [@] ( 9A 35 <XGStrategyActorNativeBase.TStaffOrder.iHours> <XGStrategyActorNativeBase.TStaffOrder> 00 00 10 00 <.I> 01 <@m_arrHiringOrders> 35 <XGStrategyActorNativeBase.TItem.iHours> <XGStrategyActorNativeBase.TItem> 01 00 1B <STAFF> 00 <.iType> 16 16 16 ) 
+/*(0x018F/0x011B)*/ 		A1 35 <XGStrategyActorNativeBase.TStaffOrder.iNumStaff> <XGStrategyActorNativeBase.TStaffOrder> 00 01 10 00 <.I> 01 <@m_arrHiringOrders> 00 <.iQuantity> 16 
+/*(0x01C0/0x0138)*/ 		04 0B 
+/*(0x01C2/0x013A)*/ 	[#label_0x01C2]
+/*(0x01C2/0x013A)*/ 	A3 00 <.I> 16 
+/*(0x01CD/0x0141)*/ 	06 [@label_0x00F0] 
+/*(0x01D0/0x0144)*/ [#label_0x01D0]
+
+/*(0x01D0/0x0144)*/ 0F 35 <XGStrategyActorNativeBase.TStaffOrder.iStaffType> <XGStrategyActorNativeBase.TStaffOrder> 00 01 00 <.kOrder> 00 <.iType> 
+/*(0x01F6/0x015A)*/ 0F 35 <XGStrategyActorNativeBase.TStaffOrder.iNumStaff> <XGStrategyActorNativeBase.TStaffOrder> 00 01 00 <.kOrder> 00 <.iQuantity> 
+/*(0x021C/0x0170)*/ 0F 35 <XGStrategyActorNativeBase.TStaffOrder.iHours> <XGStrategyActorNativeBase.TStaffOrder> 00 01 00 <.kOrder> 35 <XGStrategyActorNativeBase.TItem.iHours> <XGStrategyActorNativeBase.TItem> 01 00 1B <STAFF> 00 <.iType> 16 
+
+[#carryon]
+/*(0x025F/0x019B)*/ 55 01 <@m_arrHiringOrders> [@] ( 00 <.kOrder> 16 ) 
+/*(0x0275/0x01A9)*/ 04 0B 
+/*(0x0277/0x01AB)*/ 53 
+
+
+UPK_FILE = XComStrategyGame.upk
+OBJECT = UIDebrief.ShowCovertOpDebrief : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 1B <RealizeLabels> 16 
+/*(0x000A/0x000A)*/ 19 19 2E <Class.XComHQPresentationLayer> 01 <Engine.Actor.Owner> [@] <XComHQPresentationLayer.GetStrategyHUD.ReturnValue> 00 ( 1B <GetStrategyHUD> 16 ) [@] <NullRef> 00 ( 1B <ClearButtonHelp> 16 ) 
+/*(0x0048/0x0038)*/ 19 19 2E <Class.XComHQPresentationLayer> 01 <Engine.Actor.Owner> [@] <XComHQPresentationLayer.GetStrategyHUD.ReturnValue> 00 ( 1B <GetStrategyHUD> 16 ) [@] <NullRef> 00 ( 1B <Hide> 16 ) 
+/*(0x0086/0x0066)*/ 0F 01 <@m_iCurrentSelection> 1D <%i -1> 
+/*(0x0095/0x0071)*/ 0F 00 <.Soldier> 35 <XGDebriefUI.TCovertOpDebrief.covertSoldier> <XGDebriefUI.TCovertOpDebrief> 00 00 19 01 <@m_kMgr> [@] <XGDebriefUI.m_kCovertOpDebrief> 00 ( 01 <XGDebriefUI.m_kCovertOpDebrief> ) 
+/*(0x00D0/0x0094)*/ 0F 00 <.portraitPath> 35 <XComGame.XGTacticalScreenMgr.TImage.strPath> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.imgSoldier> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x0109/0x00B5)*/ 0F 00 <.flagImageLabel> 35 <XComGame.XGTacticalScreenMgr.TImage.strPath> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.imgFlag> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x0142/0x00D6)*/ 0F 00 <.rankIconLabel> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetRankLabel.ReturnValue> 00 ( 1B <GetRankLabel> 38 3A 35 <XGDebriefUI.TSoldierDebriefItem.m_eSoldierRanks> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 2D 35 <XGDebriefUI.TSoldierDebriefItem.m_bIsTank> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 16 ) 
+/*(0x01A6/0x0116)*/ 0F 00 <.classIconLabel> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetClassLabel.ReturnValue> 00 ( 1B <GetClassLabel> 38 3A 35 <XGDebriefUI.TSoldierDebriefItem.m_eSoldierClass> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 2D 35 <XGDebriefUI.TSoldierDebriefItem.m_bIsPsiSoldier> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 2D 35 <XGDebriefUI.TSoldierDebriefItem.m_bHasGeneMod> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 16 ) 
+/*(0x0227/0x0167)*/ 0F 00 <.nameStr> 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.txtName> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x0260/0x0188)*/ 0F 00 <.NickName> 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TSoldierPromotionItem.txtNickname> <XGDebriefUI.TSoldierPromotionItem> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.kPromotion> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x02AC/0x01B4)*/ 0F 00 <.killsOverall> 38 4A 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.txtKills> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x02E7/0x01D7)*/ 0F 00 <.killsThisMission> 1D <%i -1> 
+/*(0x02F6/0x01E2)*/ 0F 00 <.Missions> 38 4A 35 <XComGame.XGTacticalScreenMgr.TLabeledText.StrValue> <XComGame.XGTacticalScreenMgr.TLabeledText> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.txtMissions> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x0331/0x0205)*/ 0F 00 <.promoteRank> 38 3A 35 <XGDebriefUI.TSoldierDebriefItem.m_eSoldierRanks> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x0359/0x021D)*/ 0F 00 <.promoteText> 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TSoldierPromotionItem.txtPromotion> <XGDebriefUI.TSoldierPromotionItem> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.kPromotion> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x03A5/0x0249)*/ 0F 00 <.classPromoteText> 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TSoldierPromotionItem.txtClassPromotion> <XGDebriefUI.TSoldierPromotionItem> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.kPromotion> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x03F1/0x0275)*/ 14 2D 00 <.isPsiPromoted> 2D 35 <XGDebriefUI.TSoldierDebriefItem.m_bPsiPromoted> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 
+/*(0x0419/0x028D)*/ 0F 00 <.Status> 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetHTMLColoredText.ReturnValue> 00 ( 1B <GetHTMLColoredText> EB 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.txtStatus> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 16 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TSoldierDebriefItem.txtStatus> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 4A 16 ) 
+/*(0x04A3/0x02E3)*/ 07 [@label_0x0529] 84 2D 35 <XGDebriefUI.TSoldierDebriefItem.m_bPsiPromoted> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 18 [@] ( 2D 35 <XGDebriefUI.TSoldierDebriefItem.m_bWasPromoted> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 16 ) 
+/*(0x04E5/0x030D)*/ 	07 [@label_0x0529] 82 9A 01 <@m_iCurrentSelection> 1D <%i -1> 16 18 [@] ( 81 19 01 <XComGame.UI_FxsPanel.manager> [@] <XComGame.UIFxsMovie.IsMouseActive.ReturnValue> 00 ( 1B <IsMouseActive> 16 ) 16 16 ) 
+/*(0x051E/0x033A)*/ 		0F 01 <@m_iCurrentSelection> 25 
+/*(0x0529/0x0341)*/ [#label_0x0529]
+/*(0x0529/0x0341)*/ 1B <AS_SetCovertSoldier> 00 <.portraitPath> 00 <.flagImageLabel> 00 <.rankIconLabel> 00 <.classIconLabel> 00 <.nameStr> 00 <.NickName> 00 <.killsOverall> 00 <.killsThisMission> 00 <.Missions> 00 <.promoteRank> 00 <.promoteText> 00 <.classPromoteText> 00 <.Status> 2D 35 <XGDebriefUI.TSoldierDebriefItem.m_isDead> <XGDebriefUI.TSoldierDebriefItem> 00 00 00 <.Soldier> 2D 00 <.isPsiPromoted> 16 
+/*(0x05CF/0x03A3)*/ 07 [@label_0x05F4] 9A 01 <@m_iCurrentSelection> 1D <%i -1> 16 
+/*(0x05E2/0x03B2)*/ 	1B <AS_SetSoldierSelection> 1D <%i -1> 16 
+/*(0x05F1/0x03C1)*/ 	06 [@label_0x0623] 
+/*(0x05F4/0x03C4)*/ [#label_0x05F4]
+/*(0x05F4/0x03C4)*/ 07 [@label_0x0623] 81 19 01 <XComGame.UI_FxsPanel.manager> [@] <XComGame.UIFxsMovie.IsMouseActive.ReturnValue> 00 ( 1B <IsMouseActive> 16 ) 16 
+/*(0x0618/0x03E0)*/ 	1B <AS_SetSoldierSelection> 25 16 
+/*(0x0623/0x03EB)*/ [#label_0x0623]
+/*(0x0623/0x03EB)*/ 1B <AS_SetCovertInfo> 2D 35 <XGDebriefUI.TCovertOpDebrief.bSuccessful> <XGDebriefUI.TCovertOpDebrief> 00 00 19 01 <@m_kMgr> [@] <XGDebriefUI.m_kCovertOpDebrief> 00 ( 01 <XGDebriefUI.m_kCovertOpDebrief> ) 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TCovertOpDebrief.txtFeedback> <XGDebriefUI.TCovertOpDebrief> 00 00 19 01 <@m_kMgr> [@] <XGDebriefUI.m_kCovertOpDebrief> 00 ( 01 <XGDebriefUI.m_kCovertOpDebrief> ) 70 70 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TCovertOpDebrief.txtClueTitle> <XGDebriefUI.TCovertOpDebrief> 00 00 19 01 <@m_kMgr> [@] <XGDebriefUI.m_kCovertOpDebrief> 00 ( 01 <XGDebriefUI.m_kCovertOpDebrief> ) 1F <%t "
+"> 16 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGDebriefUI.TCovertOpDebrief.txtClueBody> <XGDebriefUI.TCovertOpDebrief> 00 00 19 01 <@m_kMgr> [@] <XGDebriefUI.m_kCovertOpDebrief> 00 ( 01 <XGDebriefUI.m_kCovertOpDebrief> ) 16 16 
+/*(0x0732/0x0492)*/ 1B <AS_ShowCovertOpDebrief> 16 
+
+// add a scan reminder after each covert op
+
+19 19 19 2E <Class.XComHeadquartersGame> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 
+  ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 
+  ( 01 <Engine.WorldInfo.Game> ) [@] <XComHeadquartersGame.GetGameCore.ReturnValue> 00 
+  ( 1B <GetGameCore> 16 ) [@] <XGStrategy.GetHQ.ReturnValue> 00 
+  ( 1B <GetHQ> 16 ) [@] <NullRef> 00 
+  ( 1B <OrderStaff> 26 2c 00 16 ) // hire 0 soldiers 
+
+/*(0x073C/0x049C)*/ 04 0B 
+/*(0x073E/0x049E)*/ 53 
+
+
+//This script was generated by HexToPseudoCode decompiler for use with PatchUPK/PatcherGUI tool
+UPK_FILE = XComStrategyGame.upk
+OBJECT = XGMissionControlUI.BuildEventOptions : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 0F 00 <.kTag> 2E <XComGame.XGParamTag> 19 19 2E <XComGame.XComEngine> 12 20 <Engine.Engine> [@] <Engine.Engine.GetEngine.ReturnValue> 00 ( 1C <Engine.Engine.GetEngine> 16 ) [@] <XComGame.XComEngine.LocalizeContext> 00 ( 01 <XComGame.XComEngine.LocalizeContext> ) [@] <XComGame.XGLocalizeContext.FindTag.ReturnValue> 00 ( 1B <FindTag> 1F <%t "XGParam"> 16 ) 
+/*(0x006F/0x004B)*/ 0F 00 <.iEvent> 25 
+/*(0x007A/0x0052)*/ [#label_0x007A]
+/*(0x007A/0x0052)*/ 07 [@label_0x1FE6] 96 00 <.iEvent> 36 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 
+/*(0x00A5/0x006D)*/ 	0F 00 <.iDays> 91 35 <XGStrategyActorNativeBase.THQEvent.iHours> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 2C 18 16 
+/*(0x00EC/0x0098)*/ 	07 [@label_0x013B] 97 FD 35 <XGStrategyActorNativeBase.THQEvent.iHours> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 2C 18 16 25 16 
+/*(0x012F/0x00C3)*/ 		A1 00 <.iDays> 26 16 
+/*(0x013B/0x00CB)*/ 	[#label_0x013B]
+/*(0x013B/0x00CB)*/ 	07 [@label_0x021D] 82 82 1B <ISCONTROLLED> 16 18 [@] ( 9A 38 3A 35 <XGStrategyActorNativeBase.THQEvent.EEvent> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 38 3A 24 00 16 16 ) 18 [@] ( 9A 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 26 16 16 ) 
+/*(0x01CF/0x012F)*/ 		0F 00 <.iDays> 93 92 01 <XGStrategyActorNativeBase.START_DAY> 2C 07 16 19 19 1B <GEOSCAPE> 16 [@] <XGGeoscape.m_kDateTime> 00 ( 01 <XGGeoscape.m_kDateTime> ) [@] <XGDateTime.GetDay.ReturnValue> 00 ( 1B <GetDay> 16 ) 16 
+/*(0x021D/0x0169)*/ 	[#label_0x021D]
+/*(0x021D/0x0169)*/ 	07 [@label_0x0237] 96 00 <.iDays> 25 16 
+/*(0x022C/0x0174)*/ 		0F 00 <.iDays> 25 
+/*(0x0237/0x017B)*/ 	[#label_0x0237]
+/*(0x0237/0x017B)*/ 	05 <XGStrategyActorNativeBase.THQEvent.EEvent> 00 35 <XGStrategyActorNativeBase.THQEvent.EEvent> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 
+/*(0x027A/0x01A2)*/ 	0A [@label_0x03EB] 24 00 
+/*(0x027F/0x01A7)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 25 
+/*(0x029D/0x01B9)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 05 
+/*(0x02BC/0x01CC)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DB 
+/*(0x02EE/0x01EA)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 35 <XGStrategyActorNativeBase.TTech.strName> <XGStrategyActorNativeBase.TTech> 01 00 1B <TECH> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 
+/*(0x0374/0x023C)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x03AF/0x025F)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 00 24 C8 24 00 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x03E8/0x0288)*/ 		06 [@label_0x1FAF] 
+/*(0x03EB/0x028B)*/ 	[#label_0x03EB]
+/*(0x03EB/0x028B)*/ 	0A [@label_0x061C] 24 01 
+/*(0x03F0/0x0290)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 26 
+/*(0x040E/0x02A2)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x042D/0x02B5)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DC 
+/*(0x045F/0x02D3)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 35 <XGStrategyActorNativeBase.TItem.strName> <XGStrategyActorNativeBase.TItem> 01 00 1B <Item> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 4A 16 
+/*(0x04E6/0x0326)*/ 		07 [@label_0x05A5] 97 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 26 16 
+/*(0x0525/0x034D)*/ 			0E <Core.Object.AtEqual_StrStr.ReturnValue> 61 43 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 70 70 1F <%t "("> 38 53 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 1F <%t ")"> 16 16 
+/*(0x05A5/0x039D)*/ 		[#label_0x05A5]
+/*(0x05A5/0x039D)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x05E0/0x03C0)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 C8 24 64 24 00 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x0619/0x03E9)*/ 		06 [@label_0x1FAF] 
+/*(0x061C/0x03EC)*/ 	[#label_0x061C]
+/*(0x061C/0x03EC)*/ 	0A [@label_0x078F] 24 02 
+/*(0x0621/0x03F1)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x0640/0x0404)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 03 
+/*(0x065F/0x0417)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DC 
+/*(0x0691/0x0435)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 35 <XGStrategyActorNativeBase.TFacility.strName> <XGStrategyActorNativeBase.TFacility> 01 00 1B <Facility> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 4A 16 
+/*(0x0718/0x0488)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x0753/0x04AB)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 64 24 64 24 64 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x078C/0x04D4)*/ 		06 [@label_0x1FAF] 
+/*(0x078F/0x04D7)*/ 	[#label_0x078F]
+/*(0x078F/0x04D7)*/ 	0A [@label_0x0902] 24 03 
+/*(0x0794/0x04DC)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 03 
+/*(0x07B3/0x04EF)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x07D2/0x0502)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C 6A 
+/*(0x0804/0x0520)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 35 <XGStrategyActorNativeBase.TFoundryTech.strName> <XGStrategyActorNativeBase.TFoundryTech> 01 00 1B <FTECH> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 4A 16 
+/*(0x088B/0x0573)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x08C6/0x0596)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 C8 24 C8 24 00 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x08FF/0x05BF)*/ 		06 [@label_0x1FAF] 
+/*(0x0902/0x05C2)*/ 	[#label_0x0902]
+
+
+/*(0x0902/0x05C2)*/ 	0A [@label_0x0AE6] 24 05 
+/*(0x0907/0x05C7)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 05 
+/*(0x0926/0x05DA)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x0945/0x05ED)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DE 
+/*(0x0977/0x060B)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 01 <@m_strNewSoldierEvent> 
+/*(0x09B0/0x062C)*/ 		
+
+// set additional data to hold number of soldiers ordered. Will be used to generate the EXALT icon when displaying this event
+0F 
+  35 <XGMissionControlUI.TMCEvent.iAdditionalData> <@TMCEvent> 00 01 00 <.kOption> 
+  
+  35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 
+  35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 
+  
+07 [@label_0x0A6F] 
+  99 // >= 
+    35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 
+	35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 
+	
+	26 
+  16 
+    0E <Core.Object.AtEqual_StrStr.ReturnValue> 61 43 
+	35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 
+	  70 
+	    70 
+		  1F <%t "("> 38 53 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 1F <%t ")"> 16 16 
+
+06 [@skip]
+
+[#label_0x0A6F]
+			
+// a "0" soldier hire is an exalt reminder			
+
+// Change the text to "Scan for EXALT"
+0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 
+  1f <%t "Scan for EXALT">
+
+// change the image to exalt
+0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 
+  2C <%b 222> 
+						   
+
+[#skip]
+
+/*(0x0A6F/0x06A3)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x0AAA/0x06C6)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 00 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x0AE3/0x06EF)*/ 		06 [@label_0x1FAF] 
+/*(0x0AE6/0x06F2)*/ 	[#label_0x0AE6]
+/*(0x0AE6/0x06F2)*/ 	0A [@label_0x0D62] 24 06 
+/*(0x0AEB/0x06F7)*/ 		0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Continent> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGContinent.GetName.ReturnValue> 00 ( 1B <GetName> 16 ) 
+/*(0x0B63/0x0747)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 06 
+/*(0x0B82/0x075A)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x0BA1/0x076D)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C D8 
+/*(0x0BD3/0x078B)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelNewInterceptors> 4A 16 ) 
+/*(0x0C2C/0x07C4)*/ 		07 [@label_0x0CEB] 97 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 26 16 
+/*(0x0C6B/0x07EB)*/ 			0E <Core.Object.AtEqual_StrStr.ReturnValue> 61 43 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 70 70 1F <%t "("> 38 53 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 1F <%t ")"> 16 16 
+/*(0x0CEB/0x083B)*/ 		[#label_0x0CEB]
+/*(0x0CEB/0x083B)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x0D26/0x085E)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 00 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x0D5F/0x0887)*/ 		06 [@label_0x1FAF] 
+/*(0x0D62/0x088A)*/ 	[#label_0x0D62]
+/*(0x0D62/0x088A)*/ 	0A [@label_0x0EEE] 24 0D 
+/*(0x0D67/0x088F)*/ 		0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Country> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 
+/*(0x0DE0/0x08E0)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 0D 
+/*(0x0DFF/0x08F3)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x0E1E/0x0906)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelSatOperational> 4A 16 ) 
+/*(0x0E77/0x093F)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x0EB2/0x0962)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 00 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x0EEB/0x098B)*/ 		06 [@label_0x1FAF] 
+/*(0x0EEE/0x098E)*/ 	[#label_0x0EEE]
+/*(0x0EEE/0x098E)*/ 	0A [@label_0x10AB] 24 07 
+/*(0x0EF3/0x0993)*/ 		0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Continent> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGContinent.GetName.ReturnValue> 00 ( 1B <GetName> 16 ) 
+/*(0x0F6B/0x09E3)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 07 
+/*(0x0F8A/0x09F6)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x0FA9/0x0A09)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C D8 
+/*(0x0FDB/0x0A27)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelShipTransfer> 4A 16 ) 
+/*(0x1034/0x0A60)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x106F/0x0A83)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 00 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x10A8/0x0AAC)*/ 		06 [@label_0x1FAF] 
+/*(0x10AB/0x0AAF)*/ 	[#label_0x10AB]
+/*(0x10AB/0x0AAF)*/ 	0A [@label_0x12BE] 24 0C 
+/*(0x10B0/0x0AB4)*/ 		0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Continent> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGContinent.GetName.ReturnValue> 00 ( 1B <GetName> 16 ) 
+/*(0x1128/0x0B04)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iAdditionalData> <@TMCEvent> 00 01 00 <.kOption> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 
+/*(0x117E/0x0B36)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 0C 
+/*(0x119D/0x0B49)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x11BC/0x0B5C)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C D8 
+/*(0x11EE/0x0B7A)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelFCRequest> 4A 16 ) 
+/*(0x1247/0x0BB3)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x1282/0x0BD6)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 00 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x12BB/0x0BFF)*/ 		06 [@label_0x1FAF] 
+/*(0x12BE/0x0C02)*/ 	[#label_0x12BE]
+/*(0x12BE/0x0C02)*/ 	0A [@label_0x192B] 24 08 
+/*(0x12C3/0x0C07)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 08 
+/*(0x12E2/0x0C1A)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x1301/0x0C2D)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DE 
+/*(0x1333/0x0C4B)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 01 <@m_strLabelPsiTesting> 
+/*(0x136C/0x0C6C)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x13A7/0x0C8F)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 C8 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x13E0/0x0CB8)*/ 		07 [@label_0x1928] 77 2E <Class.XComHeadquartersCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) 2A 16 
+/*(0x140E/0x0CD6)*/ 			07 [@label_0x1928] 19 2E <Class.XComHeadquartersCheatManager> 19 1C <Engine.Actor.GetALocalPlayerController> 16 [@] <Engine.PlayerController.CheatManager> 00 ( 01 <Engine.PlayerController.CheatManager> ) [@] <XComHeadquartersCheatManager.bDebugAIEvents> 00 ( 2D 01 <XComHeadquartersCheatManager.bDebugAIEvents> ) 
+/*(0x144F/0x0CFF)*/ 				07 [@label_0x1928] 9B 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 25 16 
+/*(0x148E/0x0D26)*/ 					0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 25 
+/*(0x14BF/0x0D43)*/ 					05 <XGStrategyActorNativeBase.THQEvent.iData> 00 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 
+/*(0x1502/0x0D6A)*/ 					0A [@label_0x15A4] 2C 03 
+/*(0x1507/0x0D6F)*/ 						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> A8 1F <%t "UFO Crash in"> 19 1B <Country> 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 16 
+/*(0x15A1/0x0DD9)*/ 						06 [@label_0x1928] 
+/*(0x15A4/0x0DDC)*/ 					[#label_0x15A4]
+/*(0x15A4/0x0DDC)*/ 					0A [@label_0x1645] 2C 0C 
+/*(0x15A9/0x0DE1)*/ 						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> A8 1F <%t "OVERSEER in"> 19 1B <Country> 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 16 
+/*(0x1642/0x0E4A)*/ 						06 [@label_0x1928] 
+/*(0x1645/0x0E4D)*/ 					[#label_0x1645]
+/*(0x1645/0x0E4D)*/ 					0A [@label_0x16EF] 2C 07 
+/*(0x164A/0x0E52)*/ 						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> A8 1F <%t "Hunting Satellite in"> 19 1B <Country> 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 16 
+/*(0x16EC/0x0EC4)*/ 						06 [@label_0x1928] 
+/*(0x16EF/0x0EC7)*/ 					[#label_0x16EF]
+/*(0x16EF/0x0EC7)*/ 					0A [@label_0x1793] 2C 04 
+/*(0x16F4/0x0ECC)*/ 						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> A8 1F <%t "UFO Landing in"> 19 1B <Country> 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 16 
+/*(0x1790/0x0F38)*/ 						06 [@label_0x1928] 
+/*(0x1793/0x0F3B)*/ 					[#label_0x1793]
+/*(0x1793/0x0F3B)*/ 					0A [@label_0x1835] 2C 02 
+/*(0x1798/0x0F40)*/ 						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> A8 1F <%t "Abduction in"> 19 1B <Country> 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 16 
+/*(0x1832/0x0FAA)*/ 						06 [@label_0x1928] 
+/*(0x1835/0x0FAD)*/ 					[#label_0x1835]
+/*(0x1835/0x0FAD)*/ 					0A [@label_0x18D4] 2C 09 
+/*(0x183A/0x0FB2)*/ 						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> A8 1F <%t "Terror in"> 19 1B <Country> 35 <XGStrategyActorNativeBase.THQEvent.iData2> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 16 
+/*(0x18D1/0x1019)*/ 						06 [@label_0x1928] 
+/*(0x18D4/0x101C)*/ 					[#label_0x18D4]
+/*(0x18D4/0x101C)*/ 					0A [@label_0x1925] 2C 0B 
+/*(0x18D9/0x1021)*/ 						0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 1F <%t "Funding Council Mission"> 
+/*(0x1922/0x1056)*/ 						06 [@label_0x1928] 
+/*(0x1925/0x1059)*/ 					[#label_0x1925]
+/*(0x1925/0x1059)*/ 					0A FF FF 
+/*(0x1928/0x105C)*/ 		[#label_0x1928]
+/*(0x1928/0x105C)*/ 		06 [@label_0x1FAF] 
+/*(0x192B/0x105F)*/ 	[#label_0x192B]
+/*(0x192B/0x105F)*/ 	0A [@label_0x1A50] 24 09 
+/*(0x1930/0x1064)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 09 
+/*(0x194F/0x1077)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x196E/0x108A)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DE 
+/*(0x19A0/0x10A8)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 01 <@m_strLabelGeneModification> 
+/*(0x19D9/0x10C9)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x1A14/0x10EC)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 C8 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x1A4D/0x1115)*/ 		06 [@label_0x1FAF] 
+/*(0x1A50/0x1118)*/ 	[#label_0x1A50]
+/*(0x1A50/0x1118)*/ 	0A [@label_0x1B75] 24 0A 
+/*(0x1A55/0x111D)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 0A 
+/*(0x1A74/0x1130)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x1A93/0x1143)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DE 
+/*(0x1AC5/0x1161)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 01 <@m_strLabelCyberneticModification> 
+/*(0x1AFE/0x1182)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x1B39/0x11A5)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 C8 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x1B72/0x11CE)*/ 		06 [@label_0x1FAF] 
+/*(0x1B75/0x11D1)*/ 	[#label_0x1B75]
+/*(0x1B75/0x11D1)*/ 	0A [@label_0x1D30] 24 0B 
+/*(0x1B7A/0x11D6)*/ 		0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 35 <XGStrategyActorNativeBase.TItem.strName> <XGStrategyActorNativeBase.TItem> 01 00 1B <Item> 35 <XGStrategyActorNativeBase.THQEvent.iData> <XGStrategyActorNativeBase.THQEvent> 00 00 10 00 <.iEvent> 35 <XGMissionControlUI.TMCEventMenu.arrEvents> <@TMCEventMenu> 00 00 01 <@m_kEvents> 4A 16 
+/*(0x1BF0/0x1220)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 0B 
+/*(0x1C0F/0x1233)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x1C2E/0x1246)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DC 
+/*(0x1C60/0x1264)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelMecRepair> 4A 16 ) 
+/*(0x1CB9/0x129D)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x1CF4/0x12C0)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 C8 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x1D2D/0x12E9)*/ 		06 [@label_0x1FAF] 
+/*(0x1D30/0x12EC)*/ 	[#label_0x1D30]
+/*(0x1D30/0x12EC)*/ 	0A [@label_0x1E87] 24 04 
+/*(0x1D35/0x12F1)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 04 
+/*(0x1D54/0x1304)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 04 
+/*(0x1D73/0x1317)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C D9 
+/*(0x1DA5/0x1335)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 01 <@m_strLabelCouncilReport> 
+/*(0x1DDE/0x1356)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 2C 04 
+/*(0x1E10/0x1374)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x1E4B/0x1397)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 00 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x1E84/0x13C0)*/ 		06 [@label_0x1FAF] 
+/*(0x1E87/0x13C3)*/ 	[#label_0x1E87]
+/*(0x1E87/0x13C3)*/ 	0A [@label_0x1FAC] 24 0E 
+/*(0x1E8C/0x13C8)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iEventType> <@TMCEvent> 00 01 00 <.kOption> 2C 0E 
+/*(0x1EAB/0x13DB)*/ 		0F 35 <XGMissionControlUI.TMCEvent.iPriority> <@TMCEvent> 00 01 00 <.kOption> 2C 02 
+/*(0x1ECA/0x13EE)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCEvent.imgOption> <@TMCEvent> 00 01 00 <.kOption> 2C DE 
+/*(0x1EFC/0x140C)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtOption> <@TMCEvent> 00 01 00 <.kOption> 01 <@m_strLabelCovertOperative> 
+/*(0x1F35/0x142D)*/ 		0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCEvent.txtDays> <@TMCEvent> 00 01 00 <.kOption> 38 53 00 <.iDays> 
+/*(0x1F70/0x1450)*/ 		0F 35 <XGMissionControlUI.TMCEvent.clrOption> <@TMCEvent> 00 01 00 <.kOption> 1C <Core.Object.MakeColor> 24 C8 24 00 24 C8 38 3D 91 38 3A 24 AF 38 3A 24 03 16 16 
+/*(0x1FA9/0x1479)*/ 		06 [@label_0x1FAF] 
+/*(0x1FAC/0x147C)*/ 	[#label_0x1FAC]
+/*(0x1FAC/0x147C)*/ 	0A FF FF 
+/*(0x1FAF/0x147F)*/ 	[#label_0x1FAF]
+/*(0x1FAF/0x147F)*/ 	55 35 <XGMissionControlUI.TMCEventMenu.arrOptions> <@TMCEventMenu> 00 00 01 <@m_kEvents> [@] ( 00 <.kOption> 16 ) 
+/*(0x1FD8/0x1498)*/ 	A5 00 <.iEvent> 16 
+/*(0x1FE3/0x149F)*/ 	06 [@label_0x007A] 
+/*(0x1FE6/0x14A2)*/ [#label_0x1FE6]
+/*(0x1FE6/0x14A2)*/ 0F 35 <XGMissionControlUI.TMCEventMenu.iHighlight> <@TMCEventMenu> 00 01 01 <@m_kEvents> 1D <%i -1> 
+/*(0x2008/0x14B8)*/ 04 0B 
+/*(0x200A/0x14BA)*/ 53 
+
+//This script was generated by HexToPseudoCode decompiler for use with PatchUPK/PatcherGUI tool
+UPK_FILE = XComStrategyGame.upk
+OBJECT = XGMissionControlUI.AddNotice : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 0B 
+/*(0x0001/0x0001)*/ 0B 
+/*(0x0002/0x0002)*/ 0B 
+/*(0x0003/0x0003)*/ 0F 00 <.kTag> 2E <XComGame.XGParamTag> 19 19 2E <XComGame.XComEngine> 12 20 <Engine.Engine> [@] <Engine.Engine.GetEngine.ReturnValue> 00 ( 1C <Engine.Engine.GetEngine> 16 ) [@] <XComGame.XComEngine.LocalizeContext> 00 ( 01 <XComGame.XComEngine.LocalizeContext> ) [@] <XComGame.XGLocalizeContext.FindTag.ReturnValue> 00 ( 1B <FindTag> 1F <%t "XGParam"> 16 ) 
+/*(0x0072/0x004E)*/ 0F 35 <XGMissionControlUI.TMCNotice.fTimer> <@TMCNotice> 00 01 00 <.kNotice> 1E <%f 6> 
+/*(0x0094/0x0064)*/ 05 <.eNotice> 00 00 <.eNotice> 
+/*(0x00A7/0x006F)*/ 0A [@label_0x0219] 24 14 
+/*(0x00AC/0x0074)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_ItemBuilt> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_ItemBuilt> ) 16 ) 
+/*(0x00EB/0x00A7)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue0> 00 ( 01 <XComGame.XGParamTag.IntValue0> ) 00 <.iData2> 
+/*(0x0113/0x00BF)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 35 <XGStrategyActorNativeBase.TItem.strName> <XGStrategyActorNativeBase.TItem> 01 00 1B <Item> 00 <.iData1> 4A 16 
+/*(0x0159/0x00ED)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelItemBuilt> 4A 16 ) 
+/*(0x01B2/0x0126)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x01E4/0x0144)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 69 
+/*(0x0216/0x0162)*/ 	06 [@label_0x1C15] 
+/*(0x0219/0x0165)*/ [#label_0x0219]
+/*(0x0219/0x0165)*/ 0A [@label_0x0311] 24 16 
+/*(0x021E/0x016A)*/ 	1B <Narrative> 20 <NarrativeMoment.RoboHQ_ExcavationComplete> 4A 16 
+/*(0x0232/0x017A)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_ExcavationComplete> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_ExcavationComplete> ) 16 ) 
+/*(0x0271/0x01AD)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 01 <@m_strLabelExcavationComplete> 
+/*(0x02AA/0x01CE)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x02DC/0x01EC)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 63 
+/*(0x030E/0x020A)*/ 	06 [@label_0x1C15] 
+/*(0x0311/0x020D)*/ [#label_0x0311]
+/*(0x0311/0x020D)*/ 0A [@label_0x03B6] 24 17 
+/*(0x0316/0x0212)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 01 <@m_strLabelFacilityRemoved> 
+/*(0x034F/0x0233)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x0381/0x0251)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 63 
+/*(0x03B3/0x026F)*/ 	06 [@label_0x1C15] 
+/*(0x03B6/0x0272)*/ [#label_0x03B6]
+/*(0x03B6/0x0272)*/ 0A [@label_0x04A3] 24 11 
+/*(0x03BB/0x0277)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue0> 00 ( 01 <XComGame.XGParamTag.IntValue0> ) 00 <.iData1> 
+/*(0x03E3/0x028F)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelNewScientists> 4A 16 ) 
+/*(0x043C/0x02C8)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x046E/0x02E6)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 79 
+/*(0x04A0/0x0304)*/ 	06 [@label_0x1C15] 
+/*(0x04A3/0x0307)*/ [#label_0x04A3]
+/*(0x04A3/0x0307)*/ 0A [@label_0x0590] 24 10 
+/*(0x04A8/0x030C)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue0> 00 ( 01 <XComGame.XGParamTag.IntValue0> ) 00 <.iData1> 
+/*(0x04D0/0x0324)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelNewEngineers> 4A 16 ) 
+/*(0x0529/0x035D)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x055B/0x037B)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 7A 
+/*(0x058D/0x0399)*/ 	06 [@label_0x1C15] 
+/*(0x0590/0x039C)*/ [#label_0x0590]
+/*(0x0590/0x039C)*/ 0A [@label_0x06BC] 24 0E 
+
+//*************************** 0 new soldiers means scan for exalt
+
+07 [@notzero]
+  9a // ==  
+    00 <.iData1> 
+	2c 00
+  16
+  
+// its an exalt reminder
+ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_SoldierHealed> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_SoldierHealed> ) 16 ) 
+	
+ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 
+	  1f <%t "Scan for EXALT">
+
+    06 [@carryon]	  
+[#notzero]  
+
+/*(0x0595/0x03A1)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_SoldiersArrived> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_SoldiersArrived> ) 16 ) 
+/*(0x05D4/0x03D4)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue0> 00 ( 01 <XComGame.XGParamTag.IntValue0> ) 00 <.iData1> 
+/*(0x05FC/0x03EC)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelNewSoldiers> 4A 16 ) 
+
+[#carryon]
+/*(0x0655/0x0425)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x0687/0x0443)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 78 
+/*(0x06B9/0x0461)*/ 	06 [@label_0x1C15] 
+/*(0x06BC/0x0464)*/ [#label_0x06BC]
+
+
+
+/*(0x06BC/0x0464)*/ 0A [@label_0x0798] 24 2F 
+/*(0x06C1/0x0469)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Country> 00 <.iData1> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 
+/*(0x070A/0x049E)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strCellHides> 4A 16 ) 
+/*(0x0763/0x04D7)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x0795/0x04F5)*/ 	06 [@label_0x1C15] 
+/*(0x0798/0x04F8)*/ [#label_0x0798]
+/*(0x0798/0x04F8)*/ 0A [@label_0x08FC] 24 0F 
+/*(0x079D/0x04FD)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_SoldierHealed> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_SoldierHealed> ) 16 ) 
+/*(0x07DC/0x0530)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 19 1B <BARRACKS> 16 [@] <XGFacility_Barracks.GetSoldierByID.ReturnValue> 00 ( 1B <GetSoldierByID> 00 <.iData1> 16 ) [@] <XGStrategySoldier.GetName.ReturnValue> 00 ( 1B <GetName> 24 05 16 ) 
+/*(0x083C/0x0578)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelSoldierHealed> 4A 16 ) 
+/*(0x0895/0x05B1)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x08C7/0x05CF)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 78 
+/*(0x08F9/0x05ED)*/ 	06 [@label_0x1C15] 
+/*(0x08FC/0x05F0)*/ [#label_0x08FC]
+/*(0x08FC/0x05F0)*/ 0A [@label_0x0A21] 24 30 
+/*(0x0901/0x05F5)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 19 1B <BARRACKS> 16 [@] <XGFacility_Barracks.GetSoldierByID.ReturnValue> 00 ( 1B <GetSoldierByID> 00 <.iData1> 16 ) [@] <XGStrategySoldier.GetName.ReturnValue> 00 ( 1B <GetName> 24 05 16 ) 
+/*(0x0961/0x063D)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strGeneModCompleteNotify> 4A 16 ) 
+/*(0x09BA/0x0676)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x09EC/0x0694)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 78 
+/*(0x0A1E/0x06B2)*/ 	06 [@label_0x1C15] 
+/*(0x0A21/0x06B5)*/ [#label_0x0A21]
+/*(0x0A21/0x06B5)*/ 0A [@label_0x0B95] 24 12 
+/*(0x0A26/0x06BA)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_JetArrived> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_JetArrived> ) 16 ) 
+/*(0x0A65/0x06ED)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.IntValue0> 00 ( 01 <XComGame.XGParamTag.IntValue0> ) 00 <.iData1> 
+/*(0x0A8D/0x0705)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Continent> 00 <.iData2> 16 [@] <XGContinent.GetName.ReturnValue> 00 ( 1B <GetName> 16 ) 
+/*(0x0AD5/0x0739)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelNewInterceptorArrival> 4A 16 ) 
+/*(0x0B2E/0x0772)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x0B60/0x0790)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x0B92/0x07AE)*/ 	06 [@label_0x1C15] 
+/*(0x0B95/0x07B1)*/ [#label_0x0B95]
+/*(0x0B95/0x07B1)*/ 0A [@label_0x0CF7] 24 20 
+/*(0x0B9A/0x07B6)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_JetRepaired> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_JetRepaired> ) 16 ) 
+/*(0x0BD9/0x07E9)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 10 00 <.iData1> 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.m_arrInts> 00 ( 01 <XGFacility_Hangar.m_arrInts> ) [@] <XGShip_Interceptor.GetCallsign.ReturnValue> 00 ( 1B <GetCallsign> 16 ) 
+/*(0x0C37/0x082B)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelShipOnline> 4A 16 ) 
+/*(0x0C90/0x0864)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x0CC2/0x0882)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x0CF4/0x08A0)*/ 	06 [@label_0x1C15] 
+/*(0x0CF7/0x08A3)*/ [#label_0x0CF7]
+/*(0x0CF7/0x08A3)*/ 0A [@label_0x0EB7] 24 1F 
+/*(0x0CFC/0x08A8)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_JetArmed> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_JetArmed> ) 16 ) 
+/*(0x0D3B/0x08DB)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 10 00 <.iData1> 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.m_arrInts> 00 ( 01 <XGFacility_Hangar.m_arrInts> ) [@] <XGShip_Interceptor.GetCallsign.ReturnValue> 00 ( 1B <GetCallsign> 16 ) 
+/*(0x0D99/0x091D)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue1> 00 ( 01 <XComGame.XGParamTag.StrValue1> ) 19 10 00 <.iData1> 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.m_arrInts> 00 ( 01 <XGFacility_Hangar.m_arrInts> ) [@] <XGShip_Interceptor.GetWeaponString.ReturnValue> 00 ( 1B <GetWeaponString> 16 ) 
+/*(0x0DF7/0x095F)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelShipRearmed> 4A 16 ) 
+/*(0x0E50/0x0998)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x0E82/0x09B6)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x0EB4/0x09D4)*/ 	06 [@label_0x1C15] 
+/*(0x0EB7/0x09D7)*/ [#label_0x0EB7]
+/*(0x0EB7/0x09D7)*/ 0A [@label_0x10AA] 24 1E 
+/*(0x0EBC/0x09DC)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_JetTransferred> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_JetTransferred> ) 16 ) 
+/*(0x0EFB/0x0A0F)*/ 	1B <Narrative> 20 <NarrativeMoment.RoboHQ_AircraftTransferComplete> 4A 16 
+/*(0x0F0F/0x0A1F)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 10 00 <.iData1> 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.m_arrInts> 00 ( 01 <XGFacility_Hangar.m_arrInts> ) [@] <XGShip_Interceptor.GetCallsign.ReturnValue> 00 ( 1B <GetCallsign> 16 ) 
+/*(0x0F6D/0x0A61)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue1> 00 ( 01 <XComGame.XGParamTag.StrValue1> ) 19 1B <Continent> 19 10 00 <.iData1> 19 1B <HANGAR> 16 [@] <XGFacility_Hangar.m_arrInts> 00 ( 01 <XGFacility_Hangar.m_arrInts> ) [@] <XGShip_Interceptor.m_iHomeContinent> 00 ( 01 <XGShip_Interceptor.m_iHomeContinent> ) 16 [@] <XGContinent.GetName.ReturnValue> 00 ( 1B <GetName> 16 ) 
+/*(0x0FEA/0x0ABA)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelShipTransferArrival> 4A 16 ) 
+/*(0x1043/0x0AF3)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x1075/0x0B11)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x10A7/0x0B2F)*/ 	06 [@label_0x1C15] 
+/*(0x10AA/0x0B32)*/ [#label_0x10AA]
+/*(0x10AA/0x0B32)*/ 0A [@label_0x11B8] 24 28 
+/*(0x10AF/0x0B37)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Country> 00 <.iData1> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetNameWithArticle> 27 16 ) 
+/*(0x10F8/0x0B6C)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelFCRequestExpired> 4A 16 ) 
+/*(0x1151/0x0BA5)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x1183/0x0BC3)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x11B5/0x0BE1)*/ 	06 [@label_0x1C15] 
+/*(0x11B8/0x0BE4)*/ [#label_0x11B8]
+/*(0x11B8/0x0BE4)*/ 0A [@label_0x12C6] 24 29 
+/*(0x11BD/0x0BE9)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Country> 00 <.iData1> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetNameWithArticle> 27 16 ) 
+/*(0x1206/0x0C1E)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelFCRequestDelayed> 4A 16 ) 
+/*(0x125F/0x0C57)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x1291/0x0C75)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x12C3/0x0C93)*/ 	06 [@label_0x1C15] 
+/*(0x12C6/0x0C96)*/ [#label_0x12C6]
+/*(0x12C6/0x0C96)*/ 0A [@label_0x16C6] 24 21 
+/*(0x12CB/0x0C9B)*/ 	19 1B <Sound> 16 [@] <NullRef> 00 ( 1B <PlaySFX> 19 1B <SNDLIB> 16 [@] <XComGame.XComHQSoundCollection.SFX_Notify_SatelliteOperational> 00 ( 01 <XComGame.XComHQSoundCollection.SFX_Notify_SatelliteOperational> ) 16 ) 
+/*(0x130A/0x0CCE)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 35 <XGStrategyActorNativeBase.TItem.strName> <XGStrategyActorNativeBase.TItem> 01 00 1B <Item> 35 <XGStrategyActorNativeBase.TSatellite.iType> <XGStrategyActorNativeBase.TSatellite> 00 00 10 00 <.iData1> 19 1B <HQ> 16 [@] <XGHeadQuarters.m_arrSatellites> 00 ( 01 <XGHeadQuarters.m_arrSatellites> ) 4A 16 
+/*(0x1383/0x0D1F)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue1> 00 ( 01 <XComGame.XGParamTag.StrValue1> ) 19 1B <Country> 35 <XGStrategyActorNativeBase.TSatellite.iCountry> <XGStrategyActorNativeBase.TSatellite> 00 00 10 00 <.iData1> 19 1B <HQ> 16 [@] <XGHeadQuarters.m_arrSatellites> 00 ( 01 <XGHeadQuarters.m_arrSatellites> ) 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetName> 4A 16 ) 
+/*(0x13FF/0x0D77)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelSatOnline> 4A 16 ) 
+/*(0x1458/0x0DB0)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x148A/0x0DCE)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x14BC/0x0DEC)*/ 	05 <XGStrategyActorNativeBase.TSatellite.iCountry> 00 35 <XGStrategyActorNativeBase.TSatellite.iCountry> <XGStrategyActorNativeBase.TSatellite> 00 00 10 00 <.iData1> 19 1B <HQ> 16 [@] <XGHeadQuarters.m_arrSatellites> 00 ( 01 <XGHeadQuarters.m_arrSatellites> ) 
+/*(0x1502/0x0E1A)*/ 	0A [@label_0x151D] 25 
+/*(0x1506/0x0E1E)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_UnitedStates> 4A 16 
+/*(0x151A/0x0E2E)*/ 		06 [@label_0x16C3] 
+/*(0x151D/0x0E31)*/ 	[#label_0x151D]
+/*(0x151D/0x0E31)*/ 	0A [@label_0x1539] 2C 0F 
+/*(0x1522/0x0E36)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Canada> 4A 16 
+/*(0x1536/0x0E46)*/ 		06 [@label_0x16C3] 
+/*(0x1539/0x0E49)*/ 	[#label_0x1539]
+/*(0x1539/0x0E49)*/ 	0A [@label_0x1554] 26 
+/*(0x153D/0x0E4D)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Russia> 4A 16 
+/*(0x1551/0x0E5D)*/ 		06 [@label_0x16C3] 
+/*(0x1554/0x0E60)*/ 	[#label_0x1554]
+/*(0x1554/0x0E60)*/ 	0A [@label_0x1570] 2C 02 
+/*(0x1559/0x0E65)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_China> 4A 16 
+/*(0x156D/0x0E75)*/ 		06 [@label_0x16C3] 
+/*(0x1570/0x0E78)*/ 	[#label_0x1570]
+/*(0x1570/0x0E78)*/ 	0A [@label_0x158C] 2C 03 
+/*(0x1575/0x0E7D)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_UK> 4A 16 
+/*(0x1589/0x0E8D)*/ 		06 [@label_0x16C3] 
+/*(0x158C/0x0E90)*/ 	[#label_0x158C]
+/*(0x158C/0x0E90)*/ 	0A [@label_0x15A8] 2C 05 
+/*(0x1591/0x0E95)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_France> 4A 16 
+/*(0x15A5/0x0EA5)*/ 		06 [@label_0x16C3] 
+/*(0x15A8/0x0EA8)*/ 	[#label_0x15A8]
+/*(0x15A8/0x0EA8)*/ 	0A [@label_0x15C4] 2C 04 
+/*(0x15AD/0x0EAD)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Germany> 4A 16 
+/*(0x15C1/0x0EBD)*/ 		06 [@label_0x16C3] 
+/*(0x15C4/0x0EC0)*/ 	[#label_0x15C4]
+/*(0x15C4/0x0EC0)*/ 	0A [@label_0x15E0] 2C 09 
+/*(0x15C9/0x0EC5)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Italy> 4A 16 
+/*(0x15DD/0x0ED5)*/ 		06 [@label_0x16C3] 
+/*(0x15E0/0x0ED8)*/ 	[#label_0x15E0]
+/*(0x15E0/0x0ED8)*/ 	0A [@label_0x15FC] 2C 07 
+/*(0x15E5/0x0EDD)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_India> 4A 16 
+/*(0x15F9/0x0EED)*/ 		06 [@label_0x16C3] 
+/*(0x15FC/0x0EF0)*/ 	[#label_0x15FC]
+/*(0x15FC/0x0EF0)*/ 	0A [@label_0x1618] 2C 12 
+/*(0x1601/0x0EF5)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Egypt> 4A 16 
+/*(0x1615/0x0F05)*/ 		06 [@label_0x16C3] 
+/*(0x1618/0x0F08)*/ 	[#label_0x1618]
+/*(0x1618/0x0F08)*/ 	0A [@label_0x1634] 2C 06 
+/*(0x161D/0x0F0D)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Japan> 4A 16 
+/*(0x1631/0x0F1D)*/ 		06 [@label_0x16C3] 
+/*(0x1634/0x0F20)*/ 	[#label_0x1634]
+/*(0x1634/0x0F20)*/ 	0A [@label_0x1650] 2C 13 
+/*(0x1639/0x0F25)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Brazil> 4A 16 
+/*(0x164D/0x0F35)*/ 		06 [@label_0x16C3] 
+/*(0x1650/0x0F38)*/ 	[#label_0x1650]
+/*(0x1650/0x0F38)*/ 	0A [@label_0x166C] 2C 14 
+/*(0x1655/0x0F3D)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Argentina> 4A 16 
+/*(0x1669/0x0F4D)*/ 		06 [@label_0x16C3] 
+/*(0x166C/0x0F50)*/ 	[#label_0x166C]
+/*(0x166C/0x0F50)*/ 	0A [@label_0x1688] 2C 19 
+/*(0x1671/0x0F55)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Nigeria> 4A 16 
+/*(0x1685/0x0F65)*/ 		06 [@label_0x16C3] 
+/*(0x1688/0x0F68)*/ 	[#label_0x1688]
+/*(0x1688/0x0F68)*/ 	0A [@label_0x16A4] 2C 16 
+/*(0x168D/0x0F6D)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_SouthAfrica> 4A 16 
+/*(0x16A1/0x0F7D)*/ 		06 [@label_0x16C3] 
+/*(0x16A4/0x0F80)*/ 	[#label_0x16A4]
+/*(0x16A4/0x0F80)*/ 	0A [@label_0x16C0] 2C 08 
+/*(0x16A9/0x0F85)*/ 		1B <Narrative> 20 <NarrativeMoment.RoboSatellite_Australia> 4A 16 
+/*(0x16BD/0x0F95)*/ 		06 [@label_0x16C3] 
+/*(0x16C0/0x0F98)*/ 	[#label_0x16C0]
+/*(0x16C0/0x0F98)*/ 	0A FF FF 
+/*(0x16C3/0x0F9B)*/ 	[#label_0x16C3]
+/*(0x16C3/0x0F9B)*/ 	06 [@label_0x1C15] 
+/*(0x16C6/0x0F9E)*/ [#label_0x16C6]
+/*(0x16C6/0x0F9E)*/ 0A [@label_0x17D4] 24 18 
+/*(0x16CB/0x0FA3)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Country> 00 <.iData1> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetNameWithArticle> 27 16 ) 
+/*(0x1714/0x0FD8)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelWarningUFOOnGround> 4A 16 ) 
+/*(0x176D/0x1011)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x179F/0x102F)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x17D1/0x104D)*/ 	06 [@label_0x1C15] 
+/*(0x17D4/0x1050)*/ [#label_0x17D4]
+/*(0x17D4/0x1050)*/ 0A [@label_0x18E2] 24 0A 
+/*(0x17D9/0x1055)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 1B <Country> 00 <.iData1> 16 [@] <XGCountry.GetName.ReturnValue> 00 ( 1B <GetNameWithArticle> 27 16 ) 
+/*(0x1822/0x108A)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelWarningContactLost> 4A 16 ) 
+/*(0x187B/0x10C3)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x18AD/0x10E1)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x18DF/0x10FF)*/ 	06 [@label_0x1C15] 
+/*(0x18E2/0x1102)*/ [#label_0x18E2]
+/*(0x18E2/0x1102)*/ 0A [@label_0x19A7] 24 34 
+/*(0x18E7/0x1107)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelSignatureNotIdentified> 4A 16 ) 
+/*(0x1940/0x1140)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x1972/0x115E)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x19A4/0x117C)*/ 	06 [@label_0x1C15] 
+/*(0x19A7/0x117F)*/ [#label_0x19A7]
+/*(0x19A7/0x117F)*/ 0A [@label_0x1ACA] 24 25 
+/*(0x19AC/0x1184)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 19 10 00 <.iData1> 19 1B <GEOSCAPE> 16 [@] <XGGeoscape.m_arrMissions> 00 ( 01 <XGGeoscape.m_arrMissions> ) [@] <XGMission.GetTitle.ReturnValue> 00 ( 1B <GetTitle> 16 ) 
+/*(0x1A0A/0x11C6)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strLabelDays> 4A 16 ) 
+/*(0x1A63/0x11FF)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x1A95/0x121D)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 44 
+/*(0x1AC7/0x123B)*/ 	06 [@label_0x1C15] 
+/*(0x1ACA/0x123E)*/ [#label_0x1ACA]
+/*(0x1ACA/0x123E)*/ 0A [@label_0x1C12] 24 36 
+/*(0x1ACF/0x1243)*/ 	0B 
+/*(0x1AD0/0x1244)*/ 	0B 
+/*(0x1AD1/0x1245)*/ 	0B 
+/*(0x1AD2/0x1246)*/ 	0B 
+/*(0x1AD3/0x1247)*/ 	0B 
+/*(0x1AD4/0x1248)*/ 	0B 
+/*(0x1AD5/0x1249)*/ 	0B 
+/*(0x1AD6/0x124A)*/ 	0B 
+/*(0x1AD7/0x124B)*/ 	0B 
+/*(0x1AD8/0x124C)*/ 	0B 
+/*(0x1AD9/0x124D)*/ 	0B 
+/*(0x1ADA/0x124E)*/ 	0B 
+/*(0x1ADB/0x124F)*/ 	0B 
+/*(0x1ADC/0x1250)*/ 	0B 
+/*(0x1ADD/0x1251)*/ 	0B 
+/*(0x1ADE/0x1252)*/ 	0B 
+/*(0x1ADF/0x1253)*/ 	0B 
+/*(0x1AE0/0x1254)*/ 	0B 
+/*(0x1AE1/0x1255)*/ 	0B 
+/*(0x1AE2/0x1256)*/ 	0B 
+/*(0x1AE3/0x1257)*/ 	0B 
+/*(0x1AE4/0x1258)*/ 	0B 
+/*(0x1AE5/0x1259)*/ 	0B 
+/*(0x1AE6/0x125A)*/ 	0B 
+/*(0x1AE7/0x125B)*/ 	0B 
+/*(0x1AE8/0x125C)*/ 	0B 
+/*(0x1AE9/0x125D)*/ 	0B 
+/*(0x1AEA/0x125E)*/ 	0B 
+/*(0x1AEB/0x125F)*/ 	0B 
+/*(0x1AEC/0x1260)*/ 	0B 
+/*(0x1AED/0x1261)*/ 	0B 
+/*(0x1AEE/0x1262)*/ 	0B 
+/*(0x1AEF/0x1263)*/ 	0B 
+/*(0x1AF0/0x1264)*/ 	0B 
+/*(0x1AF1/0x1265)*/ 	0B 
+/*(0x1AF2/0x1266)*/ 	0B 
+/*(0x1AF3/0x1267)*/ 	0B 
+/*(0x1AF4/0x1268)*/ 	0B 
+/*(0x1AF5/0x1269)*/ 	0B 
+/*(0x1AF6/0x126A)*/ 	0B 
+/*(0x1AF7/0x126B)*/ 	0B 
+/*(0x1AF8/0x126C)*/ 	0B 
+/*(0x1AF9/0x126D)*/ 	0B 
+/*(0x1AFA/0x126E)*/ 	0B 
+/*(0x1AFB/0x126F)*/ 	0B 
+/*(0x1AFC/0x1270)*/ 	0B 
+/*(0x1AFD/0x1271)*/ 	0B 
+/*(0x1AFE/0x1272)*/ 	0B 
+/*(0x1AFF/0x1273)*/ 	0B 
+/*(0x1B00/0x1274)*/ 	0B 
+/*(0x1B01/0x1275)*/ 	0B 
+/*(0x1B02/0x1276)*/ 	0B 
+/*(0x1B03/0x1277)*/ 	0B 
+/*(0x1B04/0x1278)*/ 	0B 
+/*(0x1B05/0x1279)*/ 	0B 
+/*(0x1B06/0x127A)*/ 	0B 
+/*(0x1B07/0x127B)*/ 	0B 
+/*(0x1B08/0x127C)*/ 	0B 
+/*(0x1B09/0x127D)*/ 	0B 
+/*(0x1B0A/0x127E)*/ 	0B 
+/*(0x1B0B/0x127F)*/ 	0B 
+/*(0x1B0C/0x1280)*/ 	0B 
+/*(0x1B0D/0x1281)*/ 	0B 
+/*(0x1B0E/0x1282)*/ 	0F 19 00 <.kTag> [@] <XComGame.XGParamTag.StrValue0> 00 ( 01 <XComGame.XGParamTag.StrValue0> ) 35 <XGStrategyActorNativeBase.TItem.strName> <XGStrategyActorNativeBase.TItem> 01 00 1B <Item> 00 <.iData1> 2C 02 16 
+/*(0x1B55/0x12B1)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.StrValue> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 12 20 <XComGame.XComLocalizer> [@] <XComGame.XComLocalizer.ExpandString.ReturnValue> 00 ( 1B <ExpandString> 01 <@m_strSpeakSatDestroyed> 4A 16 ) 
+/*(0x1BAE/0x12EA)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TText.iState> <XComGame.XGTacticalScreenMgr.TText> 00 00 35 <XGMissionControlUI.TMCNotice.txtNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 04 
+/*(0x1BE0/0x1308)*/ 	0F 35 <XComGame.XGTacticalScreenMgr.TImage.iImage> <XComGame.XGTacticalScreenMgr.TImage> 00 00 35 <XGMissionControlUI.TMCNotice.imgNotice> <@TMCNotice> 00 01 00 <.kNotice> 2C 69 
+/*(0x1C12/0x1326)*/ [#label_0x1C12]
+/*(0x1C12/0x1326)*/ 0A FF FF 
+/*(0x1C15/0x1329)*/ [#label_0x1C15]
+/*(0x1C15/0x1329)*/ 07 [@label_0x1C48] 9A 36 01 <@m_arrNotices> 25 16 
+/*(0x1C25/0x1335)*/ 	55 01 <@m_arrNotices> [@] ( 00 <.kNotice> 16 ) 
+/*(0x1C3B/0x1343)*/ 	1B <UpdateView> 16 
+/*(0x1C45/0x134D)*/ 	06 [@label_0x1C7A] 
+/*(0x1C48/0x1350)*/ [#label_0x1C48]
+/*(0x1C48/0x1350)*/ 07 [@label_0x1C7A] 98 36 01 <@m_arrNotices> 2C 10 16 
+/*(0x1C59/0x135D)*/ 	57 01 <@m_arrNotices> [@] ( 25 00 <.kNotice> 16 ) 
+/*(0x1C70/0x136C)*/ 	1B <UpdateView> 16 
+/*(0x1C7A/0x1376)*/ [#label_0x1C7A]
+/*(0x1C7A/0x1376)*/ 04 0B 
+/*(0x1C7C/0x1378)*/ 53 
+
+OBJECT = UISituationRoom.SweepDialogueCallback : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 07 [@label_0x01DE] 9A 38 3A 00 <.eAction> 38 3A 24 00 16 
+/*(0x0014/0x0010)*/ 	1C <@AS_SweepAnimation> 19 19 19 2E <Class.XComHeadquartersGame> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 ( 01 <Engine.WorldInfo.Game> ) [@] <XComHeadquartersGame.GetGameCore.ReturnValue> 00 ( 1B <GetGameCore> 16 ) [@] <XGStrategy.GetHQ.ReturnValue> 00 ( 1B <GetHQ> 16 ) [@] <XGHeadQuarters.m_iContinent> 00 ( 01 <XGHeadQuarters.m_iContinent> ) 16 
+/*(0x009C/0x006C)*/ 	19 19 1B <GetInfiltratorMgr> 16 [@] <XGStrategyActorNativeBase.EXALT.ReturnValue> 00 ( 1B <EXALT> 16 ) [@] <NullRef> 00 ( 1B <PerformSweep> 16 ) 
+/*(0x00D2/0x009A)*/ 	19 1B <GetInfiltratorMgr> 16 [@] <NullRef> 00 ( 1B <UpdateCountryHelp> 16 ) 
+/*(0x00F2/0x00B6)*/ 	1B <UpdateCountries> 16 
+/*(0x00FC/0x00C0)*/ 	1B <RealizeMap> 16 
+/*(0x0106/0x00CA)*/ 	14 2D 01 <@m_bSweepFailed> 81 1B <WasSweepSuccessful> 16 16 
+/*(0x011D/0x00DD)*/ 	1B <UpdateHUD> 16 
+/*(0x0127/0x00E7)*/ 	1B <RefreshHUDButtonHelp> 16 
+/*(0x0131/0x00F1)*/ 	07 [@label_0x018E] 2D 01 <@m_bSweepFailed> 
+/*(0x013E/0x00FA)*/ 		19 2E <Class.XComHQPresentationLayer> 19 01 <XComGame.UI_FxsPanel.controllerRef> [@] <XComGame.XComPlayerController.m_Pres> 00 ( 01 <XComGame.XComPlayerController.m_Pres> ) [@] <XComGame.XComPresentationLayerBase.UINarrative.ReturnValue> 00 ( 1B <UINarrative> 20 <NarrativeMomentsEWI.Robo_NegativeScan> 4A 4A 4A 4A 4A 4A 4A 16 ) 
+
+// sweep failed, add a scan reminder...
+19 19 19 2E <Class.XComHeadquartersGame> 19 12 20 <Engine.Engine> [@] <Engine.Engine.GetCurrentWorldInfo.ReturnValue> 00 
+  ( 1C <Engine.Engine.GetCurrentWorldInfo> 16 ) [@] <Engine.WorldInfo.Game> 00 
+  ( 01 <Engine.WorldInfo.Game> ) [@] <XComHeadquartersGame.GetGameCore.ReturnValue> 00 
+  ( 1B <GetGameCore> 16 ) [@] <XGStrategy.GetHQ.ReturnValue> 00 
+  ( 1B <GetHQ> 16 ) [@] <NullRef> 00 
+  ( 1B <OrderStaff> 26 
+  1d <%i -1> // hire -1 soldiers  
+  16 ) 
+
+
+/*(0x018B/0x012F)*/ 		06 [@label_0x01DB] 
+/*(0x018E/0x0132)*/ 	[#label_0x018E]
+/*(0x018E/0x0132)*/ 	19 2E <Class.XComHQPresentationLayer> 19 01 <XComGame.UI_FxsPanel.controllerRef> [@] <XComGame.XComPlayerController.m_Pres> 00 ( 01 <XComGame.XComPlayerController.m_Pres> ) [@] <XComGame.XComPresentationLayerBase.UINarrative.ReturnValue> 00 ( 1B <UINarrative> 20 <NarrativeMomentsEWI.Robo_PositiveScan> 4A 4A 4A 4A 4A 4A 4A 16 ) 
+/*(0x01DB/0x0167)*/ 	[#label_0x01DB]
+/*(0x01DB/0x0167)*/ 	06 [@label_0x01F2] 
+/*(0x01DE/0x016A)*/ [#label_0x01DE]
+/*(0x01DE/0x016A)*/ 07 [@label_0x01F2] 9A 38 3A 00 <.eAction> 38 3A 24 01 16 
+/*(0x01F2/0x017A)*/ [#label_0x01F2]
+/*(0x01F2/0x017A)*/ 04 0B 
+/*(0x01F4/0x017C)*/ 53 
+
+//This script was generated by HexToPseudoCode decompiler for use with PatchUPK/PatcherGUI tool
+UPK_FILE = XComStrategyGame.upk
+OBJECT = UIStrategyComponent_EventList.GetEventImageLabel : AUTO
+[REPLACEMENT_CODE]
+/*(0x0000/0x0000)*/ 05 <.EventType> 00 00 <.EventType> 
+/*(0x0013/0x000B)*/ 0A [@label_0x0023] 25 
+/*(0x0017/0x000F)*/ 	04 1F <%t "_research"> 
+/*(0x0023/0x001B)*/ [#label_0x0023]
+/*(0x0023/0x001B)*/ 0A [@label_0x0036] 26 
+/*(0x0027/0x001F)*/ 	04 1F <%t "_itemProject"> 
+/*(0x0036/0x002E)*/ [#label_0x0036]
+/*(0x0036/0x002E)*/ 0A [@label_0x0047] 2C 02 
+/*(0x003B/0x0033)*/ 	04 1F <%t "_facility"> 
+/*(0x0047/0x003F)*/ [#label_0x0047]
+/*(0x0047/0x003F)*/ 0A [@label_0x0057] 2C 03 
+/*(0x004C/0x0044)*/ 	04 1F <%t "_foundry"> 
+/*(0x0057/0x004F)*/ [#label_0x0057]
+/*(0x0057/0x004F)*/ 0A [@label_0x006A] 2C 04 
+/*(0x005C/0x0054)*/ 	04 1F <%t "_endOfMonth"> 
+/*(0x006A/0x0062)*/ [#label_0x006A]
+/*(0x006A/0x0062)*/ 0A [@label_0x0079] 2C 05 
+
+04 
+  45
+    9a
+      00 <.iContinentMakingRequest> // continent no holds the number of staff ordered. 0 means it's an exalt reminder
+	  2c 00
+    16
+	[@]
+	(
+	  1F <%t "_covertop">   
+	)
+	[@]
+	(
+	  1F <%t "_hiring"> 
+	)
+  
+
+/*(0x0079/0x0071)*/ [#label_0x0079]
+/*(0x0079/0x0071)*/ 0A [@label_0x0095] 2C 06 
+/*(0x007E/0x0076)*/ 	04 1F <%t "_interceptorOrdering"> 
+/*(0x0095/0x008D)*/ [#label_0x0095]
+/*(0x0095/0x008D)*/ 0A [@label_0x00AB] 2C 07 
+/*(0x009A/0x0092)*/ 	04 1F <%t "_shipTransfers"> 
+/*(0x00AB/0x00A3)*/ [#label_0x00AB]
+/*(0x00AB/0x00A3)*/ 0A [@label_0x00BF] 2C 08 
+/*(0x00B0/0x00A8)*/ 	04 1F <%t "_psiTraining"> 
+/*(0x00BF/0x00B7)*/ [#label_0x00BF]
+/*(0x00BF/0x00B7)*/ 0A [@label_0x00CF] 2C 09 
+/*(0x00C4/0x00BC)*/ 	04 1F <%t "_genemod"> 
+/*(0x00CF/0x00C7)*/ [#label_0x00CF]
+/*(0x00CF/0x00C7)*/ 0A [@label_0x00DC] 2C 0A 
+/*(0x00D4/0x00CC)*/ 	04 1F <%t "_mech"> 
+/*(0x00DC/0x00D4)*/ [#label_0x00DC]
+/*(0x00DC/0x00D4)*/ 0A [@label_0x00E9] 2C 0B 
+/*(0x00E1/0x00D9)*/ 	04 1F <%t "_mech"> 
+/*(0x00E9/0x00E1)*/ [#label_0x00E9]
+/*(0x00E9/0x00E1)*/ 0A [@label_0x0117] 2C 0C 
+/*(0x00EE/0x00E6)*/ 	04 12 20 <XComGame.UIUtilities> [@] <XComGame.UIUtilities.GetEventListFCRequestIcon.ReturnValue> 00 ( 1B <GetEventListFCRequestIcon> 00 <.iContinentMakingRequest> 16 ) 
+/*(0x0117/0x0103)*/ [#label_0x0117]
+/*(0x0117/0x0103)*/ 0A [@label_0x0129] 2C 0D 
+/*(0x011C/0x0108)*/ 	04 1F <%t "_satellite"> 
+/*(0x0129/0x0115)*/ [#label_0x0129]
+/*(0x0129/0x0115)*/ 0A [@label_0x013A] 2C 0E 
+/*(0x012E/0x011A)*/ 	04 1F <%t "_covertop"> 
+/*(0x013A/0x0126)*/ [#label_0x013A]
+/*(0x013A/0x0126)*/ 0A FF FF 
+/*(0x013D/0x0129)*/ 04 1F <%t "_unknown"> 
+/*(0x0148/0x0134)*/ 04 3A <.ReturnValue> 
+/*(0x0152/0x013A)*/ 53 

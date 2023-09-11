@@ -1,0 +1,14 @@
+MOD_NAME=Chop Psionics and Officers
+
+AUTHOR=DM666. Thanks to Amineri for pointing out the function
+
+UPK_FILE=XComStrategyGame.upk
+
+//Psionics
+FIND_HEX=07 57 00 97 1B 0B 13 00 00 00 00 00 00 16 25 16 04 27
+MODDED_HEX=07 57 00 97 1B 0B 13 00 00 00 00 00 00 16 25 16 04 28
+
+//Officers
+//FIND_HEX=07 78 00 97 1B E2 24 00 00 00 00 00 00 16 25 16 04 27
+//MODDED_HEX=07 78 00 97 1B E2 24 00 00 00 00 00 00 16 25 16 04 28
+

@@ -37,22 +37,21 @@ Several changes have been made to multiple config files. The most notable is `de
 
 ### `defaltgamecore.ini`
 **Tactial**
-- Cyberdisks have +1 DR
-- Mechtoids have +2 DR
-- Sectopods have +3 DR
+- Alien mechanical units (Cyberdisc, Mechtoid, Sectopod recieve increased DR)
 - XCOM default squad size increased by 2 (for a starting squad size of 8)
 - Increased low cover bonus to 35% and high cover to 50%
 - Sharpshooter now grants +15% aim to high cover targets
-- HEAT Ammo and Warheads bonus increased to +100%
+- HEAT Ammo and Warheads bonus increased to +75%
 - Arc Thrower added to pistol slot
 - Elerium Turbos now (re)usuable for MECs
 - Alloy Carbide Plating now adds +1 HP (nerf) and +1 DR (buff)
 - Increased MEC Proximity Mine and Grenade Launcher range to 21
-- Increased Flamethrower damage to 7 (from 5)
+- Increased Flamethrower damage to 6 (from 5)
 - Increased Kinetic Strike Module damage to 14 (from 12)
 - Tanky MECs (MEC-2, MEC-4, and MEC-5) now grant Damage Control instead of Body Shield
-- All MEC suits get +1.5 DR
+- All MEC suits get +1.5 DR, Tanky MECs only recieve +1 DR (in return for Damage Control)
 - All SHIVs get +1 DR
+- Pulse Lasers also gant +8 aim in addition to +8 crit (taken from a Reddit thread about modding the .ini)
 - Gauss weapons now negate 0.5 DR instead of 0.34 (Quenchguns doubles this to 1)
 - Aiming angle second wave bonuses have been changed to minimum +10% and maximum (cover bonus - 10)%
 - Quick and Dirty Second Wave option tries to increase enemies to 150% of their normal amount

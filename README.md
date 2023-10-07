@@ -30,6 +30,7 @@ This repository contains several modifications for XCOM Enemy Unknown, specifica
 - [Ultra Graphics](https://www.nexusmods.com/xcom/mods/741)
 - [Virtual Reality Training](https://www.nexusmods.com/xcom/mods/569)
 - [XCOM Mini Mods Collection](https://www.nexusmods.com/xcom/mods/735?tab=description)
+- [Display Officer Missions](https://www.nexusmods.com/xcom/mods/832?tab=description)
 - And many more config-based ones (see below)!
 
 # Changes to Config
@@ -42,6 +43,9 @@ Several changes have been made to multiple config files. The most notable is `de
 - Increased low cover bonus to 35% and high cover to 50%
 - Sharpshooter now grants +15% aim to high cover targets
 - HEAT Ammo and Warheads bonus increased to +75%
+- Added ability for aliens to roll "Gunner" units as navigators (with HEAT or Shredder ammo), with +2 HP to indicate, intended to prevent MECs and other robotic units from dominating smaller firefights (and making larger ones even more dangerous and unpredictable)
+- Most aliens (Sectoids, Thin Men, Floaters, Mutons, Heavy Floaters, Muton Elites, Mechtoids) can get HEAT Ammo as navigators for Alien Gunners
+- Some aliens (Mutons, Heavy Floaters, Muton Elites, Mechtoids) can get Shredder Ammo as navigators for Alien Gunners
 - Arc Thrower added to pistol slot
 - Elerium Turbos now (re)usuable for MECs
 - Alloy Carbide Plating now adds +1 HP (nerf) and +1 DR (buff)
@@ -62,7 +66,7 @@ Several changes have been made to multiple config files. The most notable is `de
 - Starting soldiers increased to 48 and soldier cost down to $20 per soldier
 - XCOM will start with 2 SHIVs unless "On Our Own" country bonus is selected.
 - Increased rank requirements for OTS projects (in particular Squad Size)
-- Increased EXP requirements for ranks
+- Increased EXP requirements for ranks (TODO: Rollback for next campaign?)
   - Exception: SPEC now requires 80 EXP instead of 120 EXP
 - Master Sergeants gain an additional stat point every 3 missions instead of every 4 missions
 - Into the Breach officer perk grants 50% bonus EXP rather than 25%

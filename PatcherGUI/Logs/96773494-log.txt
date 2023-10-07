@@ -26,3 +26,7 @@ C:\Users\ewbie\Documents\XCOM EU EW Custom Files\PatcherGUI\Mods\DRChipping-ETIP
 C:\Users\ewbie\Documents\XCOM EU EW Custom Files\PatcherGUI\Mods\DRChipping-ETIPatch_1.1.txt.uninstall.txt
 C:\Users\ewbie\Documents\XCOM-EU-EW-Mods\PatcherGUI\Mods\Chop Psionics and Officers.txt
 C:\Users\ewbie\Documents\XCOM-EU-EW-Mods\PatcherGUI\Mods\Chop Psionics and Officers.txt.uninstall.txt
+C:\Users\ewbie\Documents\XCOM-EU-EW-Mods\Long War Mod Manager\Mods\35EXALTReminder.txt
+C:\Users\ewbie\Documents\XCOM-EU-EW-Mods\Long War Mod Manager\Mods\35EXALTReminder.txt.uninstall.txt
+C:\Users\ewbie\Documents\XCOM-EU-EW-Mods\Long War Mod Manager\Mods\36show_officer_missions.txt
+C:\Users\ewbie\Documents\XCOM-EU-EW-Mods\Long War Mod Manager\Mods\36show_officer_missions.txt.uninstall.txt
